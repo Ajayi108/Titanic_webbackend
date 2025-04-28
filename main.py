@@ -1,11 +1,20 @@
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
 
+#CONFIGURATION: where is our model service?
+#    - In Docker Compose we set MODEL_BACKEND_URL=http://model-backend:8000
+#    - Locally (no Docker) it'll default to localhost:8000
+MODEL_BACKEND_URL = os.getenv("MODEL_BACKEND_URL", "http://localhost:8000")
+
+# Create FastAPI app instance
 app = FastAPI()
 
-# 1. Allow your frontend (or Postman) to call in
+# CORS MIDDLEWARE
+#    - Allows your frontend (or Postman) to make requests from any origin.
+#    - In production you might lock down `allow_origins` to your real domain.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],            # in prod, lock this down
@@ -13,8 +22,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 2. Re-declare the same request/response schemas
+# Re-declare the same request/response schemas
 class PredictRequest(BaseModel):
+    """
+    Describes the JSON body we expect on POST /predict
+    Fields must match exactly, types are enforced.
+    """
     model: int
     Pclass: int
     Sex: int
@@ -26,16 +39,21 @@ class PredictRequest(BaseModel):
     Age_Class: float
 
 class PredictResponse(BaseModel):
+    
     prediction: int
     probability: float
 
 # 3. Proxy /predict to the model service
 @app.post("/predict", response_model=PredictResponse)
 def predict(req: PredictRequest):
+    """
+    1. Take JSON → Pydantic PredictRequest (validated).
+    2. Forward it to the model‐backend service.
+    3. If the model‐backend errors or is unreachable, return 502 Bad Gateway.
+    4. Otherwise, pass its JSON straight back as PredictResponse."""
     try:
-        # model-backend is the Docker service name; 8000 is its port
         r = requests.post(
-            "http://model-backend:8000/predict",
+            f"{MODEL_BACKEND_URL}/predict",
             json=req.dict(),
             timeout=5
         )
