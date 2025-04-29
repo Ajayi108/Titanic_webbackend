@@ -15,18 +15,23 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  background-color: #f7fafc;
+  background-color: #f5f7fa; /* Lighter, more modern background */
   margin: 0;
   padding: 0;
-  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 /* Layout */
 .landing-container {
-  
+  width: 100%;
+  max-width: 1800px; /* Optimal reading width */
   margin: 0 auto;
-  padding: 2rem;
-  align-items: center;
+  padding: 0 20px;
+
+  flex-direction: column;
+  gap: 60px; /* Consistent spacing between sections */
+  padding-bottom: 60px; /* Bottom padding */
 }
 
 .hero-section {
@@ -59,9 +64,10 @@ body {
   font-weight: 600;
   color: var(--primary-color);
   text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
+  padding-top: 50px
+  ;
 }
+
 
 .section-title::after {
   content: '';
