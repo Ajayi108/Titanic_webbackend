@@ -1,0 +1,81 @@
+.service-slider-container {
+    padding: 0 25px;
+    width: 100%;
+    max-width: 1700px;
+    align-self: center;
+    background: rgb(238, 237, 235);
+    height: 920px;
+    margin-left: 25px;
+  }
+  
+  .service-card {
+    /* Layout */
+    height: 320px;
+    width: 180px;
+    padding: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Visual Style */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 56px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(37, 35, 35, 0.3) inset;
+    
+    /* Animation */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin-top: 40px;
+  }
+ 
+  
+  .service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 8px 30px rgba(43, 42, 42, 0.685),
+      0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .service-icon {
+    font-size: 3rem; /* Larger icon */
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+  
+  /* Swiper navigation arrows */
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.8);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 1.2rem;
+  }
+  
+  /* Swiper pagination */
+  .swiper-pagination-bullet {
+    background: #ccc;
+    opacity: 1;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: var(--primary-color);
+  }
