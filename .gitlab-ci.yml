@@ -1,0 +1,8 @@
+# Minimal config 
+stages:
+  - check
+
+placeholder_job:
+  stage: check
+  script:
+    - echo "No CI checks required for this project"
