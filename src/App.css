@@ -1,4 +1,4 @@
-/* Base Styles */
+/* 🌐 Base Styles */
 :root {
   --primary-color: #2a4365;
   --secondary-color: #16222e;
@@ -15,26 +15,27 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  background-color: #f5f7fa; /* Lighter, more modern background */
+  background-color: #f5f7fa;
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  overflow-x: hidden; /* Prevents horizontal scrolling */
+  overflow-x: hidden;
 }
 
-/* Layout */
+/* 🌟 Layout */
 .landing-container {
   width: 100%;
-  max-width: 1800px; /* Optimal reading width */
+  max-width: 1800px;
   margin: 0 auto;
   padding: 0 20px;
-
   flex-direction: column;
-  gap: 60px; /* Consistent spacing between sections */
-  padding-bottom: 60px; /* Bottom padding */
+  gap: 60px;
+  padding-bottom: 60px;
+  align-items: center;
 }
 
 .hero-section {
+  position: relative;
   text-align: center;
   padding: 4rem 2rem;
   margin-bottom: 3rem;
@@ -42,9 +43,10 @@ body {
   color: var(--white);
   border-radius: 12px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
-/* Typography */
+/* 📝 Typography */
 .hero-title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -64,10 +66,10 @@ body {
   font-weight: 600;
   color: var(--primary-color);
   text-align: center;
-  padding-top: 50px
-  ;
+  margin-bottom: 3rem;
+  position: relative;
+  padding-top: 50px;
 }
-
 
 .section-title::after {
   content: '';
@@ -80,13 +82,12 @@ body {
 }
 
 .project-description {
-  
   margin: 0 auto 2rem;
   font-size: 1.1rem;
   line-height: 1.8;
 }
 
-/* Features Section */
+/* 🚀 Features Section */
 .features-section {
   padding: 4rem 0;
 }
@@ -129,23 +130,182 @@ body {
   font-size: 0.95rem;
 }
 
- 
+/* 🙋 Invitation Section */
 .Invitation {
   align-items: center;
   margin-left: 700px;
 }
 
-/* Responsive Design */
+/* 📱 Responsive Design */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.1rem;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* 🌐 Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(26, 54, 93, 0.9);
+  color: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--light-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links button {
+  background: transparent;
+  color: var(--white);
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-links button:hover {
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* ✨ Starry Hero Background */
+.starry-hero {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  top: 0;
+  left: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: twinkle 2s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0.9; transform: scale(1.5); }
+}
+
+/* 🚢 Ship Animation */
+.ship-animation-wrapper {
+  position: relative;
+  margin-top: 2rem;
+  height: 150px;
+  z-index: 1;
+}
+
+.ship {
+  height: 120px;
+  animation: shipFloat 5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes shipFloat {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  50%  { transform: translateY(-10px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* 🪟 Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* 📋 Sign-Up Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.signup-form input {
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.signup-form button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background-color: var(--dark-color);
+}
+
+/* 📄 Page Container */
+.page-container {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-color);
 }
