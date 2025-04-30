@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+
+import Navbar from './components/Navbar';
 import SignupInvitation from './components/SignupInvitation';
 import ServiceSlider from './components/ServiceSlider';
-import './App.css'
-import { Routes, Route } from 'react-router-dom';
+
 import Login from './pages/Login';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function LandingPage() {
+  const [showModal, setShowModal] = useState(false);
+
   const services = [
     {
       icon: "📊",
@@ -25,64 +32,87 @@ function LandingPage() {
     {
       icon: "🔍",
       title: "Service 3",
-      description: "One service we that can offer, small description"
+      description: "Explore passengers' real stories and survival rates"
     },
     {
       icon: "📚",
       title: "Service 4",
-      description: "One service we that can offer, small description"
+      description: "Educational resources for historical and data context"
     },
     {
       icon: "🔄",
       title: "Service 5",
-      description: "One service we that can offer, small description"
+      description: "Dynamic comparisons across classes, gender, age, etc."
     }
   ];
 
   return (
-
-      /* Please observe that landing-container is the main container of the landing page 
-      In case u want to insert a navigation bar, or something before the main title (Titanic Survival Predictor)
-      you can do it right here inserting a new class 
-      In case u want to work with the title and welcoming message please work on the class hero-section and subclasses too 
-      
-      'ServiceSlider, SignupInvitation' are by now the components that we are using. 
-      
-
-
-      */
     <div className="landing-container">
-      <div className="hero-section">
+      <Navbar />
+
+      <section className="hero-section">
+        {/* Starry Background Animation */}
+        <div className="starry-hero">
+          {Array.from({ length: 80 }).map((_, i) => (
+            <div
+              key={i}
+              className="star"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+              }}
+            />
+          ))}
+        </div>
+
         <h1 className="hero-title">Titanic Survival Predictor</h1>
         <p className="hero-subtitle">AI-Powered Historical Analysis</p>
-        
-        <div className='project-description'>  
+
+        <div className="ship-animation-wrapper">
+          <img src="/src/assets/ship.png" alt="Titanic Ship" className="ship" />
+          <div className="wave"></div>
+        </div>
+
+        <div className="project-description">
           <p>
-            Discover if you would have survived the legendary Titanic disaster with our 
-            machine learning prediction tool. Description of the project , Description of the project,
-            Description of the project, Description of the project. Description 
-            of the project, 
+            Discover if you would have survived the legendary Titanic disaster with our
+            machine learning prediction tool. Explore real passenger data, learn about
+            survival factors, and engage with interactive visualizations.
           </p>
         </div>
-      </div>
-       
-      
-       
+      </section>
+
       <ServiceSlider services={services} />
-      
-      <div className='Invitation'>
-        <SignupInvitation />
+
+      <div className="Invitation">
+        <SignupInvitation onSignupClick={() => setShowModal(true)} />
+        {showModal && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <button className="close-button" onClick={() => setShowModal(false)}>✖</button>
+              <h2>Sign Up</h2>
+              <form className="signup-form">
+                <input type="text" placeholder="Full Name" required />
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Password" required />
+                <button type="submit">Create Account</button>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
     </Routes>
   );
 }

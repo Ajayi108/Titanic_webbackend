@@ -1,151 +1,151 @@
 /* Enhanced Signup Button with Thick Blue Glow */
 .signup-invitation-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 5rem 0;
-    padding: 0 2rem;
-  }
-  
-  .signup-invitation {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: relative;
-  }
-  
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 5rem 0;
+  padding: 0 2rem;
+}
+
+.signup-invitation {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.signup-button {
+  background: linear-gradient(135deg, #3182ce 0%, #2a4365 100%);
+  color: white;
+  border: none;
+  padding: 2.5rem 4rem;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+              0 1px 3px rgba(0, 0, 0, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-align: center;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* Thick Blue Glow Effect */
+.signup-button::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.6) 0%, rgba(42, 67, 101, 0.6) 100%);
+  border-radius: 24px;
+  z-index: -1;
+  filter: blur(15px);
+  opacity: 0.8;
+  transition: all 0.4s ease;
+}
+
+/* Even more intense glow on hover */
+.signup-button:hover::before {
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  filter: blur(20px);
+  opacity: 1;
+  background: linear-gradient(135deg, rgba(99, 179, 237, 0.8) 0%, rgba(49, 130, 206, 0.8) 100%);
+}
+
+.signup-button:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.signup-button h2 {
+  margin: 0 0 0.8rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.signup-button p {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  opacity: 0.9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional outer glow */
+.signup-invitation::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(99, 179, 237, 0.4) 0%, rgba(49, 130, 206, 0.4) 100%);
+  z-index: -2;
+  filter: blur(25px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.signup-invitation:hover::after {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .signup-button {
-    background: linear-gradient(135deg, #3182ce 0%, #2a4365 100%);
-    color: white;
-    border: none;
-    padding: 2.5rem 4rem;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
-                0 1px 3px rgba(0, 0, 0, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-align: center;
-    width: 100%;
-    max-width: 650px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow: visible;
-    z-index: 1;
+    padding: 2rem 3rem;
   }
   
-  /* Thick Blue Glow Effect */
+  .signup-button h2 {
+    font-size: 1.6rem;
+  }
+  
+  .signup-button p {
+    font-size: 1rem;
+  }
+  
   .signup-button::before {
-    content: '';
-    position: absolute;
+    filter: blur(12px);
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-button {
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+  }
+  
+  .signup-button h2 {
+    font-size: 1.4rem;
+  }
+  
+  .signup-button::before {
+    border-radius: 18px;
+  }
+  
+  .signup-invitation::after {
     top: -10px;
     left: -10px;
     right: -10px;
     bottom: -10px;
-    background: linear-gradient(135deg, rgba(49, 130, 206, 0.6) 0%, rgba(42, 67, 101, 0.6) 100%);
-    border-radius: 24px;
-    z-index: -1;
-    filter: blur(15px);
-    opacity: 0.8;
-    transition: all 0.4s ease;
   }
-  
-  /* Even more intense glow on hover */
-  .signup-button:hover::before {
-    top: -12px;
-    left: -12px;
-    right: -12px;
-    bottom: -12px;
-    filter: blur(20px);
-    opacity: 1;
-    background: linear-gradient(135deg, rgba(99, 179, 237, 0.8) 0%, rgba(49, 130, 206, 0.8) 100%);
-  }
-  
-  .signup-button:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-  
-  .signup-button h2 {
-    margin: 0 0 0.8rem 0;
-    font-size: 2rem;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .signup-button p {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 400;
-    opacity: 0.9;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Additional outer glow */
-  .signup-invitation::after {
-    content: '';
-    position: absolute;
-    top: -15px;
-    left: -15px;
-    right: -15px;
-    bottom: -15px;
-    border-radius: 30px;
-    background: linear-gradient(135deg, rgba(99, 179, 237, 0.4) 0%, rgba(49, 130, 206, 0.4) 100%);
-    z-index: -2;
-    filter: blur(25px);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  
-  .signup-invitation:hover::after {
-    opacity: 1;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .signup-button {
-      padding: 2rem 3rem;
-    }
-    
-    .signup-button h2 {
-      font-size: 1.6rem;
-    }
-    
-    .signup-button p {
-      font-size: 1rem;
-    }
-    
-    .signup-button::before {
-      filter: blur(12px);
-      top: -8px;
-      left: -8px;
-      right: -8px;
-      bottom: -8px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .signup-button {
-      padding: 1.5rem 2rem;
-      border-radius: 12px;
-    }
-    
-    .signup-button h2 {
-      font-size: 1.4rem;
-    }
-    
-    .signup-button::before {
-      border-radius: 18px;
-    }
-    
-    .signup-invitation::after {
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-    }
-  }
+}
