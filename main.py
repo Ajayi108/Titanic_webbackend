@@ -1,63 +1,50 @@
-import os
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi import FastAPI, Body, HTTPException
 import requests
+import uvicorn
 
-#CONFIGURATION: where is our model service?
-#    - In Docker Compose we set MODEL_BACKEND_URL=http://model-backend:8000
-#    - Locally (no Docker) it'll default to localhost:8000
-MODEL_BACKEND_URL = os.getenv("MODEL_BACKEND_URL", "http://localhost:8000")
-
-# Create FastAPI app instance
-app = FastAPI()
-
-# CORS MIDDLEWARE
-#    - Allows your frontend (or Postman) to make requests from any origin.
-#    - In production you might lock down `allow_origins` to your real domain.
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],            # in prod, lock this down
-    allow_methods=["*"],
-    allow_headers=["*"],
+app = FastAPI(
+    title="Titanic Web Backend",
+    description="Accepts front-end POSTs and proxies to model-backend",
+    version="0.1.0"
 )
 
-# Re-declare the same request/response schemas
-class PredictRequest(BaseModel):
-    """
-    Describes the JSON body we expect on POST /predict
-    Fields must match exactly, types are enforced.
-    """
-    model: int
-    Pclass: int
-    Sex: int
-    Age: float
-    Fare: float
-    Embarked: int
-    Title: int
-    IsAlone: int
-    Age_Class: float
+MODEL_BACKEND_URL = "http://localhost:8000/predict"
 
-class PredictResponse(BaseModel):
-    
-    prediction: int
-    probability: float
-
-# 3. Proxy /predict to the model service
-@app.post("/predict", response_model=PredictResponse)
-def predict(req: PredictRequest):
+@app.post("/predict")
+def proxy_predict(
+    model:      int   = Body(..., description="Which model to use: 0=decision_tree,…,6=randomForest"),
+    Pclass:     int   = Body(..., description="Passenger class (1–3)"),
+    Sex:        int   = Body(..., description="Sex (0=female,1=male)"),
+    Age:        float = Body(..., description="Age in years"),
+    Fare:       float = Body(..., description="Fare paid"),
+    Embarked:   int   = Body(..., description="Port of embarkation (encoded)"),
+    Title:      int   = Body(..., description="Title (encoded)"),
+    IsAlone:    int   = Body(..., description="1 if traveling alone, else 0"),
+    Age_Class:  float = Body(..., description="Age × Class feature")
+):
     """
-    1. Take JSON → Pydantic PredictRequest (validated).
-    2. Forward it to the model‐backend service.
-    3. If the model‐backend errors or is unreachable, return 502 Bad Gateway.
-    4. Otherwise, pass its JSON straight back as PredictResponse."""
+    Now FastAPI knows about these nine fields, will validate them,
+    and swagger-ui will render a form at /docs.
+    """
+    payload = {
+        "model":     model,
+        "Pclass":    Pclass,
+        "Sex":       Sex,
+        "Age":       Age,
+        "Fare":      Fare,
+        "Embarked":  Embarked,
+        "Title":     Title,
+        "IsAlone":   IsAlone,
+        "Age_Class": Age_Class
+    }
+
     try:
-        r = requests.post(
-            f"{MODEL_BACKEND_URL}/predict",
-            json=req.dict(),
-            timeout=5
-        )
-        r.raise_for_status()
-    except Exception as e:
-        raise HTTPException(502, detail=f"Model service error: {e}")
-    return r.json()
+        resp = requests.post(MODEL_BACKEND_URL, json=payload, timeout=5)
+    except requests.exceptions.RequestException:
+        raise HTTPException(status_code=502, detail="Cannot reach model-backend")
+
+    # propagate status code & JSON body back to caller
+    return resp.json(), resp.status_code
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
