@@ -12,6 +12,7 @@ function Navbar() {
       <nav className="nav-links">
         <Link to="/about">About Us</Link>
         <Link to="/contact">Contact Info</Link>
+        <Link to="/calculator">Prediction Calculator</Link>
       </nav>
     </header>
   );
