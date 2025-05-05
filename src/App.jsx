@@ -2,49 +2,26 @@ import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import Navbar from './components/Navbar';
+// Shared UI components
+import Navbar from './components/Navbar/Navbar';
 import SignupInvitation from './components/SignupInvitation';
-import ServiceSlider from './components/ServiceSlider';
+import ServiceSlider from './components/ServiceSlider/ServiceSlider';
 
-import Login from './pages/Login';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import CalculatorPage from './pages/CalculatorPage';
+import Login from './pages/Login/Login';
+import About from './pages/About/About';
+import Contact from './pages/Contact/Contact';
+import CalculatorPage from './pages/CalculatorPage/CalculatorPage';
 
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
 
   const services = [
-    {
-      icon: "📊",
-      title: "Data Analysis",
-      description: "Comprehensive statistical breakdown of survival factors"
-    },
-    {
-      icon: "🤖",
-      title: "AI Prediction",
-      description: "Accurate machine learning model trained on passenger data"
-    },
-    {
-      icon: "📈",
-      title: "Service 2",
-      description: "Interactive charts showing survival probabilities"
-    },
-    {
-      icon: "🔍",
-      title: "Service 3",
-      description: "Explore passengers' real stories and survival rates"
-    },
-    {
-      icon: "📚",
-      title: "Service 4",
-      description: "Educational resources for historical and data context"
-    },
-    {
-      icon: "🔄",
-      title: "Service 5",
-      description: "Dynamic comparisons across classes, gender, age, etc."
-    }
+    { icon: "📊", title: "Data Analysis", description: "Comprehensive statistical breakdown of survival factors"},
+    { icon: "🤖", title: "AI Prediction", description: "Accurate machine learning model trained on passenger data"},
+    { icon: "📈", title: "Service 2", description: "Interactive charts showing survival probabilities" },
+    { icon: "🔍", title: "Service 3", description: "Explore passengers' real stories and survival rates" },
+    { icon: "📚", title: "Service 4", description: "Educational resources for historical and data context" },
+    { icon: "🔄", title: "Service 5", description: "Dynamic comparisons across classes, gender, age, etc." }
   ];
 
   return (
