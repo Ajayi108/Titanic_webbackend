@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+// Global app-wide styles (variables, resets, shared layouts, navbar, hero, etc.)
 import './App.css';
 
 // Shared UI components
@@ -7,6 +9,7 @@ import Navbar from './components/Navbar/Navbar';
 import SignupInvitation from './components/SignupInvitation';
 import ServiceSlider from './components/ServiceSlider/ServiceSlider';
 
+//page components
 import Login from './pages/Login/Login';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
@@ -14,7 +17,7 @@ import CalculatorPage from './pages/CalculatorPage/CalculatorPage';
 
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
-
+  // Data fed into the ServiceSlider component
   const services = [
     { icon: "📊", title: "Data Analysis", description: "Comprehensive statistical breakdown of survival factors"},
     { icon: "🤖", title: "AI Prediction", description: "Accurate machine learning model trained on passenger data"},
@@ -46,7 +49,8 @@ function LandingPage() {
 
         <h1 className="hero-title">Titanic Survival Predictor</h1>
         <p className="hero-subtitle">AI-Powered Historical Analysis</p>
-
+        
+        {/* Ship on wave animation */}
         <div className="ship-animation-wrapper">
           <img src="/src/assets/ship.png" alt="Titanic Ship" className="ship" />
           <div className="wave"></div>
