@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Body, HTTPException
+from pydantic import BaseModel, EmailStr
+import bcrypt
 import requests
 import uvicorn
 
 app = FastAPI(
     title="Titanic Web Backend",
-    description="Accepts front-end POSTs and proxies to model-backend",
-    version="0.1.0"
+    description="Handles prediction requests and user registration",
+    version="0.2.0"
 )
 
 MODEL_BACKEND_URL = "http://localhost:8000/predict"
@@ -22,10 +24,6 @@ def proxy_predict(
     IsAlone:    int   = Body(..., description="1 if traveling alone, else 0"),
     Age_Class:  float = Body(..., description="Age × Class feature")
 ):
-    """
-    Now FastAPI knows about these nine fields, will validate them,
-    and swagger-ui will render a form at /docs.
-    """
     payload = {
         "model":     model,
         "Pclass":    Pclass,
@@ -43,8 +41,22 @@ def proxy_predict(
     except requests.exceptions.RequestException:
         raise HTTPException(status_code=502, detail="Cannot reach model-backend")
 
-    # propagate status code & JSON body back to caller
     return resp.json(), resp.status_code
+
+users = []
+
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+@app.post("/register")
+def register_user(request: RegisterRequest):
+    hashed_pw = bcrypt.hashpw(request.password.encode('utf-8'), bcrypt.gensalt())
+    users.append({
+        "email": request.email,
+        "hashed_password": hashed_pw.decode('utf-8')
+    })
+    return {"message": f"User {request.email} registered successfully."}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
