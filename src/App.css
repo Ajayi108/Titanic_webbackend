@@ -11,6 +11,7 @@
   --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
 }
 
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
@@ -151,48 +152,6 @@ body {
   }
 }
 
-/* 🌐 Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: rgba(26, 54, 93, 0.9);
-  color: var(--white);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.logo {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: var(--light-color);
-}
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-links button {
-  background: transparent;
-  color: var(--white);
-  border: none;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.nav-links button:hover {
-  color: var(--accent-color);
-  transform: translateY(-1px);
-}
 
 /* ✨ Starry Hero Background */
 .starry-hero {
@@ -304,8 +263,9 @@ body {
 
 /* 📄 Page Container */
 .page-container {
+  width : 100%; 
   padding: 4rem 2rem;
-  max-width: 800px;
+  max-width: 3000px;
   margin: 0 auto;
   color: var(--text-color);
 }
@@ -385,85 +345,4 @@ body {
     margin-top: 1rem;
   }
 }
-/* 🎯 Calculator Page */
-.calculator-container {
-  max-width: 600px;
-  margin: 4rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
 
-.calculator-title {
-  font-size: 2rem;
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-  font-weight: 600;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 0.7rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: #f9f9f9;
-}
-
-.form-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.form-buttons button {
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button.predict-btn {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-button.predict-btn:hover {
-  background-color: var(--dark-color);
-}
-
-button.reset-btn {
-  background-color: #e2e8f0;
-  color: var(--text-color);
-}
-
-button.reset-btn:hover {
-  background-color: #cbd5e0;
-}
-
-/* 📊 Prediction Result */
-.prediction-result {
-  background-color: #ebf8ff;
-  color: #2c5282;
-  font-weight: bold;
-  text-align: center;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  border-radius: 8px;
-}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
+import './CalculatorPage.css';
 
 export default function CalculatorPage() {
   const [formData, setFormData] = useState({
