@@ -31,17 +31,6 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌟 Layout */
-.landing-container {
-  width: 100%;
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 0 20px;
-  flex-direction: column;
-  gap: 60px;
-  padding-bottom: 60px;
-  align-items: center;
-}
 
 .hero-section {
   position: relative;
@@ -50,115 +39,23 @@ body {
   margin-bottom: 3rem;
   background: var(--gradient);
   color: var(--white);
-  border-radius: 12px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
-/* 📝 Typography */
 .hero-title {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  letter-spacing: -0.025em;
 }
 
 .hero-subtitle {
   font-size: 1.25rem;
-  font-weight: 400;
-  opacity: 0.9;
   margin-bottom: 2rem;
 }
 
-.section-title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--primary-color);
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  padding-top: 50px;
-}
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 4px;
-  background: var(--accent-color);
-  margin: 0.5rem auto;
-  border-radius: 2px;
-}
 
-.project-description {
-  margin: 0 auto 2rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
-
-/* 🚀 Features Section */
-.features-section {
-  padding: 4rem 0;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  list-style: none;
-  padding: 0;
-}
-
-.feature-card {
-  background: var(--white);
-  border-radius: 10px;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.feature-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.feature-card h3 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-}
-
-.feature-card p {
-  color: var(--text-light);
-  font-size: 0.95rem;
-}
-
-/* 🙋 Invitation Section */
-.Invitation {
-  align-items: center;
-  margin-left: 700px;
-}
-
-/* 📱 Responsive Design */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.1rem;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 
 /* ✨ Starry Hero Background */
@@ -180,11 +77,21 @@ body {
   opacity: 0.6;
   animation: twinkle 2s infinite ease-in-out alternate;
 }
-
+/* Makes star twinkle */
 @keyframes twinkle {
   0% { opacity: 0.3; transform: scale(1); }
   100% { opacity: 0.9; transform: scale(1.5); }
 }
+
+
+/* Project Description */
+.project-description {
+  max-width: 50%;
+  margin: 0 auto 4rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
 
 /* 🚢 Ship Animation */
 .ship-animation-wrapper {
@@ -207,37 +114,11 @@ body {
   100% { transform: translateY(0px) rotate(0deg); }
 }
 
-/* 🪟 Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
+
+/* 🙋 Invitation Section */
+.Invitation {
   align-items: center;
-  z-index: 999;
-}
-
-.modal {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
+  margin-left: 700px;
 }
 
 /* 📋 Sign-Up Form */
@@ -277,80 +158,8 @@ body {
   margin: 0 auto;
   color: var(--text-color);
 }
-.hero-section {
-  padding: 4rem 2rem;
-  margin-bottom: 3rem;
-  background: var(--gradient);
-  color: var(--white);
-  text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.project-description {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
 
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
 
-.hero-subtitle {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-}
 
-/* 📱 Responsive adjustments */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .project-description {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-
-  .landing-container {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-top: 1rem;
-  }
-}
 
