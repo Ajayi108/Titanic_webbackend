@@ -7,6 +7,12 @@
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
+
+  /* all inputs in your form */
+.calculator-container input {
+  color: teal;
+}
+
   
   .calculator-title {
     font-size: 2rem;
@@ -22,7 +28,7 @@
   .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--text-color);
+    color: #c90f0f;
     font-weight: 600;
   }
   
@@ -31,9 +37,14 @@
     width: 100%;
     padding: 0.7rem;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 6px;
-    background-color: #f9f9f9;
+    background-color: #000000;
+  }
+  /* Style the options themselves */
+ .form-group select option {
+   background-color: #444;  /* background of each item */
+   color: #fff;             /* text of each item */
   }
   
   .form-buttons {
@@ -54,7 +65,7 @@
   
   button.predict-btn {
     background-color: var(--primary-color);
-    color: white;
+    color: rgb(255, 254, 254);
   }
   
   button.predict-btn:hover {
