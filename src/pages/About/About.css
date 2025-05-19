@@ -1,0 +1,24 @@
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+  margin-bottom: 0.5rem;
+  color: #003049;
+}
+
+.section p,
+.section ul {
+  line-height: 1.6;
+}
+
+.section ul {
+  padding-left: 1.5rem;
+}
