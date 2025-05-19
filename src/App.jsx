@@ -8,13 +8,13 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import SignupInvitation from './components/SignupInvitation';
 import ServiceSlider from './components/ServiceSlider/ServiceSlider';
-
+import Welcome  from './components/Welcome/Welcome';
 //page components
 import Login from './pages/Login/Login';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import CalculatorPage from './pages/CalculatorPage/CalculatorPage';
-
+ 
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   // Data fed into the ServiceSlider component
@@ -30,41 +30,8 @@ function LandingPage() {
   return (
     <div className="landing-container">
       <Navbar />
-
-      <section className="hero-section">
-        {/* Starry Background Animation */}
-        <div className="starry-hero">
-          {Array.from({ length: 80 }).map((_, i) => (
-            <div
-              key={i}
-              className="star"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        <h1 className="hero-title">Titanic Survival Predictor</h1>
-        <p className="hero-subtitle">AI-Powered Historical Analysis</p>
-        
-        {/* Ship on wave animation */}
-        <div className="ship-animation-wrapper">
-          <img src="/src/assets/ship.png" alt="Titanic Ship" className="ship" />
-          <div className="wave"></div>
-        </div>
-
-        <div className="project-description">
-          <p>
-            Discover if you would have survived the legendary Titanic disaster with our
-            machine learning prediction tool. Explore real passenger data, learn about
-            survival factors, and engage with interactive visualizations.
-          </p>
-        </div>
-      </section>
-
+      <Welcome />   // The previous 'Welcome' section code was converted to a component, please go to components/Welcome/Welcome.jsx
+      
       <ServiceSlider services={services} />
 
       <div className="Invitation">

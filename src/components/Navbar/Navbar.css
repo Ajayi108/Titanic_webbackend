@@ -1,39 +1,89 @@
 /* 🌐 Navbar */
-
+ 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(26, 54, 93, 0.9);
+    padding: 1rem 9rem;
+    background: rgba(--white );
     color: var(--white);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+    
+    
+    
+    
   }
   
+
+  /* The changes will be applied to the whole square containing the 
+  logo image , text and slogan*/
   .logo {
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: bold;
-    color: var(--light-color);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 0.0rem;
+     
   }
+.logo img {
+  width: 5rem;
+  height: 5rem;
+}
+/* This will edit the main title and slogan */ 
+
+.logo-box p {
+  margin: 0;
+  line-height: 1.2;
+  color: black;
   
+
+}
+.logo-title {
+  font-size: 2rem;
+  font-family:'Times New Roman', Times, serif;
+  letter-spacing: 1.5px;
+ }
+
+.logo-slogan {
+  font-size: 1rem;
+  font-style: oblique;
+}
+
+
   .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 3rem;
+    margin-right: 33rem;   /* This can change the position of the links */
+    
+  }
+  .nav-links p {
+    color:rgba(0, 0, 0, 0.651);
+    font-size: 1.2rem;
+    position: relative;
+    padding-bottom: 8px;
+    
+  }
+
+  .nav-links p::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%; /* Start from center */
+  width: 0; /* Initially no width */
+  height: 2px; /* Underline thickness */
+  background-color: currentColor; /* Matches text color */
+  transition: all 0.3s ease; /* Smooth animation */
+  transform: translateX(-50%); /* Centers the element */
+}
+
+  .nav-links p:hover::after {
+    width: 100%; 
+  
   }
   
-  .nav-links button {
-    background: transparent;
-    color: var(--white);
-    border: none;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .nav-links button:hover {
-    color: var(--accent-color);
-    transform: translateY(-1px);
-  }
+   
+
+ 
+
   
