@@ -54,8 +54,9 @@ function LandingPage() {
 
   return (
     <div className="landing-container">
-      <Welcome /> // The previous 'Welcome' section code was converted to a
-      component, please go to components/Welcome/Welcome.jsx
+      {
+        <Welcome /> /* The previous 'Welcome' section code was converted to a component, please go to components/Welcome/Welcome.jsx */
+      }
       <ServiceSlider services={services} />
       <div className="Invitation">
         <SignupInvitation onSignupClick={() => setShowModal(true)} />
