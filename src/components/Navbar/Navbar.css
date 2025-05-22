@@ -1,72 +1,61 @@
 /* 🌐 Navbar */
- 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 9rem;
-    background: rgba(--white );
-    color: var(--white);
-    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
-    
-    
-    
-    
-  }
-  
 
-  /* The changes will be applied to the whole square containing the 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(--white);
+  color: var(--white);
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* The changes will be applied to the whole square containing the 
   logo image , text and slogan*/
-  .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    gap: 0.0rem;
-     
-  }
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+}
 .logo img {
   width: 5rem;
   height: 5rem;
 }
-/* This will edit the main title and slogan */ 
+/* This will edit the main title and slogan */
 
 .logo-box p {
   margin: 0;
   line-height: 1.2;
   color: black;
-  
-
 }
 .logo-title {
   font-size: 2rem;
-  font-family:'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   letter-spacing: 1.5px;
- }
+}
 
 .logo-slogan {
   font-size: 1rem;
   font-style: oblique;
 }
 
+.nav-links {
+  display: flex;
+  gap: 3rem;
+  margin-right: 33rem; /* This can change the position of the links */
+}
+.nav-links p {
+  color: rgba(0, 0, 0, 0.651);
+  font-size: 1.2rem;
+  position: relative;
+  padding-bottom: 8px;
+}
 
-  .nav-links {
-    display: flex;
-    gap: 3rem;
-    margin-right: 33rem;   /* This can change the position of the links */
-    
-  }
-  .nav-links p {
-    color:rgba(0, 0, 0, 0.651);
-    font-size: 1.2rem;
-    position: relative;
-    padding-bottom: 8px;
-    
-  }
-
-  .nav-links p::after {
-  content: '';
+.nav-links p::after {
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%; /* Start from center */
@@ -77,13 +66,6 @@
   transform: translateX(-50%); /* Centers the element */
 }
 
-  .nav-links p:hover::after {
-    width: 100%; 
-  
-  }
-  
-   
-
- 
-
-  
+.nav-links p:hover::after {
+  width: 100%;
+}

@@ -5,7 +5,6 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
 // Shared UI components
-// import Navbar from "./components/Navbar/Navbar";
 import Layout from "./components/Layout/Layout";
 import SignupInvitation from "./components/SignupInvitation/SignupInvitation";
 import ServiceSlider from "./components/ServiceSlider/ServiceSlider";

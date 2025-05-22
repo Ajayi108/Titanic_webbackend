@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import "./CalculatorPage.css";
 
 // feature‐encoders for the payload
-const pclassMap   = { First: 1, Second: 2, Third: 3 };
-const sexMap      = { Female: 0, Male: 1 };
-const aloneMap    = { Yes: 1, No: 0 };
+const pclassMap = { First: 1, Second: 2, Third: 3 };
+const sexMap = { Female: 0, Male: 1 };
+const aloneMap = { Yes: 1, No: 0 };
 const embarkedMap = { Cherbourg: 0, Queenstown: 1, Southampton: 2 };
-const titleMap    = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
+const titleMap = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
 
-// the full list of models, in the exact order expected by the model backend 
+// the full list of models, in the exact order expected by the model backend
 const modelList = [
   "decision_tree",
   "gaussian",
@@ -19,19 +18,19 @@ const modelList = [
   "perceptron",
   "randomForest",
   "svc",
-  "sgd"
+  "sgd",
 ];
 
 export default function CalculatorPage() {
   const [formData, setFormData] = useState({
-    pclass:        "First",
-    sex:           "Male",
-    age:           "",
-    fare:          "",
+    pclass: "First",
+    sex: "Male",
+    age: "",
+    fare: "",
     traveledAlone: "Yes",
-    embarked:      "Cherbourg",
-    title:         "Mr",
-    model:         modelList[0],  // default to "decision_tree"
+    embarked: "Cherbourg",
+    title: "Mr",
+    model: modelList[0], // default to "decision_tree"
   });
   const [predictionResult, setPredictionResult] = useState("");
 
@@ -42,38 +41,48 @@ export default function CalculatorPage() {
 
   const handleReset = () => {
     setFormData({
-      pclass:        "First",
-      sex:           "Male",
-      age:           "",
-      fare:          "",
+      pclass: "First",
+      sex: "Male",
+      age: "",
+      fare: "",
       traveledAlone: "Yes",
-      embarked:      "Cherbourg",
-      title:         "Mr",
-      model:         modelList[0],
+      embarked: "Cherbourg",
+      title: "Mr",
+      model: modelList[0],
     });
     setPredictionResult("");
   };
 
   const handlePredict = async () => {
     // encode features
-    const Pclass    = pclassMap[formData.pclass];
-    const Sex       = sexMap[formData.sex];
-    const Age       = parseFloat(formData.age)  || 0;
-    const Fare      = parseFloat(formData.fare) || 0;
-    const IsAlone   = aloneMap[formData.traveledAlone];
-    const Embarked  = embarkedMap[formData.embarked];
-    const Title     = titleMap[formData.title];
+    const Pclass = pclassMap[formData.pclass];
+    const Sex = sexMap[formData.sex];
+    const Age = parseFloat(formData.age) || 0;
+    const Fare = parseFloat(formData.fare) || 0;
+    const IsAlone = aloneMap[formData.traveledAlone];
+    const Embarked = embarkedMap[formData.embarked];
+    const Title = titleMap[formData.title];
     // to look up the index of the selected model
-    const model     = modelList.indexOf(formData.model);
+    const model = modelList.indexOf(formData.model);
     const Age_Class = Age * Pclass;
 
-    const payload = { model, Pclass, Sex, Age, Fare, Embarked, Title, IsAlone, Age_Class };
+    const payload = {
+      model,
+      Pclass,
+      Sex,
+      Age,
+      Fare,
+      Embarked,
+      Title,
+      IsAlone,
+      Age_Class,
+    };
 
     try {
       const resp = await fetch("http://localhost:5000/predict", {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(payload),
+        body: JSON.stringify(payload),
       });
 
       const text = await resp.text();
@@ -94,7 +103,9 @@ export default function CalculatorPage() {
       const pred = data.prediction;
       const prob = data.probability;
       const resultText = pred === 1 ? "Survived" : "Did Not Survive";
-      setPredictionResult(`${resultText} (${(prob * 100).toFixed(2)}% confidence)`);
+      setPredictionResult(
+        `${resultText} (${(prob * 100).toFixed(2)}% confidence)`
+      );
     } catch (err) {
       console.error(err);
       setPredictionResult(`Error: ${err.message}`);
@@ -103,7 +114,6 @@ export default function CalculatorPage() {
 
   return (
     <div className="calculator-page">
-      <Navbar />
       <div className="calculator-container">
         <h1>Survival Calculator</h1>
 
@@ -153,7 +163,11 @@ export default function CalculatorPage() {
         {/* Traveled Alone */}
         <div className="form-group">
           <label>Traveled Alone</label>
-          <select name="traveledAlone" value={formData.traveledAlone} onChange={handleChange}>
+          <select
+            name="traveledAlone"
+            value={formData.traveledAlone}
+            onChange={handleChange}
+          >
             <option>Yes</option>
             <option>No</option>
           </select>
@@ -162,7 +176,11 @@ export default function CalculatorPage() {
         {/* Embarkation Port */}
         <div className="form-group">
           <label>Embarked</label>
-          <select name="embarked" value={formData.embarked} onChange={handleChange}>
+          <select
+            name="embarked"
+            value={formData.embarked}
+            onChange={handleChange}
+          >
             <option>Cherbourg</option>
             <option>Queenstown</option>
             <option>Southampton</option>
@@ -181,8 +199,6 @@ export default function CalculatorPage() {
           </select>
         </div>
 
-
-
         {/* Prediction Model */}
         <div className="form-group">
           <label>Model</label>
@@ -197,8 +213,12 @@ export default function CalculatorPage() {
 
         {/* Action Buttons */}
         <div className="form-buttons">
-          <button className="predict-btn" onClick={handlePredict}>Predict</button>
-          <button className="reset-btn"   onClick={handleReset}>Reset</button>
+          <button className="predict-btn" onClick={handlePredict}>
+            Predict
+          </button>
+          <button className="reset-btn" onClick={handleReset}>
+            Reset
+          </button>
         </div>
 
         {/* Result Display */}

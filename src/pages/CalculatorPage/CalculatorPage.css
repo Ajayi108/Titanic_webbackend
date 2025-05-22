@@ -1,93 +1,100 @@
-/* 🎯 Calculator Page */
-.calculator-container {
-    max-width: 600px;
-    margin: 4rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
+.calculator-page {
+  min-height: 100vh;
+  background-color: #f7f9fc;
+  padding-top: 6rem; /* space below navbar */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 
-  /* all inputs in your form */
+.calculator-container {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* all inputs in your form */
 .calculator-container input {
   color: teal;
 }
 
-  
-  .calculator-title {
-    font-size: 2rem;
-    text-align: center;
-    color: var(--primary-color);
-    margin-bottom: 2rem;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #c90f0f;
-    font-weight: 600;
-  }
-  
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
-    border: 1px solid #000000;
-    border-radius: 6px;
-    background-color: #000000;
-  }
-  /* Style the options themselves */
- .form-group select option {
-   background-color: #444;  /* background of each item */
-   color: #fff;             /* text of each item */
-  }
-  
-  .form-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-  
-  .form-buttons button {
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  button.predict-btn {
-    background-color: var(--primary-color);
-    color: rgb(255, 254, 254);
-  }
-  
-  button.predict-btn:hover {
-    background-color: var(--dark-color);
-  }
-  
-  button.reset-btn {
-    background-color: #e2e8f0;
-    color: var(--text-color);
-  }
-  
-  button.reset-btn:hover {
-    background-color: #cbd5e0;
-  }
-  
-  /* 📊 Prediction Result */
-  .prediction-result {
-    background-color: #ebf8ff;
-    color: #2c5282;
-    font-weight: bold;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 2rem;
-    border-radius: 8px;
-  }
+.calculator-title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #c90f0f;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  background-color: #000000;
+}
+/* Style the options themselves */
+.form-group select option {
+  background-color: #444; /* background of each item */
+  color: #fff; /* text of each item */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.form-buttons button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button.predict-btn {
+  background-color: var(--primary-color);
+  color: rgb(255, 254, 254);
+}
+
+button.predict-btn:hover {
+  background-color: var(--dark-color);
+}
+
+button.reset-btn {
+  background-color: #e2e8f0;
+  color: var(--text-color);
+}
+
+button.reset-btn:hover {
+  background-color: #cbd5e0;
+}
+
+/* 📊 Prediction Result */
+.prediction-result {
+  background-color: #ebf8ff;
+  color: #2c5282;
+  font-weight: bold;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+}
