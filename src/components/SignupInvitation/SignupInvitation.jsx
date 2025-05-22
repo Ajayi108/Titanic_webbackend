@@ -1,5 +1,5 @@
 // SignupInvitation.jsx
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function SignupInvitation({ onSignupClick }) {
   return (
