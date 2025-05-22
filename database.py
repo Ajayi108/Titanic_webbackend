@@ -11,6 +11,7 @@
 # GRANT ALL PRIVILEGES ON TABLE models TO titanic_saver;
 # GRANT USAGE, SELECT ON SEQUENCE models_id_seq TO titanic_saver;
 
+
 import psycopg2
 
 # to Connect to the database server
@@ -22,6 +23,7 @@ conn = psycopg2.connect(
     port="5432"
 )
 cursor = conn.cursor()
+
 
 # Function to create users and predictions tables
 def create_tables():
@@ -51,6 +53,8 @@ def create_tables():
     """)
     conn.commit()
     print("✅ Tables created successfully.")
+
+
 
 # Function to add and remove model name
 def add_name(model_name):
@@ -113,5 +117,6 @@ add_prediction(
 
 
 # Step 6: Close connections
+
 cursor.close()
 conn.close()
