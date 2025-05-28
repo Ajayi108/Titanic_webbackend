@@ -1,10 +1,14 @@
 from fastapi import APIRouter, Body, HTTPException
 from starlette.responses import JSONResponse
 import requests
+import os
 
 router = APIRouter(tags=["prediction"])
 
-MODEL_BACKEND_URL = "http://localhost:2000/predict"
+
+
+MODEL_BACKEND_URL = os.getenv("MODEL_BACKEND_URL", "http://localhost:2000/predict")
+
 
 @router.post("/predict")
 async def proxy_predict(

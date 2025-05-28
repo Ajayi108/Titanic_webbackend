@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Body, HTTPException
 from starlette.responses import JSONResponse
 import requests
+import os
 
 router = APIRouter(tags=["training"])
 
 # point to model-backend's train endpoint
-MODEL_BACKEND_TRAIN_URL = "http://localhost:2000/train"
+MODEL_BACKEND_TRAIN_URL = os.getenv("MODEL_BACKEND_TRAIN_URL", "http://localhost:2000/train")
+
+# MODEL_BACKEND_TRAIN_URL = "http://localhost:2000/train"
+MODEL_BACKEND_TRAIN_URL = "http://model-backend:2000/train"
 
 @router.post("/train")
 async def proxy_train(
