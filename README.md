@@ -1,3 +1,6 @@
+Start the web app: `npm run dev` 
+Local Server :  `http://localhost:8000` 
+
 # student-repo
  
 This repository was created for you as part of a course project. You are required to use this project for any course work and contact 
