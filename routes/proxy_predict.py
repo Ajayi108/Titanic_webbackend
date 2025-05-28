@@ -4,7 +4,7 @@ import requests
 
 router = APIRouter(tags=["prediction"])
 
-MODEL_BACKEND_URL = "http://localhost:8000/predict"
+MODEL_BACKEND_URL = "http://localhost:2000/predict"
 
 @router.post("/predict")
 async def proxy_predict(
