@@ -32,6 +32,8 @@ def create_tables():
             id SERIAL PRIMARY KEY,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            first_name TEXT,
+            last_name TEXT,
             is_admin BOOLEAN DEFAULT FALSE
         );
     """)

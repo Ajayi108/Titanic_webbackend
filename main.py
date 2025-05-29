@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from routes.proxy_predict import router as predict_router
 from routes.proxy_train   import router as train_router
+from routes.auth import router as auth_router
 
 app = FastAPI(
     title="Titanic Web Backend",
@@ -21,6 +22,7 @@ app.add_middleware(
 
 app.include_router(predict_router)
 app.include_router(train_router)
+app.include_router(auth_router)  
 
 
 if __name__ == "__main__":
