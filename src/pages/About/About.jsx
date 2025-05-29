@@ -3,50 +3,49 @@ import "./About.css";
 function About() {
   return (
     <div className="page-container">
-      <h1>About Us</h1>
+      <h1>Welcome to IcebergAI</h1>
 
       <section className="section">
-        <h2>Our Mission</h2>
+        <h2>Step Into the Story</h2>
         <p>
-          {" "}
-          IcebergAI is an interactive web application powered by cutting-edge
-          machine learning technology. Our goal is to educate and engage users
-          by letting them explore survival predictions from the Titanic disaster
-          based on real passenger data.
+          Ever wondered what it might’ve been like aboard the Titanic? With IcebergAI,
+          you can explore passenger profiles and uncover your own “what if” survival
+          story—all while learning something new in the process.
         </p>
       </section>
 
       <section className="section">
-        <h2>What You Can Do</h2>
+        <h2>What You Can Explore</h2>
         <ul>
-          <li>Experiment with different passenger characterisitcs</li>
-          <li>See real-time AI predictions for survival chances</li>
-          <li>View personalized prediction histories</li>
-          <li>Train your own models</li>
+          <li>Experiment with different passenger backgrounds</li>
+          <li>Discover how small choices affect big outcomes</li>
+          <li>Track your own prediction history</li>
+          <li>Try your hand at adjusting how the system thinks</li>
         </ul>
       </section>
 
       <section className="section">
-        <h2>Why We Built This</h2>
+        <h2>Why We Made This</h2>
         <p>
-          This project is part of a software engineering practical course at TH
-          Deggendorf. It demonstrates how modern AI can be integrated into
-          full-stack web applications to solve real-world problems.
+          This project grew from a course at TH Deggendorf, where we combined tech
+          skills and curiosity to create something educational, thought-provoking,
+          and fun to explore.
         </p>
       </section>
 
       <section className="section">
-        <h2>Learn AI with Us</h2>
+        <h2>Learn and Share</h2>
         <p>
-          IcebergAI also serves as a promotional showcase for our online course:
-          <strong> "Build and Deploy AI-Powered Web Applications" </strong>.
-          Learn how to preprocess data, train models, and integrate them into
-          production-ready apps.
+          IcebergAI is also part of our course{" "}
+          <strong>"Build and Deploy Web Apps with Intelligence"</strong>. Learn how
+          to build apps that think, respond, and evolve. Try it out, share your
+          results, and invite others to experience it too.
         </p>
+        <blockquote>
+          “Join the adventure, spread the word, and help others step into the story!”
+          <br /> — Sam Altmaniac, Marketing Director
+        </blockquote>
       </section>
-      <p>
-        This project predicts Titanic survival chances using machine learning.
-      </p>
     </div>
   );
 }
