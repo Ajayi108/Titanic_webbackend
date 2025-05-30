@@ -1,0 +1,199 @@
+.join-us-section {
+  padding: 4rem 2rem;
+}
+
+
+.join-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.join-us-button-container {
+  text-align: center; /* Ensures button stays centered */
+  margin: 2rem 0;
+}
+
+
+
+.join-us-left,
+.join-us-right {
+  flex: 1;
+}
+
+
+
+
+.join-us-statement {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #3a7bd5; /* Blue accent */
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.join-us-statement::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+}
+.join-us-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.3;
+}
+.join-us-sub {
+   
+   
+  text-align: center; 
+  margin-top: 0.25rem;
+}
+.join-us-text {
+  color: rgba(255, 255, 255, 0.85); /* Soft white (like stat-label) */
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400; /* Lighter than headings */
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Optional: Gradient highlight for key words */
+.join-us-text strong {
+  background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+.join-us-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+.join-us-left {
+  position: relative;
+}
+
+.join-us-left::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.1));
+  border-radius: 1rem;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.join-us-left:hover::before {
+  opacity: 1;
+}
+
+.join-us-left:hover .join-us-image {
+  transform: translateY(-5px);
+}
+
+.join-us-button {
+  /* Glassmorphism base (like stat-card) */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px; /* Matches card radius */
+  
+  /* Gradient text + border (like stat-value) */
+  border: 1px solid transparent;
+  background: 
+    linear-gradient(rgba(8, 12, 27, 0.8), rgba(8, 12, 27, 0.8)) padding-box,
+    linear-gradient(45deg, #00d2ff, #3a7bd5) border-box;
+  
+  /* Text */
+  color: #00d2ff; /* Blue gradient start color */
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-block; /* Allows centering */
+  margin: 0 auto; /* Centers horizontally */
+}
+
+
+/* Hover effects (shine + glow) */
+.join-us-button:hover {
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 210, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+
+/* Shine animation (like stat-card) */
+.join-us-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  opacity: 0;
+}
+
+.join-us-button:hover::before {
+  opacity: 1;
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: rotate(30deg) translate(-30%, -30%); }
+  100% { transform: rotate(30deg) translate(30%, 30%); }
+}
+
+@media (max-width: 768px) {
+  .join-us-button {
+    padding: 0.8rem 2rem;
+    font-size: 0.9rem;
+    display: block; /* Full width on mobile */
+    width: 80%; /* Better touch target */
+    margin: 0 auto 1.5rem; /* Centered with bottom spacing */
+  }
+}
+
+  .join-us-title {
+    font-size: 2rem;
+  }
+
+  .join-us-left::before {
+    display:none; /* Disable shine effect on mobile */
+  }
+

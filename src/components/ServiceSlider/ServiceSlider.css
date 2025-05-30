@@ -1,58 +1,44 @@
-.service-slider-container {
+ 
+.swiper-container,
+.swiper-wrapper,
+.swiper-slide {
+  overflow: visible !important;
+   
+}
+
+
+ .service-slider-container {
     padding: 0 25px;
     width: 100%;
-    max-width: 1700px;
+    max-width: 1100px;
+
     align-self: center;
-    background: rgb(238, 237, 235);
-    height: 920px;
+    
     margin-left: 25px;
+    border-radius: 50px;
   }
   
-  .service-card {
-    /* Layout */
-    height: 320px;
-    width: 180px;
-    padding: 10rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    /* Visual Style */
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 56px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.08),
-      0 0 0 1px rgba(37, 35, 35, 0.3) inset;
-    
-    /* Animation */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    margin-top: 40px;
-  }
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  
+}
+   
  
   
-  .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 
-      0 8px 30px rgba(43, 42, 42, 0.685),
-      0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-    background: rgba(255, 255, 255, 0.9);
-  }
-  
-  .service-icon {
-    font-size: 3rem; /* Larger icon */
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-  }
+.review-card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 8px 30px rgba(43, 42, 42, 0.685),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  filter: brightness(0.9);
+}
+   
   
   /* Swiper navigation arrows */
   .swiper-button-next,
@@ -71,11 +57,71 @@
   }
   
   /* Swiper pagination */
+  
   .swiper-pagination-bullet {
     background: #ccc;
     opacity: 1;
+    top: 100px;
+   
   }
   
   .swiper-pagination-bullet-active {
     background: var(--primary-color);
   }
+  .review-card {
+  background: linear-gradient(135deg, #89F7FE 0%, #66A6FF 100%);
+  transition: transform .2s, box-shadow .2s, filter .2s;  
+
+  border-radius: 38px;
+  padding: 30px;
+  text-align: center;
+  margin-top: 50px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: visible;
+  padding-top: 40px;;
+  right: 45px;
+  width: 250px;
+  height: 300px;
+  
+}
+
+.review-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.review-name {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.review-profession {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 1px 0 20px;
+}
+
+.review-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 12px 0 8px;
+  font-style: oblique;
+}
+
+.review-description {
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.121rem;      /* slightly larger for readability */
+  line-height: 1.6;         /* more breathing room between lines */
+  font-weight: 400;         /* normal weight */
+  color: #333;              /* keep the dark-gray text */
+  letter-spacing: 0.5px;    /* subtle tracking for better flow */
+           
+}

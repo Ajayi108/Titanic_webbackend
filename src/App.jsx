@@ -9,55 +9,35 @@ import Layout from "./components/Layout/Layout";
 import SignupInvitation from "./components/SignupInvitation/SignupInvitation";
 import ServiceSlider from "./components/ServiceSlider/ServiceSlider";
 import Welcome from "./components/Welcome/Welcome";
+import PopularCourses from "./components/PopularCourses/PopularCourses";
+import Statistics from "./components/Statistics/Statistics";
+import JoinUsSection  from "./components/JoinUsSection/JoinUsSection";
+
+
+
 //page components
 import Login from "./pages/Login/Login";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
 import CalculatorPage from "./pages/CalculatorPage/CalculatorPage";
-
+   
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   // Data fed into the ServiceSlider component
-  const services = [
-    {
-      icon: "📊",
-      title: "Data Analysis",
-      description: "Comprehensive statistical breakdown of survival factors",
-    },
-    {
-      icon: "🤖",
-      title: "AI Prediction",
-      description: "Accurate machine learning model trained on passenger data",
-    },
-    {
-      icon: "📈",
-      title: "Service 2",
-      description: "Interactive charts showing survival probabilities",
-    },
-    {
-      icon: "🔍",
-      title: "Service 3",
-      description: "Explore passengers' real stories and survival rates",
-    },
-    {
-      icon: "📚",
-      title: "Service 4",
-      description: "Educational resources for historical and data context",
-    },
-    {
-      icon: "🔄",
-      title: "Service 5",
-      description: "Dynamic comparisons across classes, gender, age, etc.",
-    },
-  ];
+  // To avoid spaghetti code, components should be as independent as possible!!! 
 
   return (
     <div className="landing-container">
       {
         <Welcome /> /* The previous 'Welcome' section code was converted to a component, please go to components/Welcome/Welcome.jsx */
+        
       }
-      <ServiceSlider services={services} />
+      
+      <Statistics/>   
+      <PopularCourses />
+      <ServiceSlider />
+      <JoinUsSection />
       <div className="Invitation">
         <SignupInvitation onSignupClick={() => setShowModal(true)} />
         {showModal && (

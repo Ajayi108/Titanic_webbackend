@@ -37,7 +37,7 @@ function About() {
         <h2>Learn and Share</h2>
         <p>
           IcebergAI is also part of our course{" "}
-          <strong>"Build and Deploy Web Apps with Intelligence"</strong>. Learn how
+          <strong>"Titanic Survival Predictor"</strong>. Learn how
           to build apps that think, respond, and evolve. Try it out, share your
           results, and invite others to experience it too.
         </p>

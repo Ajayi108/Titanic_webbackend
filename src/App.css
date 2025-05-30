@@ -13,6 +13,7 @@
     var(--primary-color) 0%,
     var(--secondary-color) 100%
   );
+ 
 }
 
 /* Body & Layout */
@@ -27,14 +28,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(to bottom, #0a2e38 0%, #000 100%);
+
 }
 
 .landing-container {
   width: 100%;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0;
+   
 }
 
 .Invitation,

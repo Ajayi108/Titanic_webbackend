@@ -8,6 +8,7 @@
   background: rgba(--white);
   color: var(--white);
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+  background-color: white;
 }
 
 /* The changes will be applied to the whole square containing the 
