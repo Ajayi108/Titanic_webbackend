@@ -17,6 +17,7 @@ import JoinUsSection  from "./components/JoinUsSection/JoinUsSection";
 
 //page components
 import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
@@ -70,6 +71,7 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/calculator" element={<CalculatorPage />} />

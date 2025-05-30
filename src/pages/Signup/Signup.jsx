@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import './Login.css';
+import './Signup.css';
 import titanicVideo from '../../assets/shot-titanic.mp4';
 import { Link } from 'react-router-dom';
+
 
 
 const funFacts = [
@@ -20,30 +21,28 @@ export default function LoginPage() {
     // Pick a random fact on load
     setCurrentFact(funFacts[Math.floor(Math.random() * funFacts.length)]);
   }, []);
-
   return (
-    <div className="login-container">
-      <video autoPlay muted loop className="background-video">
+    <div className="signup-container">
+      <video autoPlay muted loop className="signup-background-video">
         <source src={titanicVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      <div className="login-content">
-        <div className="login-box">
-          <h2>Sign in</h2>
-          <input type="email" placeholder="Your email" className="login-input" />
-          <input type="password" placeholder="Password" className="login-input" />
-          <div className="login-row">
-            <label><input type="checkbox" /> Keep me signed in</label>
-            <a href="#" className="login-link">Forgot password?</a>
-          </div>
-          <button className="login-btn">Sign In</button>
-          <p className="login-footer">
-            Don't have an account? <Link to="/Signup" className="login-link">Sign up</Link>
+      <div className="signup-content">
+        <div className="signup-box">
+          <h2>Create Account</h2>
+          <input type="text" placeholder="First name" className="signup-input" />
+          <input type="text" placeholder="Last name" className="signup-input" />
+          <input type="email" placeholder="Email address" className="signup-input" />
+          <input type="password" placeholder="Password" className="signup-input" />
+          <input type="password" placeholder="Confirm password" className="signup-input" />
+          <button className="signup-btn">Sign Up</button>
+          <p className="signup-footer">
+            Already have an account? <Link to="/login" className="signup-link">Sign in</Link>
           </p>
         </div>
 
-        <div className="fact-box">
+        <div className="signup-fact-box">
           <h3>Did You Know?</h3>
           <p>{currentFact}</p>
         </div>

@@ -1,5 +1,5 @@
 /* 🎬 Background Video */
-.background-video {
+.signup-background-video {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,11 +7,11 @@
   height: 100vh;
   object-fit: cover;
   z-index: -1;
-  filter: brightness(0.6); /* Optional dimming */
+  filter: brightness(0.6);
 }
 
 /* 📦 Outer Container */
-.login-container {
+.signup-container {
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -24,8 +24,8 @@
   flex-direction: column;
 }
 
-/* 🧱 Login Layout Wrapper */
-.login-content {
+/* 🧱 Signup Layout Wrapper */
+.signup-content {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
@@ -37,8 +37,8 @@
   box-sizing: border-box;
 }
 
-/* 🔐 Login Box */
-.login-box {
+/* 🔐 Signup Box */
+.signup-box {
   background-color: rgba(0, 0, 0, 0.85);
   color: white;
   padding: 2rem;
@@ -50,7 +50,7 @@
 }
 
 /* 🧾 Inputs */
-.login-input {
+.signup-input {
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
@@ -60,19 +60,10 @@
   box-sizing: border-box;
 }
 
-/* ☑️ Checkbox Row */
-.login-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-/* 🔘 Login Button */
-.login-btn {
+/* 🔘 Signup Button */
+.signup-btn {
   width: 100%;
-  background-color: #2563eb;
+  background-color: #10b981;
   color: white;
   font-weight: bold;
   padding: 0.75rem;
@@ -83,20 +74,19 @@
   font-size: 1rem;
 }
 
-
 /* 📝 Footer */
-.login-footer {
+.signup-footer {
   text-align: center;
   font-size: 0.9rem;
 }
 
-.login-link {
+.signup-link {
   color: #60a5fa;
   text-decoration: none;
 }
 
 /* 💡 Fact Box */
-.fact-box {
+.signup-fact-box {
   background-color: rgba(255, 255, 255, 0.15);
   color: white;
   padding: 1rem;
@@ -111,38 +101,31 @@
 
 /* 📱 Responsive Design */
 @media screen and (max-width: 768px) {
-  .login-content {
+  .signup-content {
     flex-direction: column;
     align-items: center;
   }
 
-  .login-box,
-  .fact-box {
+  .signup-box,
+  .signup-fact-box {
     width: 100%;
     max-width: 400px;
   }
 
-  .fact-box {
+  .signup-fact-box {
     margin-top: 1rem;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .login-box,
-  .fact-box {
+  .signup-box,
+  .signup-fact-box {
     padding: 1rem;
   }
 
-  .login-input,
-  .login-btn,
-  .login-social-btn {
+  .signup-input,
+  .signup-btn {
     font-size: 0.9rem;
     padding: 0.6rem;
-  }
-
-  .login-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
   }
 }

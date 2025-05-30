@@ -1,22 +1,21 @@
 /* 🌐 Navbar */
 
 .navbar {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(--white);
-  color: var(--white);
-  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
-  background-color: white;
+  background: white;
+  color: black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
 }
 
-/* The changes will be applied to the whole square containing the 
-  logo image , text and slogan*/
+/* Logo styling */
 .logo {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--white);
   display: flex;
   align-items: center;
   gap: 0rem;
@@ -25,8 +24,8 @@
   width: 5rem;
   height: 5rem;
 }
-/* This will edit the main title and slogan */
 
+/* Title and slogan */
 .logo-box p {
   margin: 0;
   line-height: 1.2;
@@ -37,16 +36,16 @@
   font-family: "Times New Roman", Times, serif;
   letter-spacing: 1.5px;
 }
-
 .logo-slogan {
   font-size: 1rem;
   font-style: oblique;
 }
 
+/* Navigation links */
 .nav-links {
   display: flex;
   gap: 3rem;
-  margin-right: 33rem; /* This can change the position of the links */
+  margin-right: 33rem; /* Desktop spacing */
 }
 .nav-links p {
   color: rgba(0, 0, 0, 0.651);
@@ -54,19 +53,55 @@
   position: relative;
   padding-bottom: 8px;
 }
-
 .nav-links p::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 50%; /* Start from center */
-  width: 0; /* Initially no width */
-  height: 2px; /* Underline thickness */
-  background-color: currentColor; /* Matches text color */
-  transition: all 0.3s ease; /* Smooth animation */
-  transform: translateX(-50%); /* Centers the element */
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
 }
-
 .nav-links p:hover::after {
   width: 100%;
+}
+
+/* Hamburger icon */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: black;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    width: 100%;
+    padding: 1rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-right: 0;
+    z-index: 10;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links p {
+    padding: 1rem;
+    text-align: center;
+  }
 }
