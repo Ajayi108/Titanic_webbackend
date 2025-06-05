@@ -7,7 +7,7 @@ COPY . .
 
 # Development
 FROM base AS dev
-EXPOSE 8000
+EXPOSE 8080
 CMD ["npm", "run", "dev"]
 
 # Production
