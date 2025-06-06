@@ -50,13 +50,18 @@ function LandingPage() {
               >
                 ✖
               </button>
-              <h2>Sign Up</h2>
+              <h2 className="signup-title">Create Account</h2>
               <form className="signup-form">
-                <input type="text" placeholder="Full Name" required />
-                <input type="email" placeholder="Email" required />
+                <input type="text" placeholder="First name" required />
+                <input type="text" placeholder="Last name" required />
+                <input type="email" placeholder="Email address" required />
                 <input type="password" placeholder="Password" required />
-                <button type="submit">Create Account</button>
+                <input type="password" placeholder="Confirm password" required />
+                <button type="submit">Sign Up</button>
               </form>
+              <p className="signin-text">
+                Already have an account? <a href="/login">Sign in</a>
+              </p>
             </div>
           </div>
         )}
