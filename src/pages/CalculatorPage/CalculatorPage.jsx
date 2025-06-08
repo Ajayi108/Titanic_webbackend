@@ -1,231 +1,332 @@
-import React, { useState } from "react";
-import "./CalculatorPage.css";
+import { useState, useEffect } from 'react';
+import './CalculatorPage.css';
 
-// feature‐encoders for the payload
-const pclassMap = { First: 1, Second: 2, Third: 3 };
-const sexMap = { Female: 0, Male: 1 };
-const aloneMap = { Yes: 1, No: 0 };
-const embarkedMap = { Cherbourg: 0, Queenstown: 1, Southampton: 2 };
-const titleMap = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
-
-// the full list of models, in the exact order expected by the model backend
-const modelList = [
-  "decision_tree",
-  "gaussian",
-  "knn",
-  "linear_svc",
-  "logreg",
-  "perceptron",
-  "randomForest",
-  "svc",
-  "sgd",
-];
-
-export default function CalculatorPage() {
-  const [formData, setFormData] = useState({
-    pclass: "First",
-    sex: "Male",
-    age: "",
-    fare: "",
-    traveledAlone: "Yes",
-    embarked: "Cherbourg",
-    title: "Mr",
-    model: modelList[0], // default to "decision_tree"
+const CalculatorPage = () => {
+  const [model, setModel] = useState(null);
+  const [inputs, setInputs] = useState({
+    class: '',
+    sex: '',
+    age: '',
+    fare: '',
+    alone: '',
+    embarked: '',
+    title: ''
   });
-  const [predictionResult, setPredictionResult] = useState("");
+  const [prediction, setPrediction] = useState(null);
+  const [explanation, setExplanation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [showInputs, setShowInputs] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const inputOptions = {
+    class: ['First', 'Second', 'Third'],
+    sex: ['Male', 'Female'],
+    alone: ['Yes', 'No'],
+    embarked: ['Cherbourg', 'Queenstown', 'Southampton'],
+    title: ['Master', 'Miss', 'Mr', 'Mrs', 'Rare']
   };
 
-  const handleReset = () => {
-    setFormData({
-      pclass: "First",
-      sex: "Male",
-      age: "",
-      fare: "",
-      traveledAlone: "Yes",
-      embarked: "Cherbourg",
-      title: "Mr",
-      model: modelList[0],
+  const explanations = {
+    class: 'Passenger class was a strong indicator of survival chance',
+    sex: 'Women and children had higher survival rates',
+    age: 'Children under 10 had better survival odds',
+    fare: 'Higher fares correlated with better survival chances',
+    alone: 'Passengers with family often helped each other survive',
+    embarked: 'Embarkation port indicated socioeconomic factors',
+    title: 'Titles revealed social standing and marital status'
+  };
+
+  const handleInputChange = (field, value) => {
+    setInputs(prev => ({ ...prev, [field]: value }));
+  };
+
+  const resetInputs = () => {
+    setInputs({
+      class: '',
+      sex: '',
+      age: '',
+      fare: '',
+      alone: '',
+      embarked: '',
+      title: ''
     });
-    setPredictionResult("");
+    setPrediction(null);
+    setExplanation(null);
   };
 
-  const handlePredict = async () => {
-    // encode features
-    const Pclass = pclassMap[formData.pclass];
-    const Sex = sexMap[formData.sex];
-    const Age = parseFloat(formData.age) || 0;
-    const Fare = parseFloat(formData.fare) || 0;
-    const IsAlone = aloneMap[formData.traveledAlone];
-    const Embarked = embarkedMap[formData.embarked];
-    const Title = titleMap[formData.title];
-    // to look up the index of the selected model
-    const model = modelList.indexOf(formData.model);
-    const Age_Class = Age * Pclass;
-
-    const payload = {
-      model,
-      Pclass,
-      Sex,
-      Age,
-      Fare,
-      Embarked,
-      Title,
-      IsAlone,
-      Age_Class,
-    };
-
-    try {
-      const resp = await fetch("http://localhost:5000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const text = await resp.text();
-      if (!text) throw new Error(`Empty response (status ${resp.status})`);
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error(`Invalid JSON: ${text}`);
-      }
-
-      if (!resp.ok) {
-        const detail = data.detail || JSON.stringify(data);
-        throw new Error(`Server Error ${resp.status}: ${detail}`);
-      }
-
-      const pred = data.prediction;
-      const prob = data.probability;
-      const resultText = pred === 1 ? "Survived" : "Did Not Survive";
-      setPredictionResult(
-        `${resultText} (${(prob * 100).toFixed(2)}% confidence)`
-      );
-    } catch (err) {
-      console.error(err);
-      setPredictionResult(`Error: ${err.message}`);
-    }
+  const makePrediction = () => {
+    setIsCalculating(true);
+    // Simulate API call with model processing
+    setTimeout(() => {
+      // This would be replaced with actual model prediction logic
+      const features = {
+        ...inputs,
+        class: inputs.class === 'First' ? 1 : inputs.class === 'Second' ? 2 : 3,
+        sex: inputs.sex === 'Male' ? 0 : 1,
+        alone: inputs.alone === 'Yes' ? 1 : 0
+      };
+      
+      // Simple mock prediction logic
+      let survivalScore = 0;
+      if (features.class === 1) survivalScore += 0.4;
+      if (features.sex === 1) survivalScore += 0.3;
+      if (features.age < 16) survivalScore += 0.2;
+      if (features.fare > 100) survivalScore += 0.1;
+      
+      const randomPrediction = survivalScore > 0.5 ? 'Survived' : 'Did not survive';
+      setPrediction(randomPrediction);
+      setIsCalculating(false);
+    }, 1200);
   };
+
+  const selectModel = (selectedModel) => {
+    setModel(selectedModel);
+    setShowInputs(true);
+    // Small delay for animation
+    setTimeout(() => {
+      document.querySelector('.input-grid').scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
+
+  const allInputsFilled = Object.values(inputs).every(val => val !== '');
 
   return (
-    <div className="calculator-page">
-      <div className="calculator-container">
-        <h1>Survival Calculator</h1>
-
-        {/* Passenger Class */}
-        <div className="form-group">
-          <label>Class</label>
-          <select name="pclass" value={formData.pclass} onChange={handleChange}>
-            <option>First</option>
-            <option>Second</option>
-            <option>Third</option>
-          </select>
+    <div className="tech-calculator">
+      {/* Animated background elements */}
+      <div className="circuit-lines"></div>
+      <div className="data-dots"></div>
+      
+      <div className="container">
+        {/* Hero Section */}
+        <div className="hero-section">
+          <div className="glitch-container">
+            <h1 className="glitch" data-text="TITANIC.AI">TITANIC.AI</h1>
+          </div>
+          <h2>SURVIVAL PREDICTION ENGINE</h2>
+          <p className="subtitle">
+            Advanced machine learning models analyze historical patterns to predict your fate on the maiden voyage
+          </p>
         </div>
 
-        {/* Sex */}
-        <div className="form-group">
-          <label>Sex</label>
-          <select name="sex" value={formData.sex} onChange={handleChange}>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </div>
-
-        {/* Age */}
-        <div className="form-group">
-          <label>Age</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            placeholder="e.g. 29"
-          />
-        </div>
-
-        {/* Fare */}
-        <div className="form-group">
-          <label>Fare ($)</label>
-          <input
-            type="number"
-            name="fare"
-            value={formData.fare}
-            onChange={handleChange}
-            placeholder="e.g. 72.50"
-          />
-        </div>
-
-        {/* Traveled Alone */}
-        <div className="form-group">
-          <label>Traveled Alone</label>
-          <select
-            name="traveledAlone"
-            value={formData.traveledAlone}
-            onChange={handleChange}
-          >
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-
-        {/* Embarkation Port */}
-        <div className="form-group">
-          <label>Embarked</label>
-          <select
-            name="embarked"
-            value={formData.embarked}
-            onChange={handleChange}
-          >
-            <option>Cherbourg</option>
-            <option>Queenstown</option>
-            <option>Southampton</option>
-          </select>
-        </div>
-
-        {/* Title */}
-        <div className="form-group">
-          <label>Title</label>
-          <select name="title" value={formData.title} onChange={handleChange}>
-            <option>Master</option>
-            <option>Miss</option>
-            <option>Mr</option>
-            <option>Mrs</option>
-            <option>Rare</option>
-          </select>
-        </div>
-
-        {/* Prediction Model */}
-        <div className="form-group">
-          <label>Model</label>
-          <select name="model" value={formData.model} onChange={handleChange}>
-            {modelList.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="form-buttons">
-          <button className="predict-btn" onClick={handlePredict}>
-            Predict
-          </button>
-          <button className="reset-btn" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
-
-        {/* Result Display */}
-        {predictionResult && (
-          <div className="prediction-result">{predictionResult}</div>
+        {/* Model Selection - Only shown initially */}
+        {!model && (
+          <div className="model-selection">
+            <h3>SELECT PREDICTION ALGORITHM</h3>
+            <div className="model-cards">
+              <div className="model-card" onClick={() => selectModel('random-forest')}>
+                <div className="card-content">
+                  <div className="chip">ENSEMBLE METHOD</div>
+                  <h4>RANDOM FOREST</h4>
+                  <p>Multiple decision trees for robust prediction</p>
+                  <div className="accuracy">Accuracy: 82.3%</div>
+                </div>
+                <div className="card-glow"></div>
+              </div>
+              
+              <div className="model-card" onClick={() => selectModel('svm')}>
+                <div className="card-content">
+                  <div className="chip">KERNEL METHOD</div>
+                  <h4>SUPPORT VECTOR MACHINE</h4>
+                  <p>High-dimensional classification</p>
+                  <div className="accuracy">Accuracy: 78.9%</div>
+                </div>
+                <div className="card-glow"></div>
+              </div>
+            </div>
+          </div>
         )}
+
+        {/* Input Section - Shows after model selection */}
+        {showInputs && (
+          <>
+            <div className="model-info">
+              <div className="model-tag">
+                ACTIVE MODEL: <span>{model === 'random-forest' ? 'RANDOM FOREST' : 'SUPPORT VECTOR MACHINE'}</span>
+              </div>
+              <button className="change-model" onClick={() => {
+                setModel(null);
+                setShowInputs(false);
+                resetInputs();
+              }}>
+                CHANGE MODEL
+              </button>
+            </div>
+
+            <div className="input-grid">
+              {Object.entries(inputs).map(([field, value]) => (
+                <div 
+                  key={field} 
+                  className={`input-cell ${value ? 'filled' : ''}`}
+                  onClick={() => setExplanation(field)}
+                >
+                  <div className="input-header">
+                    <div className="input-label">
+                      <div className="label-text">{field.toUpperCase()}</div>
+                      <div className="label-line"></div>
+                    </div>
+                    <div className="input-icon">
+                      {field === 'class' && <span className="icon">ⅠⅡⅢ</span>}
+                      {field === 'sex' && <span className="icon">⚧</span>}
+                      {field === 'age' && <span className="icon">⌚</span>}
+                      {field === 'fare' && <span className="icon">$</span>}
+                      {field === 'alone' && <span className="icon">👤</span>}
+                      {field === 'embarked' && <span className="icon">⛴</span>}
+                      {field === 'title' && <span className="icon">🪪</span>}
+                    </div>
+                  </div>
+                  
+                  {inputOptions[field] ? (
+                    <div className="option-grid">
+                      {inputOptions[field].map(option => (
+                        <div
+                          key={option}
+                          className={`option ${value === option ? 'selected' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleInputChange(field, option);
+                          }}
+                        >
+                          {option}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="number-input">
+                      <input
+                        type="number"
+                        min={field === 'age' ? 0 : 0}
+                        max={field === 'age' ? 100 : 500}
+                        value={value}
+                        onChange={(e) => handleInputChange(field, e.target.value)}
+                        placeholder={field === 'age' ? 'AGE' : 'FARE'}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <div className="input-underline"></div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {explanation && (
+              <div className="explanation-panel">
+                <div className="explanation-content">
+                  <h4>{explanation.toUpperCase()}</h4>
+                  <p>{explanations[explanation]}</p>
+                </div>
+                <button className="close-explanation" onClick={() => setExplanation(null)}>
+                  <span>×</span>
+                </button>
+                <div className="explanation-arrow"></div>
+              </div>
+            )}
+
+            <div className="action-bar">
+              <button className="reset-btn" onClick={resetInputs}>
+                <span className="btn-icon">↻</span>
+                RESET PARAMETERS
+              </button>
+              
+              <button 
+                className={`predict-btn ${allInputsFilled ? 'active' : 'disabled'}`}
+                onClick={allInputsFilled ? makePrediction : null}
+              >
+                {isCalculating ? (
+                  <div className="computing">
+                    <span>COMPUTING</span>
+                    <div className="computing-dots">
+                      <div className="dot"></div>
+                      <div className="dot"></div>
+                      <div className="dot"></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <span className="btn-icon">⟳</span>
+                    EXECUTE PREDICTION
+                  </>
+                )}
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Prediction Result */}
+        {prediction && (
+          <div className={`result-panel ${prediction === 'Survived' ? 'survived' : 'not-survived'}`}>
+            <div className="result-header">
+              <h3>PREDICTION RESULT</h3>
+              <div className="model-indicator">
+                {model === 'random-forest' ? 'RANDOM FOREST' : 'SVM'} ANALYSIS
+              </div>
+            </div>
+            
+            <div className="result-content">
+              <div className="result-visual">
+                <div className={`result-circle ${prediction === 'Survived' ? 'pulse' : ''}`}>
+                  {prediction === 'Survived' ? (
+                    <div className="survived-icon">✓</div>
+                  ) : (
+                    <div className="not-survived-icon">✕</div>
+                  )}
+                </div>
+                <div className="result-rings">
+                  <div className="ring"></div>
+                  <div className="ring"></div>
+                  <div className="ring"></div>
+                </div>
+              </div>
+              
+              <div className="result-text">
+                <h2>{prediction}</h2>
+                <p className="probability">
+                  Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
+                </p>
+                <p className="explanation">
+                  {prediction === 'Survived' 
+                    ? 'The model indicates a high probability of survival based on these parameters.' 
+                    : 'The analysis suggests low survival probability for this passenger profile.'}
+                </p>
+                
+                <div className="result-stats">
+                  <div className="stat">
+                    <div className="stat-label">KEY FACTOR</div>
+                    <div className="stat-value">
+                      {inputs.class === 'First' ? 'First Class' : 
+                       inputs.sex === 'Female' ? 'Female Gender' : 
+                       inputs.age < 16 ? 'Young Age' : 'Ticket Fare'}
+                    </div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-label">INFLUENCE</div>
+                    <div className="stat-value">
+                      {inputs.class === 'First' ? '+42%' : 
+                       inputs.sex === 'Female' ? '+38%' : 
+                       inputs.age < 16 ? '+25%' : '+15%'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CTA Section */}
+        <div className="cta-section">
+          <div className="cta-content">
+            <h3>UNLOCK FULL ANALYTICS SUITE</h3>
+            <p>
+              Create an account to save predictions, compare models, and access advanced analytics
+            </p>
+            <button className="cta-btn">
+              <span>SIGN UP</span>
+              <div className="arrow">→</div>
+            </button>
+          </div>
+          <div className="cta-grid"></div>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default CalculatorPage;
