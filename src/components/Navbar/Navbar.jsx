@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./Navbar.css";
 import iceberggift from "../../assets/transhumanism.gif";
 
@@ -7,6 +8,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close on outside click
   useEffect(() => {
@@ -19,7 +21,7 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close on route change
+  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location]);
@@ -34,6 +36,15 @@ function Navbar() {
         </div>
       </Link>
 
+      {/* 🔙 Arrow Navigation */}
+      <div className="nav-arrows">
+        <button onClick={() => navigate(-1)} className="arrow-btn" aria-label="Back">
+          <ChevronLeft size={20} />
+        </button>
+        <button onClick={() => navigate(1)} className="arrow-btn" aria-label="Forward">
+          <ChevronRight size={20} />
+        </button>
+      </div>
 
       <div className="hamburger" onClick={() => setMenuOpen((prev) => !prev)}>
         ☰
