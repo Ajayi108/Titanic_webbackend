@@ -1,127 +1,290 @@
- 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+/* Base Container Styles */
 .swiper-container,
 .swiper-wrapper,
 .swiper-slide {
   overflow: visible !important;
-   
 }
 
-
- .service-slider-container {
-    padding: 0 25px;
-    width: 100%;
-    max-width: 1100px;
-
-    align-self: center;
-    
-    margin-left: 25px;
-    border-radius: 50px;
-  }
-  
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  
-}
-   
- 
-  
-.review-card:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 8px 30px rgba(43, 42, 42, 0.685),
-    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-  filter: brightness(0.9);
-}
-   
-  
-  /* Swiper navigation arrows */
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.8);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .swiper-button-next::after,
-  .swiper-button-prev::after {
-    font-size: 1.2rem;
-  }
-  
-  /* Swiper pagination */
-  
-  .swiper-pagination-bullet {
-    background: #ccc;
-    opacity: 1;
-    top: 100px;
-   
-  }
-  
-  .swiper-pagination-bullet-active {
-    background: var(--primary-color);
-  }
-  .review-card {
-  background: linear-gradient(135deg, #89F7FE 0%, #66A6FF 100%);
-  transition: transform .2s, box-shadow .2s, filter .2s;  
-
-  border-radius: 38px;
-  padding: 30px;
-  text-align: center;
-  margin-top: 50px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.service-slider-container {
+  padding: 4rem 1.5rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 2rem 0;
   position: relative;
-  overflow: visible;
-  padding-top: 40px;;
-  right: 45px;
-  width: 250px;
-  height: 300px;
-  
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
+.section-title {
+  position: relative;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  /* single solid blue color */
+  color:#87CEEB;
+  /* subtle glow in the same hue */
+  text-shadow:
+    0 0 6px rgba(0, 119, 255, 0.6),
+    0 0 8px rgba(0, 119, 255, 0.4);
+  margin: 0;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  border-radius: 2px;
+  /* underline accent in the same blue */
+  background: rgba(0, 119, 255, 0.5);
+}
+
+ 
+
+/* Review Card - Optimized for Avatar Visibility */
+.review-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 3.5rem 2rem 2rem; /* Increased top padding for avatar */
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  height: auto; /* Changed to auto for better responsiveness */
+  min-height: 420px; /* Minimum height to ensure content fits */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Changed to flex-start for better content flow */
+  position: relative;
+  overflow: visible; /* Changed to visible to ensure avatar isn't clipped */
+  margin-top: 40px; /* Reduced margin to bring cards closer */
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(0, 198, 255, 0.1) 0%,
+    rgba(114, 9, 183, 0.1) 100%
+  );
+  transform: rotate(30deg);
+  z-index: -1;
+  transition: all 0.6s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 198, 255, 0.3);
+}
+
+.review-card:hover::before {
+  transform: rotate(45deg) translateY(-20px);
+}
+
+/* Avatar - Now Fully Visible */
 .review-avatar {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
   position: absolute;
-  top: 0;
+  top: -20px; /* Half outside the card */
   left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  transform: translateX(-50%);
+  border: 3px solid #00c6ff;
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
+  transition: all 0.4s ease;
+  z-index: 10; /* Higher z-index to ensure visibility */
 }
 
+.review-card:hover .review-avatar {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px rgba(0, 198, 255, 0.6);
+}
+
+/* Text Content */
 .review-name {
-  font-size: 1.1rem;
-  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem; /* Adjusted margin */
+  color: #fff;
+  letter-spacing: 1px;
 }
 
 .review-profession {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 1px 0 20px;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
 }
 
 .review-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  margin: 12px 0 8px;
-  font-style: oblique;
+  margin: 1rem 0;
+  color: #fff;
+  font-style: italic;
+  position: relative;
+  line-height: 1.5;
+}
+
+.review-title::before,
+.review-title::after {
+  content: '"';
+  color: rgba(0, 198, 255, 0.5);
+  font-size: 1.8rem;
+  position: absolute;
+}
+
+.review-title::before {
+  top: -15px;
+  left: -10px;
+}
+
+.review-title::after {
+  bottom: -25px;
+  right: -10px;
 }
 
 .review-description {
   font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.121rem;      /* slightly larger for readability */
-  line-height: 1.6;         /* more breathing room between lines */
-  font-weight: 400;         /* normal weight */
-  color: #333;              /* keep the dark-gray text */
-  letter-spacing: 0.5px;    /* subtle tracking for better flow */
-           
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.5px;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+/* Swiper Navigation */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #00c6ff !important;
+  background: rgba(0, 198, 255, 0.1) !important;
+  backdrop-filter: blur(5px);
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(0, 198, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(0, 198, 255, 0.2) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Swiper Pagination */
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  width: 12px !important;
+  height: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: linear-gradient(90deg, #00c6ff, #0072ff) !important;
+  transform: scale(1.3) !important;
+  box-shadow: 0 0 10px rgba(0, 198, 255, 0.5) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .service-slider-container {
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 992px) {
+  .section-title {
+    font-size: 2.4rem;
+  }
+  
+  .review-card {
+    min-height: 400px;
+    padding: 3rem 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-slider-container {
+    padding: 3rem 1rem;
+    border-radius: 16px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .review-card {
+    min-height: 380px;
+    margin-top: 40px;
+    max-width: 280px;
+    padding: 3rem 1.2rem 1.2rem;
+  }
+  
+  .review-avatar {
+    width: 80px;
+    height: 80px;
+
+    top: -20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+  
+  .review-card {
+    min-height: 400px;
+    padding: 3rem 1rem 1rem;
+    margin-top: 35px;
+    
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .review-avatar {
+    width: 70px;
+    height: 70px;
+    top: -20px;
+  }
 }
