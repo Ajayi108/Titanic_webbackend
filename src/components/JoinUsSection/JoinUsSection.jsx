@@ -1,37 +1,64 @@
 import React from 'react';
 import './JoinUsSection.css';
-import engineerImage from '../../assets/capita1.png'; 
- 
+import promoVideo from '../../assets/shot-titanic.mp4';
+
 const JoinUsSection = () => (
   <section className="join-us-section">
+    <div className="cyber-grid-overlay"></div>
+    
     <div className="join-us-container">
-      <div className="join-us-left">
-        <p className="join-us-statement">
-          We don’t just take on projects—we take on possibilities. With brilliant minds and bold ideas, we push boundaries. Be part of the journey toward something greater.
-        </p>
-        <img
-          src={engineerImage}
-          alt="Engineer holding blueprints"
-          className="join-us-image"
-        />
-      </div>
-
-      <div className="join-us-right">
-        <h2 className="join-us-title">
-          Let’s Build the Future Together<br />
-          Discover What You’re Capable Of
-         </h2>
-        <p className="join-us-text">
-            Behind every line of code is a team of expert Machine Learning engineers, AI specialists, and software developers passionate about building smarter experiences. Their combined expertise brings ideas to life, crafting technology that’s both innovative and impactful.        </p>
-        <p className="join-us-text">
-            <strong >  Get ready to dive into the world of AI like never before! </strong>
-            Our immersive web experience lets you uncover whether you would have survived the Titanic catastrophe—by tweaking real data and seeing AI in action. It’s more than just a simulation; it’s a powerful glimpse into the future of intelligent technology.
-            Built by expert engineers and AI innovators, this tool blends history, data science, and discovery into one unforgettable journey. It’s fun, it’s educational, and it’s a bold preview of what you’ll master in our AI courses.
-            Curious minds welcome. Start exploring, share the experience with friends, and be part of the AI-powered future.        </p>
-        <div class ="join-us-button-container">
-            <button className="join-us-button">Join Now</button>
-             
+      <div className="video-column">
+        <div className="video-frame">
+          <video
+            className="cyber-video"
+            src={promoVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div className="video-glowing-border"></div>
         </div>
+      </div>
+      
+      <div className="content-column">
+        <h2 className="cyber-title">
+          <span className="glowing-text">Let's Build</span>
+          <span className="glowing-text-accent">The Future</span>
+          <span className="glowing-text">Together</span>
+        </h2>
+        
+        <div className="content-grid">
+          <div className="cyber-card">
+            <h3 className="card-title">Push Boundaries</h3>
+            <p className="card-text">
+              We don't just take on projects—we take on possibilities. With brilliant minds and bold ideas.
+            </p>
+          </div>
+          
+          <div className="cyber-card accent">
+            <h3 className="card-title">AI Specialists</h3>
+            <p className="card-text">
+              Machine Learning engineers crafting technology that's both innovative and impactful.
+            </p>
+          </div>
+        </div>
+        
+        <div className="highlight-box">
+          <div className="pulse-dot"></div>
+          <p>
+            <strong>Immersive AI Experience:</strong> Discover if you'd survive Titanic by tweaking real data and seeing AI predictions in action.
+          </p>
+        </div>
+        
+        <a href='/Signup' className="cyber-button">
+        
+          <span>Join Our Crew</span>
+          <div className="button-lights">
+            <span className="light blue"></span>
+            <span className="light teal"></span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
