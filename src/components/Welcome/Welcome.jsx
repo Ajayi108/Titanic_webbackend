@@ -17,7 +17,7 @@ function Welcome() {
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = '#00ffd1';
+      ctx.fillStyle = '#ff00aa';
       ctx.font = `${fontSize}px monospace`;
       for (let i = 0; i < drops.length; i++) {
         const text = Math.random() > 0.5 ? '1' : '0';
