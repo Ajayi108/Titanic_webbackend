@@ -22,32 +22,30 @@
   position: relative;
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.8rem; /* Increased from 2.4rem */
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  /* single solid blue color */
-  color:#87CEEB;
-  /* subtle glow in the same hue */
+  color: #87CEEB;
   text-shadow:
     0 0 6px rgba(0, 119, 255, 0.6),
     0 0 8px rgba(0, 119, 255, 0.4);
-  margin: 0;
+  margin: 0 auto; /* Changed to auto for horizontal centering */
   padding-bottom: 0.5rem;
+  width: fit-content; /* Ensures the underline matches text width */
+  text-align: center; /* Ensures text is centered */
 }
 
 .section-title::after {
   content: "";
   position: absolute;
-  left: 50%;
+  left: 50%; /* Changed from 70% to 50% for centering */
   bottom: 0;
-  transform: translateX(-50%);
-  width: 60%;
+  transform: translateX(-50%); /* Changed from -79% to -50% for perfect centering */
+  width: 80%; /* Increased from 60% for better visual balance */
   height: 3px;
   border-radius: 2px;
-  /* underline accent in the same blue */
   background: rgba(0, 119, 255, 0.5);
 }
-
  
 
 /* Review Card - Optimized for Avatar Visibility */
@@ -228,7 +226,7 @@
 
 @media (max-width: 992px) {
   .section-title {
-    font-size: 2.4rem;
+    font-size: 2.6rem;
   }
   
   .review-card {
@@ -244,7 +242,7 @@
   }
   
   .section-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 2.5rem;
   }
   
@@ -265,7 +263,7 @@
 
 @media (max-width: 576px) {
   .section-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     letter-spacing: 2px;
   }
   

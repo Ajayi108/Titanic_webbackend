@@ -12,7 +12,7 @@ import Welcome from "./components/Welcome/Welcome";
 import PopularCourses from "./components/PopularCourses/PopularCourses";
 import Statistics from "./components/Statistics/Statistics";
 import JoinUsSection  from "./components/JoinUsSection/JoinUsSection";
-
+import Footer from "./components/Footer/Footer";
 
 
 //page components
@@ -39,33 +39,8 @@ function LandingPage() {
       <PopularCourses />
       <ServiceSlider />
       <JoinUsSection />
-      <div className="Invitation">
-        <SignupInvitation onSignupClick={() => setShowModal(true)} />
-        {showModal && (
-          <div className="modal-overlay" onClick={() => setShowModal(false)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <button
-                className="close-button"
-                onClick={() => setShowModal(false)}
-              >
-                ✖
-              </button>
-              <h2 className="signup-title">Create Account</h2>
-              <form className="signup-form">
-                <input type="text" placeholder="First name" required />
-                <input type="text" placeholder="Last name" required />
-                <input type="email" placeholder="Email address" required />
-                <input type="password" placeholder="Password" required />
-                <input type="password" placeholder="Confirm password" required />
-                <button type="submit">Sign Up</button>
-              </form>
-              <p className="signin-text">
-                Already have an account? <a href="/login">Sign in</a>
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
+      <Footer />
+       
     </div>
   );
 }
