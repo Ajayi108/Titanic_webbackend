@@ -32,6 +32,7 @@
 
 }*/
 
+
 .landing-container {
   width: 100%;
   
@@ -39,6 +40,8 @@
   flex-direction: column;
   align-items: center;
   padding: 0;
+  background-color: #0f0c29; /* Sets the entire page background to dark */
+   
    
 }
 

@@ -1,209 +1,153 @@
-/* PopularCourses.css */
-.popular-courses-section {
-  padding: 3rem 10rem;
-  background: linear-gradient(to bottom, #0a2e38 0%, #000 100%);
+.ai-courses-section {
+  background: #0f0c29;
+  background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  padding: 4rem 0;
+  color: #fff;
+  overflow: hidden;
+}
+
+.courses-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 
 }
- 
- .popular-courses-title {
+
+.ai-section-header {
+  text-align: center;
+  margin-bottom: 4rem; /* Increased margin for better spacing */
+}
+
+/* === CHANGED: Title Color and Style === */
+.ai-courses-title {
   font-size: 3rem;
   font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  background: linear-gradient(45deg, #3a7bd5, #00d2ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  margin-bottom: 0.5rem;
+  color: #00c6ff; /* CHANGED to a vibrant, visible blue */
+  /* ADDED a glow effect for a more modern look */
+  text-shadow: 0 0 8px rgba(0, 198, 255, 0.4), 0 0 16px rgba(0, 198, 255, 0.2);
+}
+
+/* REMOVED the old underline style for a cleaner look */
+.ai-courses-title::after {
+  display: none;
+}
+
+.ai-section-subtitle {
+  font-size: 1.6rem;
+  color: #b0b0b0;
+}
+
+/* === CHANGED: Explicit 3-Column Grid Layout === */
+.ai-courses-grid {
+  display: grid;
+  /* This creates a 3-column layout on desktops */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* Course Card (styles remain the same) */
+.ai-course-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
   position: relative;
-   
+  transform: translateY(20px);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: card-fade-in 0.5s ease forwards;
+  animation-delay: var(--delay);
+  opacity: 0;
 }
 
-.popular-courses-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(to right, #3a7bd5, #00d2ff);
-  border-radius: 2px;
-  animation: underline-pulse 2.5s infinite;
+.ai-course-card:hover {
+  transform: translateY(-10px) perspective(1000px) rotateX(5deg) rotateY(-5deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.popular-courses-title::before {
-  content: '';
+.card-shine {
   position: absolute;
-  top: -10px;
-  left: 0;
+  top: 0;
+  left: -150%;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(0, 210, 255, 0.2) 0%, transparent 70%);
-  filter: blur(15px);
-  z-index: -1;
-}
-
-.popular-courses-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-   
-  gap: 2.5rem;
-  margin-bottom: 2rem;
-  padding: 0 6rem;
-}
-.course-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.2s;
-}
-.course-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.course-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
-  transform-origin: center center;
-}
-.course-card:hover .course-image {
-  /* Slightly zoom in on hover */
-  transform: scale(1.15);
-}
-.course-content {
-  padding: 0 1.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-
-}
-.course-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 0.75rem;
-  text-align: center;
-}
-.course-desc {
-  color: #000000;
-  text-align: center;
-  flex-grow: 1;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  letter-spacing: 0.02em;
-   
-}
-.course-meta {
-  font-size: 0.975rem;
-  color: black;
-  margin-bottom: 1rem;
-  text-align: center;
-  letter-spacing: 0.05em;
-}
- 
-.view-all {
-  width: 15rem;
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  border-radius: 1rem;
-  background: 
-    linear-gradient(rgba(8, 12, 27, 0.8), rgba(8, 12, 27, 0.8)) padding-box,
-    linear-gradient(45deg, #00d2ff, #3a7bd5) border-box;
-  color: #00d2ff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.view-all:hover {
-  color: #fff;
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
-  transform: translateY(-2px);
-  animation: pulse 2s infinite;
-}
-
-.view-all::before {
-  
-  top: -50%;
-  
-  right: -50%;
-  width: 200%;
-  height: 200%;
   background: linear-gradient(
-    to bottom right,
+    to right,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.2) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  transform: rotate(30deg);
-  opacity: 0;
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
 }
 
-.view-all:hover::before {
-  opacity: 1;
-  animation: shine 3s infinite;
+.ai-course-card:hover .card-shine {
+  left: 150%;
 }
 
-.view-all::after {
-  content: '→';    
-  margin-left: 0.5rem;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.view-all:hover::after {
-  opacity: 1;
-  transform: translateX(5px);
-}
-
-@keyframes shine {
-  0% { transform: rotate(30deg) translate(-30%, -30%); }
-  100% { transform: rotate(30deg) translate(30%, 30%); }
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(0, 210, 255, 0.4); }
-  50% { box-shadow: 0 0 20px rgba(0, 210, 255, 0.7); }
-}
-.course-skills {
-  margin-top: 0.75rem;
-  font-size: 0.95rem;
-   
-}
-
-.course-skills strong {
-  /* ensures the heading is bold */
-  font-weight: 700;
-}
-
-.skills-preview {
-  /* a bit transparent for subtlety */
-  opacity: 0.7;
-}
-/* Tablet: 2 columns */
-@media (max-width: 1024px) {
-  .popular-courses-grid {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 3rem;
+@keyframes card-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Mobile: 1 column */
-@media (max-width: 640px) {
-  .popular-courses-grid {
-    grid-template-columns: 1fr;
+/* Other styles remain the same... */
+.course-image-container { position: relative; }
+.course-image { width: 100%; height: 200px; object-fit: cover; }
+.image-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent); }
+.course-duration { position: absolute; top: 1rem; right: 1rem; background: rgba(0, 198, 255, 0.8); padding: 0.3rem 0.6rem; border-radius: 5px; font-size: 0.9rem; }
+.course-content { padding: 1.5rem; }
+.course-header { margin-bottom: 1rem; }
+.course-title .title-highlight { font-size: 1.5rem; font-weight: 600; background: linear-gradient(90deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.tech-tag { background: rgba(255, 255, 255, 0.1); padding: 0.3rem 0.6rem; border-radius: 5px; font-size: 0.8rem; transition: background 0.3s ease, color 0.3s ease; }
+.ai-course-card:hover .tech-tag { background: #00c6ff; color: #000; }
+.course-desc { font-size: 1rem; color: #b0b0b0; margin-bottom: 1.5rem; }
+.course-footer { display: flex; justify-content: space-between; align-items: center; }
+.instructor-info { display: flex; align-items: center; gap: 0.5rem; }
+.instructor-avatar { width: 30px; height: 30px; border-radius: 50%; background-size: cover; border: 2px solid #00c6ff; }
+.course-cta { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600; }
+.course-cta .enroll-text { transition: color 0.3s ease; }
+.course-cta:hover .enroll-text { color: #00c6ff; }
+.arrow-icon { transition: transform 0.3s ease; }
+.course-cta:hover .arrow-icon { transform: translateX(5px); }
+.view-all-container { text-align: center; margin-top: 3rem; }
+.view-all-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; border: 1px solid #00c6ff; border-radius: 50px; color: #fff; text-decoration: none; transition: background 0.3s ease, color 0.3s ease; }
+.view-all-btn:hover { background: #00c6ff; color: #000; }
+
+/*
+========================================
+NEW & IMPROVED: RESPONSIVE MEDIA QUERIES
+========================================
+*/
+
+/* For Tablets (e.g., iPads) */
+@media (max-width: 992px) {
+  /* CHANGED: Grid becomes 2 columns */
+  .ai-courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For Mobile phones */
+@media (max-width: 768px) {
+  .ai-courses-section {
+    padding: 3rem 0;
+  }
+
+  .courses-container {
     padding: 0 1rem;
+  }
+
+  .ai-courses-title {
+    font-size: 2.5rem;
+  }
+
+  /* CHANGED: Grid becomes a single column */
+  .ai-courses-grid {
+    grid-template-columns: 1fr;
   }
 }
