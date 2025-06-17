@@ -1,26 +1,13 @@
-# Database setup for testing __
-# CREATE DATABASE titanic_shrank_db;
-# CREATE USER titanic_saver WITH PASSWORD 'TitanicMan';
-# GRANT ALL PRIVILEGES ON DATABASE titanic_shrank_db TO titanic_saver;
-
-# CREATE TABLE models (
-#     id SERIAL PRIMARY KEY,
-#     model_name TEXT NOT NULL
-# );
-
-# GRANT ALL PRIVILEGES ON TABLE models TO titanic_saver;
-# GRANT USAGE, SELECT ON SEQUENCE models_id_seq TO titanic_saver;
-
-
 import psycopg2
+import os
 
 # to Connect to the database server
 conn = psycopg2.connect(
-    dbname="titanic_shrank_db",
-    user="titanic_saver",
-    password="TitanicMan",
-    host="localhost",
-    port="5432"
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST", "localhost"),
+    port=os.getenv("DB_PORT", "5432")
 )
 cursor = conn.cursor()
 
@@ -32,11 +19,10 @@ def create_tables():
             id SERIAL PRIMARY KEY,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            first_name TEXT,
-            last_name TEXT,
             is_admin BOOLEAN DEFAULT FALSE
         );
     """)
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS predictions (
             id SERIAL PRIMARY KEY,
@@ -53,7 +39,16 @@ def create_tables():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS models (
+            id SERIAL PRIMARY KEY,
+            model_name TEXT UNIQUE NOT NULL
+        );
+    """)
+
     conn.commit()
+    
     print("✅ Tables created successfully.")
 
 
