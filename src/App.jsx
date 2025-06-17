@@ -14,33 +14,26 @@ import Statistics from "./components/Statistics/Statistics";
 import JoinUsSection  from "./components/JoinUsSection/JoinUsSection";
 import Footer from "./components/Footer/Footer";
 
-
-//page components
+// Page components
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
 import CalculatorPage from "./pages/CalculatorPage/CalculatorPage";
-   
+import CourseDetails from "./pages/CourseDetails/CourseDetails"; // <-- Use the actual component
+
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
-  // Data fed into the ServiceSlider component
-  // To avoid spaghetti code, components should be as independent as possible!!! 
 
   return (
     <div className="landing-container">
-      {
-        <Welcome /> /* The previous 'Welcome' section code was converted to a component, please go to components/Welcome/Welcome.jsx */
-        
-      }
-      
+      <Welcome />
       <Statistics/>   
       <PopularCourses />
       <ServiceSlider />
       <JoinUsSection />
       <Footer />
-       
     </div>
   );
 }
@@ -56,6 +49,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/coursedetails" element={<CourseDetails />} /> {/* <-- Add this line here */}
       </Route>
     </Routes>
   );

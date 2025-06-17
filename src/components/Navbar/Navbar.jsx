@@ -32,7 +32,7 @@ function Navbar() {
         <img src={iceberggift} alt="Iceberg Logo" className="icon-gift" />
         <div className="logo-box">
           <p className="logo-title">Iceberg-AI</p>
-          <p className="logo-slogan">Predict. Survive. Learn.</p>
+          <p className="logo-slogan">Predict. Survive. Learn</p>
         </div>
       </Link>
 
