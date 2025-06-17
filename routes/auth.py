@@ -1,8 +1,26 @@
-from fastapi import APIRouter, Form, HTTPException
 import psycopg2
 import bcrypt
+import os
+from fastapi.responses import JSONResponse
+from fastapi_jwt_auth import AuthJWT
+from fastapi import APIRouter, Depends, HTTPException, Form
 
-router = APIRouter()
+
+router = APIRouter(prefix="/auth")
+
+@AuthJWT.load_config
+def get_config():
+    # must return either a Pydantic BaseSettings **or** a list of (key, value) tuples
+    return [
+        ("authjwt_secret_key", os.getenv("AUTHJWT_SECRET_KEY", "SUPER_SECRET_KEY")),
+        ("authjwt_token_location", {"cookies"}),
+        ("authjwt_cookie_secure", False),         # set True in prod (HTTPS)
+        ("authjwt_cookie_samesite", "lax"),
+        ("authjwt_cookie_csrf_protect", False),
+        ("authjwt_access_cookie_key", "access_token"),
+        ("authjwt_refresh_cookie_key", "refresh_token"),
+    ]
+
 
 # Database connection (hardcoded)
 conn = psycopg2.connect(
@@ -49,7 +67,8 @@ async def register_user(
 @router.post("/login")
 async def login_user(
     email: str = Form(...),
-    password: str = Form(...)
+    password: str = Form(...),
+    Authorize: AuthJWT = Depends(),
 ):
     # Look up user by email
     cursor.execute("SELECT id, password, is_admin, first_name, last_name FROM users WHERE email = %s;", (email,))
@@ -62,12 +81,50 @@ async def login_user(
     # Verify password
     if not verify_password(password, stored_pw):
         raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    access_token  = Authorize.create_access_token(
+        subject=str(user_id),
+        user_claims={"email": email, "is_admin": is_admin}
+    )
 
-    return {
+    #define or assign refresh_token before trying to use it.
+    refresh_token = Authorize.create_refresh_token(subject=str(user_id))
+
+    resp = JSONResponse({
         "message": "✅ Login successful",
+        "user": {
+            "id": user_id,
+            "email": email,
+            "first_name": first_name,
+            "last_name": last_name,
+            "is_admin": is_admin
+        }
+    })
+    Authorize.set_access_cookies(access_token, resp)
+    Authorize.set_refresh_cookies(refresh_token, resp)
+    return resp
+
+
+# ─── Refresh Endpoint ────────────────────────────────────
+@router.post("/refresh")
+def refresh(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_refresh_token_required()
+    current_user = Authorize.get_jwt_subject()
+    new_access   = Authorize.create_access_token(subject=current_user)
+    resp = JSONResponse({"message": "✅ Token refreshed"})
+    Authorize.set_access_cookies(new_access, resp)
+    return resp
+
+
+# ─── Protected “Me” Endpoint ─────────────────────────────
+@router.get("/me")
+def get_profile(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+    user_id = Authorize.get_jwt_subject()
+    claims  = Authorize.get_raw_jwt()
+    return {
         "user_id": user_id,
-        "email": email,
-        "first_name": first_name,
-        "last_name": last_name,
-        "is_admin": is_admin
+        "email": claims.get("email"),
+        "is_admin": claims.get("is_admin")
     }
+
