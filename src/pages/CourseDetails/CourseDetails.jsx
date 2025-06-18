@@ -29,8 +29,8 @@ function CourseDetails() {
           {course.skills.map((t, i) => <li key={i}>{t}</li>)}
         </ul>
         <div className="coursedetails-meta">
-          <span><b>Price:</b> {course.price || "N/A"}</span>
-          <span><b>Dates:</b> {course.dates || "N/A"}</span>
+          <span><b>Price:</b> 50 Euros</span>
+          <span><b>Dates:</b> 01/08/2025</span>
           <span className="spots-left"><b>{course.availablePlaces} spots left</b></span>
         </div>
       </div>

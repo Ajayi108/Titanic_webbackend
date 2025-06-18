@@ -1,3 +1,21 @@
+:root {
+  --primary:        hsl(184, 100%, 50%);
+  --primary-dark:   #0066ff;
+  --secondary:      #ff00e4;
+  --dark:           #0a0a14;
+  --darker:         #050510;
+  --light:          #e0e0e0;
+  --success:        #00ff9d;
+  --danger:         #ff3d3d;
+  --warning:        #ffcc00;
+  --card-bg:        #0d1117;
+  --card-border:    rgba(0,240,255,0.1);
+  --text-primary:   #ffffff;
+  --text-secondary: rgba(255,255,255,0.8);
+}
+
+
+
 /* Base styles from About.css */
 .page-container {
     width: 100%;
@@ -5,7 +23,7 @@
     margin: 0 auto;
     padding: 4rem 2rem;
     font-family: 'Quicksand', sans-serif;
-    background-color: #f9f7f6;
+    background-color: var(--dark);
     color: #2e2e2e;
 }
 
@@ -40,11 +58,13 @@ h1 {
 }
 
 .course-card {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+      background-color: rgba(10, 14, 26, 0.95);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 24px rgba(0, 240, 255, 0.04);
+  transition: box-shadow 0.3s ease;
 }
 
     .course-card:hover {
@@ -81,19 +101,20 @@ h1 {
 
 .course-content {
     padding: 1.5rem;
+    background-color:  var(--dark);
 }
 
     .course-content h3 {
         font-size: 1.3rem;
-        color: #3a2e39;
-        margin-bottom: 0.75rem;
+        color:hsl(184, 100%, 50%);
+         margin-bottom: 0.75rem;
     }
 
 .course-description {
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 1rem;
-    color: #5c3d2e;
+    color: #ffffff;
 }
 
 .course-meta {
@@ -104,16 +125,16 @@ h1 {
 }
 
 .professor {
-    color: #7c6f64;
+    color: #ffffff;
 }
 
 .spots {
     font-weight: 600;
-    color: #d4a373;
+    color: #efefef;
 }
 
     .spots.warning {
-        color: #ff6b6b;
+        color: #ffffff;
     }
 
 .course-skills {
@@ -123,31 +144,32 @@ h1 {
 
     .course-skills li {
         font-size: 0.8rem;
-        color: #5c3d2e;
+        color: #ebebeb;
         margin-bottom: 0.3rem;
         display: flex;
         align-items: flex-start;
     }
 
 .skill-bullet {
-    color: #d4a373;
+    color: var(--primary);
     margin-right: 0.5rem;
 }
 
 .view-details-btn {
     padding: 0.5rem 1rem;
     background-color: #f8f9fa;
-    color: #5c3d2e;
-    border: 1px solid #d4a373;
-    border-radius: 4px;
+    color: hsl(184, 54%, 11%);
+    border: 1px solid #f8f8f8;
+
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
     .view-details-btn:hover {
-        background-color: #d4a373;
-        color: white;
+        background-color:var(--dark);
+        color: var(--primary);
+        border: none;
     }
 
 .pathway-section {
