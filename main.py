@@ -5,6 +5,7 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 
 from routes.proxy_predict import router as predict_router
 from routes.proxy_train   import router as train_router
+from routes.proxy_delete import router as delete_router
 from routes.auth import router as auth_router
 
 app = FastAPI(
@@ -32,7 +33,8 @@ app.add_middleware(
 # include routers
 app.include_router(predict_router)
 app.include_router(train_router)
-app.include_router(auth_router)  
+app.include_router(auth_router)
+app.include_router(delete_router)  
 
 
 if __name__ == "__main__":
