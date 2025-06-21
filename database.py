@@ -41,9 +41,12 @@ def create_tables():
     """)
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS models (
+        CREATE TABLE IF NOT EXISTS trained_models (
             id SERIAL PRIMARY KEY,
-            model_name TEXT UNIQUE NOT NULL
+            model_name TEXT NOT NULL
+            feature_key TEXT NOT NULL,
+            file_name TEXT NOT NULL,
+            trained_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
     """)
 
