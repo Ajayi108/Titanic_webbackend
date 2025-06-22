@@ -69,7 +69,7 @@ const AdminDashboard = () => {
 
   const fetchModels = async () => {
     setIsLoading(true);
-    // This would be a real API call in production
+    // API call here for trained models goes here
     setTimeout(() => {
       // Mock data for demonstration
       const mockModels = [
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
 
     setIsTraining(true);
 
-    // This would be a real API call in production
+    // API call to add new model goes here
     setTimeout(() => {
       // Add the new model to the list
       const newModel = {
@@ -173,7 +173,7 @@ const AdminDashboard = () => {
 
   const handleDeleteModel = async (modelId) => {
     if (confirmDelete === modelId) {
-      // Actual delete operation would happen here with API call
+      // delete operation API call goes here
       setModels(models.filter((model) => model.id !== modelId));
       setConfirmDelete(null);
       showNotification("Model deleted successfully", "success");
