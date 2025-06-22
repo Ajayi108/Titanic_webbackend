@@ -135,3 +135,27 @@
   color: var(--dark);
   box-shadow: 0 0 10px var(--primary);
 }
+
+.admin-link {
+  color: #00aaff; /* Matches your theme's blue color */
+  position: relative;
+}
+
+.admin-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, #00aaff, transparent);
+  opacity: 0.7;
+}
+
+/* For development only */
+.dev-admin-link {
+  color: #ff3366;
+  background-color: rgba(255, 51, 102, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
