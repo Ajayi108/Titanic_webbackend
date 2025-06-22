@@ -30,7 +30,11 @@ export default function Navbar() {
 
   return (
     <header className="navbar" ref={menuRef}>
-      <Link to="/" className="logo" style={{ textDecoration: "none", color: "inherit" }}>
+      <Link
+        to="/"
+        className="logo"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
         <img src={iceberggift} alt="Iceberg Logo" className="icon-gift" />
         <div className="logo-box">
           <p className="logo-title">Iceberg-AI</p>
@@ -39,10 +43,18 @@ export default function Navbar() {
       </Link>
 
       <div className="nav-arrows">
-        <button onClick={() => navigate(-1)} className="arrow-btn" aria-label="Back">
+        <button
+          onClick={() => navigate(-1)}
+          className="arrow-btn"
+          aria-label="Back"
+        >
           <ChevronLeft size={20} />
         </button>
-        <button onClick={() => navigate(1)} className="arrow-btn" aria-label="Forward">
+        <button
+          onClick={() => navigate(1)}
+          className="arrow-btn"
+          aria-label="Forward"
+        >
           <ChevronRight size={20} />
         </button>
       </div>
@@ -52,20 +64,49 @@ export default function Navbar() {
       </div>
 
       <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-        <Link to="/about"><p>About</p></Link>
-        <Link to="/courses"><p>Courses</p></Link>
-        <Link to="/calculator"><p>Prediction Calculator</p></Link>
+        <Link to="/about">
+          <p>About</p>
+        </Link>
+        <Link to="/courses">
+          <p>Courses</p>
+        </Link>
+        <Link to="/calculator">
+          <p>Prediction Calculator</p>
+        </Link>
 
-        {user
-          ? <>
-              <p>Hello, {user.firstName}!</p>
-              <p onClick={logout} style={{ cursor: 'pointer' }}>Logout</p>
-            </>
-          : <>
-              <Link to="/login"><p>Login</p></Link>
-              <Link to="/signup"><p>Sign Up</p></Link>
-            </>}
+        {user ? (
+          <>
+            <p>Hello, {user.firstName}!</p>
+
+            {/* Admin Dashboard Link - only shown for admin users */}
+            {user.isAdmin && (
+              <Link to="/admindashboard">
+                <p className="admin-link">Admin Dashboard</p>
+              </Link>
+            )}
+
+            <p onClick={logout} style={{ cursor: "pointer" }}>
+              Logout
+            </p>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <p>Login</p>
+            </Link>
+            <Link to="/signup">
+              <p>Sign Up</p>
+            </Link>
+          </>
+        )}
+
+        {/* ADDED: For development purposes only - remove before production */}
+        {process.env.NODE_ENV === "development" && (
+          <Link to="/admindashboard">
+            <p className="dev-admin-link">Dev Admin</p>
+          </Link>
+        )}
       </nav>
     </header>
-);
+  );
 }
