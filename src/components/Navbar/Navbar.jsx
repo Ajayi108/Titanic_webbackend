@@ -78,10 +78,10 @@ export default function Navbar() {
           <>
             <p>Hello, {user.firstName}!</p>
 
-            {/* Admin Dashboard Link - only shown for admin users */}
+            {/* Only show Admin Dashboard link for admin users */}
             {user.isAdmin && (
               <Link to="/admindashboard">
-                <p className="admin-link">Admin Dashboard</p>
+                <p>Admin Dashboard</p>
               </Link>
             )}
 
@@ -100,10 +100,10 @@ export default function Navbar() {
           </>
         )}
 
-        {/* ADDED: For development purposes only - remove before production */}
+        {/* For development only - remove before production */}
         {process.env.NODE_ENV === "development" && (
           <Link to="/admindashboard">
-            <p className="dev-admin-link">Dev Admin</p>
+            <p className="dev-link">Dev Admin</p>
           </Link>
         )}
       </nav>
