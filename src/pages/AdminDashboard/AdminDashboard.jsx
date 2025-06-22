@@ -33,33 +33,28 @@ const AdminDashboard = () => {
 
   const featureOptions = [
     {
-      id: "pclass",
+      id: "Pclass",
       name: "Passenger Class",
       description: "The class of ticket purchased (1st, 2nd, 3rd)",
     },
-    { id: "sex", name: "Sex", description: "Gender of the passenger" },
-    { id: "age", name: "Age", description: "Age of the passenger in years" },
-    { id: "fare", name: "Fare", description: "Price paid for the ticket" },
+    { id: "Sex", name: "Sex", description: "Gender of the passenger" },
+    { id: "Age", name: "Age", description: "Age of the passenger in years" },
+    { id: "Fare", name: "Fare", description: "Price paid for the ticket" },
     {
-      id: "embarked",
+      id: "Embarked",
       name: "Embarked",
       description:
         "Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)",
     },
     {
-      id: "title",
+      id: "Title",
       name: "Title",
       description: "Title extracted from name (Mr, Mrs, Miss, etc.)",
     },
     {
-      id: "isalone",
+      id: "IsAlone",
       name: "Is Alone",
       description: "Whether the passenger was traveling alone",
-    },
-    {
-      id: "ageclass",
-      name: "Age*Class",
-      description: "Interaction feature of age and passenger class",
     },
   ];
 
@@ -69,63 +64,68 @@ const AdminDashboard = () => {
 
   const fetchModels = async () => {
     setIsLoading(true);
-    // API call here for trained models goes here
-    setTimeout(() => {
-      // Mock data for demonstration
-      const mockModels = [
-        {
-          id: 1,
-          name: "Default Random Forest",
-          algorithm: "random-forest",
-          features: [
-            "pclass",
-            "sex",
-            "age",
-            "fare",
-            "embarked",
-            "title",
-            "isalone",
-            "ageclass",
-          ],
-          accuracy: 83.4,
-          createdAt: "2023-06-15",
-        },
-        {
-          id: 2,
-          name: "SVM Classic",
-          algorithm: "svm",
-          features: ["pclass", "sex", "age", "fare"],
-          accuracy: 79.2,
-          createdAt: "2023-06-15",
-        },
-        {
-          id: 3,
-          name: "Decision Tree v1",
-          algorithm: "decision-tree",
-          features: ["pclass", "sex", "age", "fare", "embarked"],
-          accuracy: 76.8,
-          createdAt: "2023-07-22",
-        },
-        {
-          id: 4,
-          name: "KNN Proximity",
-          algorithm: "knn",
-          features: ["pclass", "sex", "age", "fare", "embarked", "title"],
-          accuracy: 74.5,
-          createdAt: "2023-08-10",
-        },
-        {
-          id: 5,
-          name: "Logistic Gender Focus",
-          algorithm: "logistic-regression",
-          features: ["sex", "age", "pclass"],
-          accuracy: 72.3,
-          createdAt: "2023-09-05",
-        },
-      ];
-      setModels(mockModels);
+    try {
+      // API call for trained models goes here
+      setTimeout(() => {
+        // Mock data
+        const mockModels = [
+          {
+            id: 1,
+            name: "Default Random Forest",
+            algorithm: "random-forest",
+            features: [
+              "Pclass",
+              "Sex",
+              "Age",
+              "Fare",
+              "Embarked",
+              "Title",
+              "IsAlone",
+            ],
+            model_index: 0,
+            createdAt: "2023-06-15",
+          },
+          {
+            id: 2,
+            name: "SVM Classic",
+            algorithm: "svm",
+            features: ["Pclass", "Sex", "Age", "Fare"],
+            model_index: 1,
+            createdAt: "2023-06-15",
+          },
+          {
+            id: 3,
+            name: "Decision Tree v1",
+            algorithm: "decision-tree",
+            features: ["Pclass", "Sex", "Age", "Fare", "Embarked"],
+            model_index: 2,
+            createdAt: "2023-07-22",
+          },
+          {
+            id: 4,
+            name: "KNN Proximity",
+            algorithm: "knn",
+            features: ["Pclass", "Sex", "Age", "Fare", "Embarked", "Title"],
+            model_index: 3,
+            createdAt: "2023-08-10",
+          },
+          {
+            id: 5,
+            name: "Logistic Gender Focus",
+            algorithm: "logistic-regression",
+            features: ["Sex", "Age", "Pclass"],
+            model_index: 4,
+            createdAt: "2023-09-05",
+          },
+        ];
+        setModels(mockModels);
+        setIsLoading(false);
+      }, 1500);
+    } catch (error) {
+      console.error("Error fetching models:", error);
+      showNotification("Failed to load models", "error");
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleTrainModel = async () => {
@@ -147,36 +147,47 @@ const AdminDashboard = () => {
 
     setIsTraining(true);
 
-    // API call to add new model goes here
-    setTimeout(() => {
-      // Add the new model to the list
-      const newModel = {
-        id: models.length + 1,
-        name: newModelName,
-        algorithm: selectedAlgorithm,
-        features: selectedFeatures,
-        accuracy: (Math.random() * 15 + 70).toFixed(1),
-        createdAt: new Date().toISOString().split("T")[0],
-      };
+    try {
+      // API call to train new model goes here
+      setTimeout(() => {
+        // Add the new model to the list
+        const newModel = {
+          id: models.length + 1,
+          name: newModelName,
+          algorithm: selectedAlgorithm,
+          features: selectedFeatures,
+          model_index: models.length,
+          createdAt: new Date().toISOString().split("T")[0],
+        };
 
-      setModels([...models, newModel]);
+        setModels([...models, newModel]);
 
-      // Reset form
-      setNewModelName("");
-      setSelectedAlgorithm("");
-      setSelectedFeatures([]);
+        // Reset form
+        setNewModelName("");
+        setSelectedAlgorithm("");
+        setSelectedFeatures([]);
+        setIsTraining(false);
+
+        showNotification("Model trained successfully", "success");
+      }, 5000); // Simulating a 5-second training process
+    } catch (error) {
+      console.error("Error training model:", error);
+      showNotification("Failed to train model", "error");
       setIsTraining(false);
-
-      showNotification("Model trained successfully", "success");
-    }, 5000); // Simulating a 5-second training process
+    }
   };
 
   const handleDeleteModel = async (modelId) => {
     if (confirmDelete === modelId) {
-      // delete operation API call goes here
-      setModels(models.filter((model) => model.id !== modelId));
-      setConfirmDelete(null);
-      showNotification("Model deleted successfully", "success");
+      try {
+        // API call to delete model goes here
+        setModels(models.filter((model) => model.id !== modelId));
+        setConfirmDelete(null);
+        showNotification("Model deleted successfully", "success");
+      } catch (error) {
+        console.error("Error deleting model:", error);
+        showNotification("Failed to delete model", "error");
+      }
     } else {
       // First click sets up confirmation
       setConfirmDelete(modelId);
@@ -288,8 +299,8 @@ const AdminDashboard = () => {
                         </div>
                       </div>
                       <div className="detail">
-                        <div className="detail-label">ACCURACY</div>
-                        <div className="detail-value">{model.accuracy}%</div>
+                        <div className="detail-label">MODEL INDEX</div>
+                        <div className="detail-value">{model.model_index}</div>
                       </div>
                       <div className="detail">
                         <div className="detail-label">CREATED</div>
