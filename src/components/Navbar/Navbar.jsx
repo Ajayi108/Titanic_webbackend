@@ -78,7 +78,7 @@ export default function Navbar() {
           <>
             <p>Hello, {user.firstName}!</p>
 
-            {/* ADDED: Admin Dashboard Link - only shown for admin users */}
+            {/* Admin Dashboard Link - only shown for admin users */}
             {user.isAdmin && (
               <Link to="/admindashboard">
                 <p className="admin-link">Admin Dashboard</p>
