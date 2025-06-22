@@ -11,7 +11,7 @@ import ServiceSlider from "./components/ServiceSlider/ServiceSlider";
 import Welcome from "./components/Welcome/Welcome";
 import PopularCourses from "./components/PopularCourses/PopularCourses";
 import Statistics from "./components/Statistics/Statistics";
-import JoinUsSection  from "./components/JoinUsSection/JoinUsSection";
+import JoinUsSection from "./components/JoinUsSection/JoinUsSection";
 import Footer from "./components/Footer/Footer";
 
 // Page components
@@ -22,6 +22,7 @@ import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
 import CalculatorPage from "./pages/CalculatorPage/CalculatorPage";
 import CourseDetails from "./pages/CourseDetails/CourseDetails"; // <-- Use the actual component
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ function LandingPage() {
   return (
     <div className="landing-container">
       <Welcome />
-      <Statistics/>   
+      <Statistics />
       <PopularCourses />
       <ServiceSlider />
       <JoinUsSection />
@@ -49,7 +50,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/coursedetails" element={<CourseDetails />} /> {/* <-- Add this line here */}
+        <Route path="/coursedetails" element={<CourseDetails />} />{" "}
+        <Route path="/admindashboard" element={<AdminDashboard />} />
       </Route>
     </Routes>
   );
