@@ -42,22 +42,7 @@ export default function Navbar() {
         </div>
       </Link>
 
-      <div className="nav-arrows">
-        <button
-          onClick={() => navigate(-1)}
-          className="arrow-btn"
-          aria-label="Back"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button
-          onClick={() => navigate(1)}
-          className="arrow-btn"
-          aria-label="Forward"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
+ 
 
       <div className="hamburger" onClick={() => setMenuOpen((p) => !p)}>
         ☰
