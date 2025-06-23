@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+﻿from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth.exceptions import AuthJWTException
@@ -7,6 +7,7 @@ from routes.proxy_predict import router as predict_router
 from routes.proxy_train   import router as train_router
 from routes.proxy_delete import router as delete_router
 from routes.auth import router as auth_router
+from routes.train_trigger import router as train_trigger_router  # ✅ NEW IMPORT
 
 app = FastAPI(
     title="Titanic Web Backend",
@@ -19,9 +20,7 @@ app = FastAPI(
 def authjwt_exception_handler(request: Request, exc: AuthJWTException):
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.message})
 
-
-
-# this Allow React dev server to call this API
+# Allow React dev server to call this API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8080"],
@@ -34,8 +33,8 @@ app.add_middleware(
 app.include_router(predict_router)
 app.include_router(train_router)
 app.include_router(auth_router)
-app.include_router(delete_router)  
-
+app.include_router(delete_router)
+app.include_router(train_trigger_router)  # ✅ NEW ROUTER INCLUDED
 
 if __name__ == "__main__":
     import uvicorn
