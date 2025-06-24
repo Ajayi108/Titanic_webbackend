@@ -1,6 +1,7 @@
 import { popularCourses } from '../../data/popularCourses';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer/Footer'
 
 function Courses() {
     const sortedCourses = [...popularCourses].sort((a, b) => a.availablePlaces - b.availablePlaces);
@@ -70,6 +71,7 @@ function Courses() {
                     <br /> � Prof. Alan Turington, Academic Director
                 </blockquote>
             </section>
+            <Footer />
         </div>
     );
 }

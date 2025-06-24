@@ -1,4 +1,5 @@
 import "./About.css";
+import Footer from '../../components/Footer/Footer'
 
 function About() {
   return (
@@ -46,6 +47,7 @@ function About() {
           <br /> — Sam Altmaniac, Marketing Director
         </blockquote>
       </section>
+      <Footer/>
     </div>
   );
 }

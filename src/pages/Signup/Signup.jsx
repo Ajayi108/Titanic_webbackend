@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Signup.css';
 import titanicVideo from '../../assets/shot-titanic.mp4';
 import { Link } from 'react-router-dom';
-
+ 
 
 
 const funFacts = [
@@ -47,6 +47,7 @@ export default function LoginPage() {
           <p>{currentFact}</p>
         </div>
       </div>
+       
     </div>
   );
 }
