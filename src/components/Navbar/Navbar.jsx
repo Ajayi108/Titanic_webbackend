@@ -42,8 +42,6 @@ export default function Navbar() {
         </div>
       </Link>
 
- 
-
       <div className="hamburger" onClick={() => setMenuOpen((p) => !p)}>
         ☰
       </div>
@@ -87,9 +85,14 @@ export default function Navbar() {
 
         {/* For development only - remove before production */}
         {process.env.NODE_ENV === "development" && (
-          <Link to="/admindashboard">
-            <p className="dev-link">Dev Admin</p>
-          </Link>
+          <>
+            <Link to="/loggedincalculator">
+              <p className="dev-link">Dev LoggedInCalculator</p>
+            </Link>
+            <Link to="/admindashboard">
+              <p className="dev-link">Dev Admin</p>
+            </Link>
+          </>
         )}
       </nav>
     </header>

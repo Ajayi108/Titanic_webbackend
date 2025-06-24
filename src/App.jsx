@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-// Global app-wide styles (variables, resets, shared layouts, navbar, hero, etc.)
+// Global app-wide styles
 import "./App.css";
 
 // Shared UI components
@@ -21,8 +21,9 @@ import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
 import CalculatorPage from "./pages/CalculatorPage/CalculatorPage";
-import CourseDetails from "./pages/CourseDetails/CourseDetails"; // <-- Use the actual component
+import CourseDetails from "./pages/CourseDetails/CourseDetails";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import LoggedInCalculatorPage from "./pages/LoggedInCalculatorPage/LoggedInCalculatorPage";
 
 function LandingPage() {
   const [showModal, setShowModal] = useState(false);
@@ -50,8 +51,12 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/coursedetails" element={<CourseDetails />} />{" "}
+        <Route path="/coursedetails" element={<CourseDetails />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route
+          path="/loggedincalculator"
+          element={<LoggedInCalculatorPage />}
+        />
       </Route>
     </Routes>
   );

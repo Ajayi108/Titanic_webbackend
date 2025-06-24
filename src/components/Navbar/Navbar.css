@@ -159,3 +159,31 @@
   padding: 2px 8px;
   border-radius: 4px;
 }
+
+.dev-link {
+  color: #ff9800 !important;
+  background-color: rgba(255, 152, 0, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.dev-link::after {
+  content: "DEV";
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  font-size: 8px;
+  background: #ff9800;
+  color: black;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0.8;
+}
+.nav-links p.dev-link:hover {
+  color: #ffb74d !important;
+}
+
+.nav-links p.dev-link:hover::after {
+  background-color: #ffb74d;
+}
