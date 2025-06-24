@@ -1,3 +1,5 @@
+from init_user import create_admin_user  # ✅ Added line
+
 import psycopg2
 import os
 
@@ -114,9 +116,9 @@ add_prediction(
     result="Did not survive"
 )
 
-
+# ✅ Step 5: Create admin user
+create_admin_user()
 
 # Step 6: Close connections
-
 cursor.close()
 conn.close()
