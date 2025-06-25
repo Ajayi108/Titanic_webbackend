@@ -8,11 +8,11 @@ router = APIRouter(prefix="/model", tags=["model"])
 
 # Hard‐coded DB connection, autocommit on so we never lock up on error
 conn = psycopg2.connect(
-    dbname="titanic_shrank_db",
-    user="titanic_saver",
-    password="TitanicMan",
-    host="localhost",
-    port="5432"
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST", "localhost"),
+    port=os.getenv("DB_PORT", "5432")
 )
 conn.autocommit = True
 cursor = conn.cursor()
