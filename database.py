@@ -19,6 +19,8 @@ def create_tables():
             id SERIAL PRIMARY KEY,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            first_name TEXT,
+            last_name TEXT,
             is_admin BOOLEAN DEFAULT FALSE
         );
     """)
@@ -54,6 +56,20 @@ def create_tables():
     
     print("✅ Tables created successfully.")
 
+def add_trained_model(model_name, feature_key, file_name):
+    cursor.execute("""
+        SELECT id FROM trained_models
+        WHERE model_name = %s AND feature_key = %s AND file_name = %s;
+    """, (model_name, feature_key, file_name))
+    if cursor.fetchone():
+        print("⚠️ Trained model already exists. Skipping insert.")
+    else:
+        cursor.execute("""
+            INSERT INTO trained_models (model_name, feature_key, file_name)
+            VALUES (%s, %s, %s);
+        """, (model_name, feature_key, file_name))
+        conn.commit()
+        print("✅ First Trained model added.")
 
 
 # Function to add and remove model name
@@ -92,6 +108,12 @@ def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embark
 
 # Step 1: Create tables
 create_tables()
+#this is to store the name and features of the first anomymous user model
+add_trained_model(
+    model_name="decision_tree",
+    feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="decision_tree-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title"
+)
 """
 # Step 2: Add sample model names
 add_name("Model 1")
