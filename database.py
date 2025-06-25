@@ -43,7 +43,7 @@ def create_tables():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS trained_models (
             id SERIAL PRIMARY KEY,
-            model_name TEXT NOT NULL
+            model_name TEXT NOT NULL,
             feature_key TEXT NOT NULL,
             file_name TEXT NOT NULL,
             trained_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -92,7 +92,7 @@ def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embark
 
 # Step 1: Create tables
 create_tables()
-
+"""
 # Step 2: Add sample model names
 add_name("Model 1")
 remove_name("Model 2")
@@ -114,6 +114,7 @@ add_prediction(
     result="Did not survive"
 )
 
+"""
 
 # Step 5: Close connections
 cursor.close()
