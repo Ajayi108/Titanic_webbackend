@@ -1,0 +1,414 @@
+/* Import the base calculator styles */
+@import "../CalculatorPage/CalculatorPage.css";
+
+/* Additional styles for logged-in calculator page */
+
+/* User Status Bar */
+.logged-in-calculator .user-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 240, 255, 0.05);
+  border-radius: 5px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.logged-in-calculator .status-indicator {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  box-shadow: 0 0 10px var(--success);
+  animation: pulse 2s infinite;
+}
+
+.logged-in-calculator .history-toggle {
+  margin-left: 1rem;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logged-in-calculator .history-toggle:hover {
+  background: rgba(0, 240, 255, 0.1);
+}
+
+/* Selection Helper */
+.logged-in-calculator .selection-helper {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+/* Selected Model Card Style */
+.logged-in-calculator .model-card.selected {
+  border-color: var(--success);
+  box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+}
+
+.logged-in-calculator .selected-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark);
+  font-weight: bold;
+  font-size: 0.8rem;
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+}
+
+/* Proceed Button */
+.logged-in-calculator .proceed-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.logged-in-calculator .proceed-btn {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logged-in-calculator .proceed-btn.active {
+  animation: pulse-glow 2s infinite;
+}
+
+.logged-in-calculator .proceed-btn.active:hover {
+  background: var(--primary);
+  color: var(--dark);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+/* Selected Models Summary */
+.logged-in-calculator .selected-models-summary {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--success);
+  background: rgba(0, 255, 157, 0.05);
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 255, 157, 0.2);
+}
+
+/* History Panel */
+.logged-in-calculator .history-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  margin-bottom: 3rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.logged-in-calculator .history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.logged-in-calculator .history-header h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.logged-in-calculator .close-history {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logged-in-calculator .close-history:hover {
+  color: var(--primary);
+}
+
+.logged-in-calculator .history-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.logged-in-calculator .history-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logged-in-calculator .history-item:hover {
+  background: rgba(0, 240, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.logged-in-calculator .history-timestamp {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.logged-in-calculator .history-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logged-in-calculator .history-params {
+  display: flex;
+  gap: 1rem;
+}
+
+.logged-in-calculator .history-params span {
+  font-size: 0.9rem;
+}
+
+.logged-in-calculator .history-results {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.logged-in-calculator .history-result {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+}
+
+.logged-in-calculator .history-result.survived {
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.logged-in-calculator .history-result.not-survived {
+  background: rgba(255, 61, 61, 0.1);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* Multi-Model Results */
+.logged-in-calculator .multi-model-results {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  border: 1px solid var(--card-border);
+}
+
+.logged-in-calculator .model-count {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--primary);
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+}
+
+.logged-in-calculator .models-prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.logged-in-calculator .model-prediction {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.logged-in-calculator .model-prediction.survived {
+  border-color: var(--success);
+  background: rgba(0, 255, 157, 0.05);
+}
+
+.logged-in-calculator .model-prediction.not-survived {
+  border-color: var(--danger);
+  background: rgba(255, 61, 61, 0.05);
+}
+
+.logged-in-calculator .model-prediction-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.logged-in-calculator .model-prediction-header h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: var(--primary);
+}
+
+.logged-in-calculator .model-type {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+}
+
+.logged-in-calculator .prediction-visual {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.5rem;
+}
+
+.logged-in-calculator .prediction-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.logged-in-calculator .model-prediction.survived .prediction-circle {
+  background: rgba(0, 255, 157, 0.1);
+  border: 2px solid var(--success);
+  color: var(--success);
+}
+
+.logged-in-calculator .model-prediction.not-survived .prediction-circle {
+  background: rgba(255, 61, 61, 0.1);
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+
+.logged-in-calculator .prediction-circle.pulse {
+  animation: pulse 2s infinite;
+}
+
+.logged-in-calculator .prediction-result {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logged-in-calculator .prediction-result h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.logged-in-calculator .model-prediction.survived .prediction-result h3 {
+  color: var(--success);
+}
+
+.logged-in-calculator .model-prediction.not-survived .prediction-result h3 {
+  color: var(--danger);
+}
+
+.logged-in-calculator .confidence {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.logged-in-calculator .key-factor {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.8rem;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.logged-in-calculator .factor-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+.logged-in-calculator .factor-value {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Model Agreement Section */
+.logged-in-calculator .model-agreement {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.logged-in-calculator .model-agreement h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+
+.logged-in-calculator .agreement-meter {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.logged-in-calculator .meter-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+
+.logged-in-calculator .meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success), var(--primary));
+  transition: width 1s ease-out;
+}
+
+.logged-in-calculator .agreement-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.logged-in-calculator .agreement-percent {
+  margin-left: 0.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* Animation for pulse effect */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 255, 157, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 157, 0);
+  }
+}
