@@ -1,7 +1,7 @@
 import psycopg2
 import os
 
-# to Connect to the database server
+# Database connection
 conn = psycopg2.connect(
     dbname=os.getenv("DB_NAME"),
     user=os.getenv("DB_USER"),
@@ -11,9 +11,8 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-
-# Function to create users and predictions tables
 def create_tables():
+    """Create all tables if they don't exist"""
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -51,28 +50,81 @@ def create_tables():
             trained_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
     """)
-
     conn.commit()
-    
     print("✅ Tables created successfully.")
 
-def add_trained_model(model_name, feature_key, file_name):
-    cursor.execute("""
-        SELECT id FROM trained_models
-        WHERE model_name = %s AND feature_key = %s AND file_name = %s;
-    """, (model_name, feature_key, file_name))
-    if cursor.fetchone():
-        print("⚠️ Trained model already exists. Skipping insert.")
-    else:
+def update_tables():
+    """Add new columns to existing tables"""
+    try:
+        # Add new columns if they don't exist
         cursor.execute("""
-            INSERT INTO trained_models (model_name, feature_key, file_name)
-            VALUES (%s, %s, %s);
-        """, (model_name, feature_key, file_name))
+            ALTER TABLE trained_models 
+            ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+        """)
+        cursor.execute("""
+            ALTER TABLE trained_models 
+            ADD COLUMN IF NOT EXISTS is_global BOOLEAN DEFAULT FALSE;
+        """)
         conn.commit()
-        print("✅ First Trained model added.")
+        print("✅ Tables updated successfully.")
+    except Exception as e:
+        print(f"⚠️ Table update error: {e}")
+        conn.rollback()
 
+def add_trained_model(model_name, feature_key, file_name, user_id=None, is_global=False):
+    """Add a trained model to the database"""
+    try:
+        cursor.execute("""
+            INSERT INTO trained_models 
+            (model_name, feature_key, file_name, user_id, is_global)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING;
+        """, (model_name, feature_key, file_name, user_id, is_global))
+        conn.commit()
+        model_type = "global" if is_global else f"user {user_id}'s" if user_id else "anonymous"
+        print(f"✅ {model_type} model added: {model_name}")
+    except Exception as e:
+        print(f"⚠️ Error adding model: {e}")
+        conn.rollback()
 
-# Function to add and remove model name
+def get_admin_id():
+    """Get admin user ID"""
+    cursor.execute("SELECT id FROM users WHERE email = 'admin@example.com';")
+    result = cursor.fetchone()
+    return result[0] if result else None
+
+def add_admin_model(model_name, feature_key, file_name):
+    """Add admin-specific model"""
+    admin_id = get_admin_id()
+    if admin_id:
+        add_trained_model(
+            model_name=model_name,
+            feature_key=feature_key,
+            file_name=file_name,
+            user_id=admin_id
+        )
+    else:
+        print("⚠️ Admin user not found. Create admin first.")
+
+def init_admin_with_models():
+    """Initialize admin user and models"""
+    from init_user import create_admin_user
+    create_admin_user()
+    
+    # Add admin-specific models
+    add_admin_model(
+        model_name="admin_premium_model",
+        feature_key="Full-Feature-Set",
+        file_name="admin_premium_v1"
+    )
+    
+    add_admin_model(
+        model_name="admin_optimized_rf",
+        feature_key="Optimized-Features",
+        file_name="admin_rf_optimized"
+    )
+
+# --- Existing functions remain unchanged ---
 def add_name(model_name):
     cursor.execute("INSERT INTO models (model_name) VALUES (%s);", (model_name,))
     conn.commit()
@@ -83,7 +135,6 @@ def remove_name(model_name):
     conn.commit()
     print(f"Removed: {model_name}")
 
-# Function to add user
 def add_user(email, password, is_admin=False):
     cursor.execute("SELECT id FROM users WHERE email = %s;", (email,))
     existing_user = cursor.fetchone()
@@ -97,7 +148,6 @@ def add_user(email, password, is_admin=False):
         conn.commit()
         print(f"✅ User added: {email}")
 
-# Function to add prediction
 def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embarked, title, result):
     cursor.execute("""
         INSERT INTO predictions (user_id, model_name, pclass, sex, age, fare, is_alone, embarked, title, result)
@@ -106,38 +156,21 @@ def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embark
     conn.commit()
     print(f"✅ Prediction added for user_id {user_id}")
 
-# Step 1: Create tables
+# --- Initialization ---
 create_tables()
-#this is to store the name and features of the first anomymous user model
+update_tables()  # This will add new columns if needed
+
+# Add anonymous model (global)
 add_trained_model(
     model_name="decision_tree",
     feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
-    file_name="decision_tree-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title"
-)
-"""
-# Step 2: Add sample model names
-add_name("Model 1")
-remove_name("Model 2")
-
-# Step 3: Add sample user
-add_user("hamza@ai.com", "secret")
-
-# Step 4: Add sample prediction
-add_prediction(
-    user_id=1,
-    model_name="RandomForest",
-    pclass=3,
-    sex="male",
-    age=24.0,
-    fare=7.25,
-    is_alone=True,
-    embarked="Southampton",
-    title="Mr",
-    result="Did not survive"
+    file_name="decision_tree-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    is_global=True
 )
 
-"""
+# Initialize admin and models
+init_admin_with_models()
 
-# Step 5: Close connections
+# Close connections
 cursor.close()
 conn.close()
