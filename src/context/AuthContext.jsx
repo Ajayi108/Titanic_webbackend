@@ -1,18 +1,17 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
-import api from '../api/api';
+import api from '../api/api'; // Make sure api.js uses baseURL: '/api'
 
 export const AuthContext = createContext({
   user: null,
   login: async (email, password) => {},
   logout: async () => {},
   refreshUser: async () => {},
+  register: async (email, password, firstName, lastName) => {},
 });
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // Fetch /auth/me to load current user (if logged in)
   const refreshUser = async () => {
     try {
       const resp = await api.get('/auth/me');
@@ -21,24 +20,20 @@ export function AuthProvider({ children }) {
         email: resp.data.email,
         isAdmin: resp.data.is_admin,
       });
-    } catch (err) {
+    } catch {
       setUser(null);
     }
   };
 
-  // Call once on mount
   useEffect(() => {
     refreshUser();
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     const form = new FormData();
     form.append('email', email);
     form.append('password', password);
-    // FastAPI login sets cookies and returns user data
     const resp = await api.post('/auth/login', form);
-    // resp.data.user has first_name / last_name
     setUser({
       id: resp.data.user.id,
       email: resp.data.user.email,
@@ -48,14 +43,24 @@ export function AuthProvider({ children }) {
     });
   };
 
-  // Logout function
   const logout = async () => {
-    // simply clear client-side; you could also hit a backend logout route
     setUser(null);
   };
 
+  const register = async (email, password, firstName, lastName) => {
+    const form = new FormData();
+    form.append('email', email);
+    form.append('password', password);
+    form.append('first_name', firstName);
+    form.append('last_name', lastName);
+    form.append('is_admin', 'false');
+
+    // ✅ FIXED: removed /auth from here — baseURL already includes /api
+    await api.post('/auth/register', form);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, login, logout, refreshUser, register }}>
       {children}
     </AuthContext.Provider>
   );
