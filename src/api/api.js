@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',  // your FastAPI backend
+  baseURL: '/api', // will resolve to http://localhost:8080/api via Nginx
   withCredentials: true,              // send/receive cookies
 });
 
