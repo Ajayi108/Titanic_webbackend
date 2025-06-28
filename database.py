@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from init_user import create_admin_user
 
 # Database connection
 conn = psycopg2.connect(
@@ -46,7 +47,7 @@ def create_tables():
             id SERIAL PRIMARY KEY,
             model_name TEXT NOT NULL,
             feature_key TEXT NOT NULL,
-            file_name TEXT NOT NULL,
+            file_name TEXT UNIQUE NOT NULL,
             trained_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
     """)
@@ -86,6 +87,7 @@ def add_trained_model(model_name, feature_key, file_name, user_id=None, is_globa
     except Exception as e:
         print(f"⚠️ Error adding model: {e}")
         conn.rollback()
+    
 
 def get_admin_id():
     """Get admin user ID"""
@@ -159,17 +161,23 @@ def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embark
 # --- Initialization ---
 create_tables()
 update_tables()  # This will add new columns if needed
+create_admin_user()
 
 # Add anonymous model (global)
 add_trained_model(
-    model_name="decision_tree",
+    model_name="random_forest",
     feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
-    file_name="decision_tree-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="random_forest-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     is_global=True
 )
 
-# Initialize admin and models
-init_admin_with_models()
+add_trained_model(
+    model_name="svc",
+    feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="svc-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    is_global=True
+)
+
 
 # Close connections
 cursor.close()
