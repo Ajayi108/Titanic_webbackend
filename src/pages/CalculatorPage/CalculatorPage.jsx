@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './CalculatorPage.css';
 import Footer from '../../components/Footer/Footer';
 
@@ -14,9 +14,17 @@ const CalculatorPage = () => {
     title: ''
   });
   const [prediction, setPrediction] = useState(null);
+  const [probability, setProbability] = useState(null);
   const [explanation, setExplanation] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showInputs, setShowInputs] = useState(false);
+  const [apiResponse, setApiResponse] = useState(null);
+  const [activeKeyFactor, setActiveKeyFactor] = useState('');
+  
+  const modelIdMap = {
+    'random-forest': 1,
+    'svm': 2
+  };
 
   const inputOptions = {
     class: ['First', 'Second', 'Third'],
@@ -38,6 +46,9 @@ const CalculatorPage = () => {
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: value }));
+    setPrediction(null);
+    setProbability(null);
+    setApiResponse(null);
   };
 
   const resetInputs = () => {
@@ -51,37 +62,73 @@ const CalculatorPage = () => {
       title: ''
     });
     setPrediction(null);
+    setProbability(null);
     setExplanation(null);
+    setApiResponse(null);
   };
 
-  const makePrediction = () => {
+  const makePrediction = async () => {
+    if (!model) return; 
     setIsCalculating(true);
-    // Simulate API call with model processing
-    setTimeout(() => {
-      const features = {
-        ...inputs,
-        class: inputs.class === 'First' ? 1 : inputs.class === 'Second' ? 2 : 3,
-        sex: inputs.sex === 'Male' ? 0 : 1,
-        alone: inputs.alone === 'Yes' ? 1 : 0
+    setApiResponse(null);
+    
+    try {
+      const embarkedMap = { Cherbourg: 0, Queenstown: 1, Southampton: 2 };
+      const titleMap = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
+
+      const payload = {
+        Age: parseFloat(inputs.age) || 0,
+        Pclass: inputs.class === 'First' ? 1 : inputs.class === 'Second' ? 2 : 3,
+        Fare: parseFloat(inputs.fare) || 0,
+        Sex: inputs.sex === 'Male' ? 0 : 1,
+        Embarked: embarkedMap[inputs.embarked] || 0,
+        Title: titleMap[inputs.title] || 0,
+        IsAlone: inputs.alone === 'Yes' ? 1 : 0
       };
+      const modelId = modelIdMap[model] || 1;
+       
+      const res = await fetch(`/api/model/predict/${modelId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-      let survivalScore = 0;
-      if (features.class === 1) survivalScore += 0.4;
-      if (features.sex === 1) survivalScore += 0.3;
-      if (features.age < 16) survivalScore += 0.2;
-      if (features.fare > 100) survivalScore += 0.1;
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server returned ${res.status}`);
+      }
 
-      const randomPrediction = survivalScore > 0.5 ? 'Survived' : 'Did not survive';
-      setPrediction(randomPrediction);
+      const result = await res.json();
+      setApiResponse(result);
+
+      if (result.prediction !== undefined && result.probability_class_0 !== undefined) {
+        const label = result.prediction === 1 ? 'Survived' : 'Did not survive';
+        setPrediction(label);
+        setProbability(result.probability_class_0);
+        
+        // Determine key factor based on inputs
+        if (inputs.class === 'First') setActiveKeyFactor('First Class');
+        else if (inputs.sex === 'Female') setActiveKeyFactor('Female Gender');
+        else if (inputs.age < 16) setActiveKeyFactor('Young Age');
+        else setActiveKeyFactor('Ticket Fare');
+      } else {
+        throw new Error('Unexpected response format from server');
+      }
+
+    } catch (err) {
+      console.error('Prediction failed:', err);
+      setPrediction(`Error: ${err.message}`);
+      setProbability(null);
+    } finally {
       setIsCalculating(false);
-    }, 1200);
+    }
   };
 
   const selectModel = (selectedModel) => {
     setModel(selectedModel);
     setShowInputs(true);
     setTimeout(() => {
-      document.querySelector('.input-grid').scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('.input-grid')?.scrollIntoView({ behavior: 'smooth' });
     }, 300);
   };
 
@@ -159,9 +206,9 @@ const CalculatorPage = () => {
                     </div>
                     <div className="input-icon">
                       {field === 'class' && <span className="icon">ⅠⅡⅢ</span>}
-                      {field === 'sex'   && <span className="icon">⚧</span>}
-                      {field === 'age'   && <span className="icon">⌚</span>}
-                      {field === 'fare'  && <span className="icon">$</span>}
+                      {field === 'sex' && <span className="icon">⚧</span>}
+                      {field === 'age' && <span className="icon">⌚</span>}
+                      {field === 'fare' && <span className="icon">$</span>}
                       {field === 'alone' && <span className="icon">👤</span>}
                       {field === 'embarked' && <span className="icon">⛴</span>}
                       {field === 'title' && <span className="icon">🪪</span>}
@@ -238,6 +285,7 @@ const CalculatorPage = () => {
               <button
                 className={`predict-btn ${allInputsFilled ? 'active' : 'disabled'}`}
                 onClick={allInputsFilled ? makePrediction : null}
+                disabled={!allInputsFilled || isCalculating}
               >
                 {isCalculating ? (
                   <div className="computing">
@@ -256,6 +304,14 @@ const CalculatorPage = () => {
                 )}
               </button>
             </div>
+
+            {/* API Response Debug Panel */}
+            {apiResponse && (
+              <div className="debug-panel">
+                <h4>API RESPONSE DATA</h4>
+                <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+              </div>
+            )}
           </>
         )}
 
@@ -284,9 +340,11 @@ const CalculatorPage = () => {
               </div>
               <div className="result-text">
                 <h2>{prediction}</h2>
-                <p className="probability">
-                  Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
-                </p>
+                {probability !== null && (
+                  <p className="probability">
+                    Confidence: {(probability * 100).toFixed(1)}%
+                  </p>
+                )}
                 <p className="explanation">
                   {prediction === 'Survived'
                     ? 'The model indicates a high probability of survival based on these parameters.'
@@ -295,26 +353,14 @@ const CalculatorPage = () => {
                 <div className="result-stats">
                   <div className="stat">
                     <div className="stat-label">KEY FACTOR</div>
-                    <div className="stat-value">
-                      {inputs.class === 'First'
-                        ? 'First Class'
-                        : inputs.sex === 'Female'
-                        ? 'Female Gender'
-                        : inputs.age < 16
-                        ? 'Young Age'
-                        : 'Ticket Fare'}
-                    </div>
+                    <div className="stat-value">{activeKeyFactor}</div>
                   </div>
                   <div className="stat">
                     <div className="stat-label">INFLUENCE</div>
                     <div className="stat-value">
-                      {inputs.class === 'First'
-                        ? '+42%'
-                        : inputs.sex === 'Female'
-                        ? '+38%'
-                        : inputs.age < 16
-                        ? '+25%'
-                        : '+15%'}
+                      {activeKeyFactor === 'First Class' ? '+42%' :
+                       activeKeyFactor === 'Female Gender' ? '+38%' :
+                       activeKeyFactor === 'Young Age' ? '+25%' : '+15%'}
                     </div>
                   </div>
                 </div>
