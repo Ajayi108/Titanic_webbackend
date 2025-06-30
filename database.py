@@ -166,16 +166,37 @@ create_admin_user()
 # Add anonymous model (global)
 add_trained_model(
     model_name="random_forest",
-    feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
-    file_name="random_forest-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="random_forest-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     is_global=True
 )
 
 add_trained_model(
     model_name="svc",
-    feature_key="Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
-    file_name="svc-Age-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="svc-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     is_global=True
+)
+
+add_trained_model(
+    model_name="decision_tree",
+    feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="decision_tree-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    is_global=False
+)
+
+add_trained_model(
+    model_name="logreg",
+    feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="logreg-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    is_global=False
+)
+
+add_trained_model(
+    model_name="knn",
+    feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    file_name="knn-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
+    is_global=False
 )
 
 
