@@ -5,7 +5,7 @@ from fastapi import APIRouter, status
 
 router = APIRouter(prefix="/model", tags=["model"])
 
-# Hard‐coded DB connection
+#  DB connection to docker
 conn = psycopg2.connect(
     dbname=os.getenv("DB_NAME"),
     user=os.getenv("DB_USER"),
