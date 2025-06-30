@@ -54,7 +54,7 @@ export default function Navbar() {
           <p>Courses</p>
         </Link>
         <Link to="/calculator">
-          <p>Prediction Calculator</p>
+          <p>{user ? "Prediction Calculator" : "Prediction Calculator"}</p>
         </Link>
 
         {user ? (

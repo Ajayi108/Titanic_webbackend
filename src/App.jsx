@@ -6,28 +6,26 @@ import "./App.css";
 
 // Shared UI components
 import Layout from "./components/Layout/Layout";
-import SignupInvitation from "./components/SignupInvitation/SignupInvitation";
-import ServiceSlider from "./components/ServiceSlider/ServiceSlider";
 import Welcome from "./components/Welcome/Welcome";
+import ServiceSlider from "./components/ServiceSlider/ServiceSlider";
 import PopularCourses from "./components/PopularCourses/PopularCourses";
 import Statistics from "./components/Statistics/Statistics";
 import JoinUsSection from "./components/JoinUsSection/JoinUsSection";
 import Footer from "./components/Footer/Footer";
 
-// Page components
+// Pages
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
-import CalculatorPage from "./pages/CalculatorPage/CalculatorPage";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import LoggedInCalculatorPage from "./pages/LoggedInCalculatorPage/LoggedInCalculatorPage";
+
+// Conditional calculator route handler
+import CalculatorRedirect from "./pages/CalculatorRedirect"; // ✅ new component
 
 function LandingPage() {
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <div className="landing-container">
       <Welcome />
@@ -46,17 +44,14 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/Signup" element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/coursedetails" element={<CourseDetails />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
-        <Route
-          path="/loggedincalculator"
-          element={<LoggedInCalculatorPage />}
-        />
+        <Route path="/calculator" element={<CalculatorRedirect />} />{" "}
+        {/* ✅ auto-switch */}
       </Route>
     </Routes>
   );
