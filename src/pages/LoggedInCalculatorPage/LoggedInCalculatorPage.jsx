@@ -1,22 +1,9 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from 'react-router-dom';
-// import { AuthContext } from '../../context/AuthContext';
 import "./LoggedInCalculatorPage.css";
 import Footer from "../../components/Footer/Footer";
 
 const LoggedInCalculatorPage = () => {
-  // Auth context for production (commented out for development)
-  // const { user } = useContext(AuthContext);
-  // const navigate = useNavigate();
-
-  // Redirect if not authenticated (commented out for development)
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/calculator");
-  //   }
-  // }, [user, navigate]);
-
-  // State for development
+  // Mock user for development
   const mockUser = { username: "User" };
 
   // States
@@ -35,10 +22,8 @@ const LoggedInCalculatorPage = () => {
   const [explanation, setExplanation] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showInputs, setShowInputs] = useState(false);
-  const [predictionHistory, setPredictionHistory] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
 
-  // Input options
+  // Input options (removed fare from options since we'll use direct input)
   const inputOptions = {
     class: ["First", "Second", "Third"],
     sex: ["Male", "Female"],
@@ -47,129 +32,65 @@ const LoggedInCalculatorPage = () => {
     title: ["Master", "Miss", "Mr", "Mrs", "Rare"],
   };
 
-  // Explanations
-  const explanations = {
-    class: "Passenger class was a strong indicator of survival chance",
-    sex: "Women and children had higher survival rates",
-    age: "Children under 10 had better survival odds",
-    fare: "Higher fares correlated with better survival chances",
-    alone: "Passengers with family often helped each other survive",
-    embarked: "Embarkation port indicated socioeconomic factors",
-    title: "Titles revealed social standing and marital status",
-  };
-
   // Fetch available models on component mount
   useEffect(() => {
+    const fetchAvailableModels = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/model/Model_list");
+        if (!response.ok) throw new Error("Failed to fetch models");
+
+        const modelsData = await response.json();
+        const transformedModels = modelsData.map((model) => ({
+          id: model.id,
+          name: model.model_name.toUpperCase(),
+          type: getAlgorithmType(model.model_name),
+          description: getAlgorithmDescription(model.model_name),
+          accuracy: "N/A",
+          feature_key: model.feature_key,
+        }));
+
+        setAvailableModels(transformedModels);
+      } catch (error) {
+        console.error("Error fetching available models:", error);
+        setAvailableModels([]);
+      }
+    };
+
     fetchAvailableModels();
   }, []);
 
-  // Fetch prediction history on mount
-  useEffect(() => {
-    fetchPredictionHistory();
-  }, []);
-
-  // API call to fetch available models comes here
-  const fetchAvailableModels = async () => {
-    try {
-      // API call to fetch models
-      // const response = await api.get('/api/models');
-      // setAvailableModels(response.data);
-
-      // Mock data for development
-      setTimeout(() => {
-        const mockModels = [
-          {
-            id: "random-forest",
-            name: "RANDOM FOREST",
-            type: "ENSEMBLE METHOD",
-            description: "Multiple decision trees for robust prediction",
-            accuracy: "82.3%",
-          },
-          {
-            id: "svm",
-            name: "SUPPORT VECTOR MACHINE",
-            type: "KERNEL METHOD",
-            description: "High-dimensional classification",
-            accuracy: "78.9%",
-          },
-          {
-            id: "decision-tree",
-            name: "DECISION TREE",
-            type: "TREE METHOD",
-            description: "Hierarchical decision branching",
-            accuracy: "76.4%",
-          },
-          {
-            id: "logistic-regression",
-            name: "LOGISTIC REGRESSION",
-            type: "STATISTICAL METHOD",
-            description: "Probability-based classification",
-            accuracy: "77.8%",
-          },
-          {
-            id: "knn",
-            name: "K-NEAREST NEIGHBORS",
-            type: "INSTANCE-BASED METHOD",
-            description: "Proximity-based classification",
-            accuracy: "75.1%",
-          },
-        ];
-        setAvailableModels(mockModels);
-      }, 500);
-    } catch (error) {
-      console.error("Error fetching available models:", error);
-    }
+  // Helper functions for model info
+  const getAlgorithmType = (algorithm) => {
+    if (algorithm.includes("random_forest")) return "ENSEMBLE METHOD";
+    if (algorithm.includes("svc")) return "KERNEL METHOD";
+    if (algorithm.includes("decision_tree")) return "TREE METHOD";
+    if (algorithm.includes("logreg")) return "STATISTICAL METHOD";
+    if (algorithm.includes("knn")) return "INSTANCE-BASED METHOD";
+    return "ML METHOD";
   };
 
-  // API call to fetch 10 persistent prediction history comes here
-  const fetchPredictionHistory = async () => {
-    try {
-      // API call to fetch prediction history
-      // const response = await api.get('/api/prediction-history');
-      // setPredictionHistory(response.data);
-
-      // Mock data for development
-      setTimeout(() => {
-        const mockHistory = Array(10)
-          .fill()
-          .map((_, i) => ({
-            id: i,
-            timestamp: new Date(
-              Date.now() - i * 24 * 60 * 60 * 1000
-            ).toISOString(),
-            inputs: {
-              class: ["First", "Second", "Third"][
-                Math.floor(Math.random() * 3)
-              ],
-              sex: Math.random() > 0.5 ? "Male" : "Female",
-              age: String(Math.floor(Math.random() * 70) + 5),
-              fare: String(Math.floor(Math.random() * 100) + 10),
-              alone: Math.random() > 0.5 ? "Yes" : "No",
-              embarked: ["Cherbourg", "Queenstown", "Southampton"][
-                Math.floor(Math.random() * 3)
-              ],
-              title: ["Master", "Miss", "Mr", "Mrs", "Rare"][
-                Math.floor(Math.random() * 5)
-              ],
-            },
-            predictions: {
-              "random-forest":
-                Math.random() > 0.4 ? "Survived" : "Did not survive",
-              svm: Math.random() > 0.4 ? "Survived" : "Did not survive",
-              "decision-tree":
-                Math.random() > 0.4 ? "Survived" : "Did not survive",
-            },
-          }));
-        setPredictionHistory(mockHistory);
-      }, 500);
-    } catch (error) {
-      console.error("Error fetching prediction history:", error);
-    }
+  const getAlgorithmDescription = (algorithm) => {
+    if (algorithm.includes("random_forest"))
+      return "Multiple decision trees for robust prediction";
+    if (algorithm.includes("svc")) return "High-dimensional classification";
+    if (algorithm.includes("decision_tree"))
+      return "Hierarchical decision branching";
+    if (algorithm.includes("logreg")) return "Probability-based classification";
+    if (algorithm.includes("knn")) return "Proximity-based classification";
+    return "Machine learning algorithm";
   };
 
-  // Handler functions
+  // Input handlers
   const handleInputChange = (field, value) => {
-    setInputs((prev) => ({ ...prev, [field]: value }));
+    // Special validation for numeric fields
+    if (field === "age" || field === "fare") {
+      // Allow empty string or valid numbers
+      if (value === "" || (!isNaN(value) && Number(value) >= 0)) {
+        setInputs((prev) => ({ ...prev, [field]: value }));
+      }
+    } else {
+      setInputs((prev) => ({ ...prev, [field]: value }));
+    }
   };
 
   const resetInputs = () => {
@@ -197,99 +118,100 @@ const LoggedInCalculatorPage = () => {
   const proceedToInputs = () => {
     if (selectedModels.length > 0) {
       setShowInputs(true);
-      // Small delay for animation
       setTimeout(() => {
         document
           .querySelector(".input-grid")
-          .scrollIntoView({ behavior: "smooth" });
+          ?.scrollIntoView({ behavior: "smooth" });
       }, 300);
     }
   };
 
-  // API call to make prediction comes here
+  // Convert fare value to the expected bins (0-3)
+  const getFareValue = (fare) => {
+    const fareNum = parseFloat(fare) || 0;
+    if (fareNum <= 7.91) return 0;
+    if (fareNum <= 14.454) return 1;
+    if (fareNum <= 31) return 2;
+    return 3;
+  };
+
+  // Prediction function with proper value handling
   const makePrediction = async () => {
     if (selectedModels.length === 0) return;
-
     setIsCalculating(true);
 
     try {
-      // Prepare data for API call
-      const predictionData = {
-        inputs: {
-          ...inputs,
-          // Convert data types as needed
-          age: inputs.age ? parseFloat(inputs.age) : null,
-          fare: inputs.fare ? parseFloat(inputs.fare) : null,
-        },
-        models: selectedModels,
+      // Calculate age band (0-4)
+      const ageNum = parseFloat(inputs.age) || 0;
+      const ageValue = Math.min(Math.floor(ageNum / 16), 4);
+
+      // Calculate Pclass (1-3)
+      const pclassValue =
+        inputs.class === "First" ? 1 : inputs.class === "Second" ? 2 : 3;
+
+      // Calculate and constrain Age*Class (0-12)
+      const ageClassValue = Math.min(Math.max(ageValue * pclassValue, 0), 12);
+
+      // Prepare payload with properly formatted values
+      const payload = {
+        Age: ageValue,
+        "Age*Class": ageClassValue,
+        Embarked:
+          inputs.embarked === "Cherbourg"
+            ? 0
+            : inputs.embarked === "Queenstown"
+            ? 1
+            : 2,
+        Fare: getFareValue(inputs.fare),
+        IsAlone: inputs.alone === "Yes" ? 1 : 0,
+        Pclass: pclassValue,
+        Sex: inputs.sex === "Male" ? 0 : 1,
+        Title:
+          inputs.title === "Master"
+            ? 1
+            : inputs.title === "Miss"
+            ? 2
+            : inputs.title === "Mrs"
+            ? 3
+            : inputs.title === "Mr"
+            ? 4
+            : 5,
       };
 
-      // API call to make prediction
-      // const response = await api.post('/api/predict-multi', predictionData);
-      // setModelPredictions(response.data.predictions);
+      const predictions = {};
 
-      // Mock response for development || delete after connection
-      setTimeout(() => {
-        const predictions = {};
+      for (const modelId of selectedModels) {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/model/predict/${modelId}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }
+          );
 
-        selectedModels.forEach((modelId) => {
-          const features = {
-            ...inputs,
-            class:
-              inputs.class === "First" ? 1 : inputs.class === "Second" ? 2 : 3,
-            sex: inputs.sex === "Male" ? 0 : 1,
-            alone: inputs.alone === "Yes" ? 1 : 0,
-          };
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Prediction failed");
+          }
 
-          // Simple mock prediction logic with slight variations per model
-          let survivalScore = 0;
-          if (features.class === 1) survivalScore += 0.4;
-          if (features.sex === 1) survivalScore += 0.3;
-          if (parseFloat(features.age) < 16) survivalScore += 0.2;
-          if (parseFloat(features.fare) > 100) survivalScore += 0.1;
-
-          // Add some variation between models
-          if (modelId === "random-forest") survivalScore += 0.05;
-          if (modelId === "svm") survivalScore -= 0.03;
-          if (modelId === "decision-tree") survivalScore += 0.02;
-          if (modelId === "logistic-regression") survivalScore -= 0.01;
-          if (modelId === "knn") survivalScore += 0.04;
-
+          const result = await response.json();
           predictions[modelId] =
-            survivalScore > 0.5 ? "Survived" : "Did not survive";
-        });
-
-        setModelPredictions(predictions);
-
-        if (Object.keys(predictions).length > 0) {
-          const newHistoryItem = {
-            id: Date.now(),
-            timestamp: new Date().toISOString(),
-            inputs: { ...inputs },
-            predictions: predictions,
-          };
-
-          setPredictionHistory((prev) => [newHistoryItem, ...prev.slice(0, 9)]);
-
-          // API call to save prediction history
-          // await api.post('/api/save-prediction', newHistoryItem);
+            result.prediction === 1 ? "Survived" : "Did not survive";
+        } catch (error) {
+          console.error(`Prediction error for model ${modelId}:`, error);
+          predictions[modelId] = "Error: " + error.message;
         }
+      }
 
-        setIsCalculating(false);
-      }, 1200);
+      setModelPredictions(predictions);
     } catch (error) {
-      console.error("Error making prediction:", error);
+      console.error("Prediction failed:", error);
+      setModelPredictions({ error: error.message });
+    } finally {
       setIsCalculating(false);
     }
-  };
-
-  // Load a history item into the calculator
-  const loadHistoryItem = (historyItem) => {
-    setInputs(historyItem.inputs);
-    setModelPredictions(historyItem.predictions);
-    setSelectedModels(Object.keys(historyItem.predictions));
-    setShowHistory(false);
-    setShowInputs(true);
   };
 
   const allInputsFilled = Object.values(inputs).every((val) => val !== "");
@@ -313,73 +235,9 @@ const LoggedInCalculatorPage = () => {
               with greater precision
             </p>
 
-            {/* User status and history toggle */}
             <div className="user-status">
               <div className="status-indicator"></div>
               <span>LOGGED IN AS {mockUser?.username?.toUpperCase()}</span>
-              {predictionHistory.length > 0 && (
-                <button
-                  className="history-toggle"
-                  onClick={() => setShowHistory(!showHistory)}
-                >
-                  {showHistory ? "HIDE HISTORY" : "VIEW HISTORY"}
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Prediction History Panel */}
-        {showHistory && (
-          <div className="history-panel">
-            <div className="history-header">
-              <h3>PREDICTION HISTORY</h3>
-              <button
-                className="close-history"
-                onClick={() => setShowHistory(false)}
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="history-list">
-              {predictionHistory.map((item) => (
-                <div
-                  key={item.id}
-                  className="history-item"
-                  onClick={() => loadHistoryItem(item)}
-                >
-                  <div className="history-timestamp">
-                    {new Date(item.timestamp).toLocaleDateString()} -{" "}
-                    {new Date(item.timestamp).toLocaleTimeString()}
-                  </div>
-                  <div className="history-details">
-                    <div className="history-params">
-                      <span>{item.inputs.class} Class</span>
-                      <span>{item.inputs.sex}</span>
-                      <span>Age: {item.inputs.age}</span>
-                    </div>
-                    <div className="history-results">
-                      {Object.entries(item.predictions).map(
-                        ([modelId, result]) => (
-                          <div
-                            key={modelId}
-                            className={`history-result ${
-                              result === "Survived"
-                                ? "survived"
-                                : "not-survived"
-                            }`}
-                          >
-                            {availableModels
-                              .find((m) => m.id === modelId)
-                              ?.name.split(" ")[0] || modelId}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         )}
@@ -493,21 +351,19 @@ const LoggedInCalculatorPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={field === "age" ? 110 : 5000}
+                        step={field === "age" ? "1" : "0.01"}
+                        max={field === "age" ? 110 : 1000}
                         value={value}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          const num = Number(val);
-                          if (
-                            val === "" ||
-                            (Number.isFinite(num) &&
-                              num >= 0 &&
-                              num <= (field === "age" ? 110 : 5000))
-                          ) {
-                            handleInputChange(field, val);
-                          }
-                        }}
-                        placeholder={field === "age" ? "AGE" : "FARE"}
+                        onChange={(e) =>
+                          handleInputChange(field, e.target.value)
+                        }
+                        placeholder={
+                          field === "age"
+                            ? "AGE"
+                            : field === "fare"
+                            ? "FARE (£)"
+                            : ""
+                        }
                         onClick={(e) => e.stopPropagation()}
                         onKeyDown={(e) => {
                           if (["-", "e", "E"].includes(e.key)) {
@@ -521,22 +377,6 @@ const LoggedInCalculatorPage = () => {
                 </div>
               ))}
             </div>
-
-            {explanation && (
-              <div className="explanation-panel">
-                <div className="explanation-content">
-                  <h4>{explanation.toUpperCase()}</h4>
-                  <p>{explanations[explanation]}</p>
-                </div>
-                <button
-                  className="close-explanation"
-                  onClick={() => setExplanation(null)}
-                >
-                  <span>×</span>
-                </button>
-                <div className="explanation-arrow"></div>
-              </div>
-            )}
 
             <div className="action-bar">
               <button className="reset-btn" onClick={resetInputs}>
@@ -570,7 +410,6 @@ const LoggedInCalculatorPage = () => {
           </>
         )}
 
-        {/* Multi-Model Prediction Results */}
         {Object.keys(modelPredictions).length > 0 && (
           <div className="multi-model-results">
             <div className="result-header">
@@ -587,7 +426,11 @@ const LoggedInCalculatorPage = () => {
                   <div
                     key={modelId}
                     className={`model-prediction ${
-                      result === "Survived" ? "survived" : "not-survived"
+                      result.includes("Survived")
+                        ? "survived"
+                        : result.includes("Did not survive")
+                        ? "not-survived"
+                        : "error"
                     }`}
                   >
                     <div className="model-prediction-header">
@@ -598,22 +441,30 @@ const LoggedInCalculatorPage = () => {
                     <div className="prediction-visual">
                       <div
                         className={`prediction-circle ${
-                          result === "Survived" ? "pulse" : ""
+                          result.includes("Survived")
+                            ? "pulse"
+                            : result.includes("Error")
+                            ? "error"
+                            : ""
                         }`}
                       >
-                        {result === "Survived" ? (
+                        {result.includes("Survived") ? (
                           <div className="survived-icon">✓</div>
-                        ) : (
+                        ) : result.includes("Did not survive") ? (
                           <div className="not-survived-icon">✕</div>
+                        ) : (
+                          <div className="error-icon">!</div>
                         )}
                       </div>
                     </div>
 
                     <div className="prediction-result">
                       <h3>{result}</h3>
-                      <p className="confidence">
-                        Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
-                      </p>
+                      {!result.includes("Error") && (
+                        <p className="confidence">
+                          Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
+                        </p>
+                      )}
                     </div>
 
                     <div className="key-factor">
@@ -633,14 +484,19 @@ const LoggedInCalculatorPage = () => {
               })}
             </div>
 
-            {/* Model Agreement Indicator */}
             <div className="model-agreement">
               <h4>MODEL AGREEMENT</h4>
               <div className="agreement-meter">
                 {(() => {
-                  const predictions = Object.values(modelPredictions);
-                  const survivedCount = predictions.filter(
-                    (p) => p === "Survived"
+                  const predictions = Object.values(modelPredictions).filter(
+                    (p) =>
+                      p.includes("Survived") || p.includes("Did not survive")
+                  );
+
+                  if (predictions.length === 0) return null;
+
+                  const survivedCount = predictions.filter((p) =>
+                    p.includes("Survived")
                   ).length;
                   const agreementPercent =
                     (Math.max(

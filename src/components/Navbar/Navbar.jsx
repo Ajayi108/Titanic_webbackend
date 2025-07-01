@@ -59,7 +59,7 @@ export default function Navbar() {
 
         {user ? (
           <>
-            <p>Hello, {user.firstName}!</p>
+            <p>Hello {user.firstName}!</p>
 
             {/* Only show Admin Dashboard link for admin users */}
             {user.isAdmin && (
