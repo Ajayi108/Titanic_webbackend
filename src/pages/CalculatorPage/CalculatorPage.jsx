@@ -74,7 +74,7 @@ const CalculatorPage = () => {
     
     try {
       const embarkedMap = { Cherbourg: 1, Queenstown: 2, Southampton: 0 };
-      const titleMap = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
+      const titleMap = { Master: 4, Miss: 2, Mr: 1, Mrs: 3, Rare: 5 };
       const getAgeBin = (age) => {
         if (age <= 16) return 0;
         if (age <= 32) return 1;
