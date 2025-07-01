@@ -32,17 +32,6 @@ const LoggedInCalculatorPage = () => {
     title: ["Master", "Miss", "Mr", "Mrs", "Rare"],
   };
 
-  // Explanations
-  const explanations = {
-    class: "Passenger class was a strong indicator of survival chance",
-    sex: "Women and children had higher survival rates",
-    age: "Children under 10 had better survival odds",
-    fare: "Higher fares correlated with better survival chances",
-    alone: "Passengers with family often helped each other survive",
-    embarked: "Embarkation port indicated socioeconomic factors",
-    title: "Titles revealed social standing and marital status",
-  };
-
   // Fetch available models on component mount
   useEffect(() => {
     const fetchAvailableModels = async () => {
@@ -388,22 +377,6 @@ const LoggedInCalculatorPage = () => {
                 </div>
               ))}
             </div>
-
-            {explanation && (
-              <div className="explanation-panel">
-                <div className="explanation-content">
-                  <h4>{explanation.toUpperCase()}</h4>
-                  <p>{explanations[explanation]}</p>
-                </div>
-                <button
-                  className="close-explanation"
-                  onClick={() => setExplanation(null)}
-                >
-                  <span>×</span>
-                </button>
-                <div className="explanation-arrow"></div>
-              </div>
-            )}
 
             <div className="action-bar">
               <button className="reset-btn" onClick={resetInputs}>
