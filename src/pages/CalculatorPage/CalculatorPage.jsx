@@ -38,7 +38,7 @@ const CalculatorPage = () => {
     class: 'Passenger class was a strong indicator of survival chance',
     sex: 'Women and children had higher survival rates',
     age: 'Children under 10 had better survival odds',
-    fare: 'Higher fares correlated with better survival chances',
+    fare: 'Price of your ticket in American Dollars',
     alone: 'Passengers with family often helped each other survive',
     embarked: 'Embarkation port indicated socioeconomic factors',
     title: 'Titles revealed social standing and marital status'
@@ -73,8 +73,29 @@ const CalculatorPage = () => {
     setApiResponse(null);
     
     try {
-      const embarkedMap = { Cherbourg: 0, Queenstown: 1, Southampton: 2 };
+      const embarkedMap = { Cherbourg: 1, Queenstown: 2, Southampton: 0 };
       const titleMap = { Master: 0, Miss: 1, Mr: 2, Mrs: 3, Rare: 4 };
+      const getAgeBin = (age) => {
+        if (age <= 16) return 0;
+        if (age <= 32) return 1;
+        if (age <= 48) return 2;
+        if (age <= 64) return 3;
+        return 4;
+      };
+      
+      const getFareBin = (fare) => {
+        if (fare <= 7.91) return 0;
+        if (fare <= 14.454) return 1;
+        if (fare <= 31) return 2;
+        return 3;
+
+      };
+      const ageNum = parseFloat(inputs.age) || 0;
+      const fareNum = parseFloat(inputs.fare) || 0;
+
+      const binnedAge = getAgeBin(ageNum);
+      const binnedFare = getFareBin(fareNum);
+
 
       const payload = {
         Age: parseFloat(inputs.age) || 0,
@@ -83,7 +104,9 @@ const CalculatorPage = () => {
         Sex: inputs.sex === 'Male' ? 0 : 1,
         Embarked: embarkedMap[inputs.embarked] || 0,
         Title: titleMap[inputs.title] || 0,
-        IsAlone: inputs.alone === 'Yes' ? 1 : 0
+        IsAlone: inputs.alone === 'Yes' ? 1 : 0,
+        'Age*Class' : binnedAge * binnedFare,
+        
       };
       const modelId = modelIdMap[model] || 1;
        
@@ -235,7 +258,7 @@ const CalculatorPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={field === 'age' ? 110 : 5000}
+                        max={field === 'age' ? 110 : 700}
                         value={value}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -244,7 +267,7 @@ const CalculatorPage = () => {
                             val === '' ||
                             (Number.isFinite(num) &&
                               num >= 0 &&
-                              num <= (field === 'age' ? 110 : 5000))
+                              num <= (field === 'age' ? 110 : 700))
                           ) {
                             handleInputChange(field, val);
                           }
@@ -305,13 +328,8 @@ const CalculatorPage = () => {
               </button>
             </div>
 
-            {/* API Response Debug Panel */}
-            {apiResponse && (
-              <div className="debug-panel">
-                <h4>API RESPONSE DATA</h4>
-                <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
-              </div>
-            )}
+            
+            
           </>
         )}
 
