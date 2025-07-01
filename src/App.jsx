@@ -21,6 +21,7 @@ import Contact from "./pages/Contact/Contact";
 import Courses from "./pages/Courses/Courses";
 import CourseDetails from "./pages/CourseDetails/CourseDetails";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import RequireAdmin from "./components/Auth/RequireAdmin";
 
 // Conditional calculator route handler
 import CalculatorRedirect from "./pages/CalculatorRedirect"; // ✅ new component
@@ -49,7 +50,15 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/coursedetails" element={<CourseDetails />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} />
+        import RequireAdmin from "./components/Auth/RequireAdmin"; // ...
+        <Route
+          path="/admindashboard"
+          element={
+            <RequireAdmin>
+              <AdminDashboard />
+            </RequireAdmin>
+          }
+        />
         <Route path="/calculator" element={<CalculatorRedirect />} />{" "}
         {/* ✅ auto-switch */}
       </Route>
