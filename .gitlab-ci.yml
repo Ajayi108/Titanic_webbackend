@@ -1,8 +1,32 @@
-# Minimal config 
 stages:
-  - check
+  - test
+  - build
 
-placeholder_job:
-  stage: check
+# Test stage
+run_tests:
+  stage: test
+  image: node:18
+  before_script:
+    - npm install
   script:
-    - echo "No CI checks required for this project"
+    - npm test
+
+# Build and push Docker image
+build_and_push:
+  stage: build
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker info
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    # Build once and tag multiple times
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    
+    # Push both versions
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
