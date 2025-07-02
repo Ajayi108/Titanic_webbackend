@@ -74,7 +74,7 @@ const AdminDashboard = () => {
     }  
     setIsTraining(true);
     try {
-      const response = await api.fetch("/api/model/train", {
+      const response = await fetch("/api/model/train", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
