@@ -45,6 +45,7 @@ def create_tables():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS trained_models (
             id SERIAL PRIMARY KEY,
+            display_name TEXT UNIQUE NOT NULL,
             model_name TEXT NOT NULL,
             feature_key TEXT NOT NULL,
             file_name TEXT UNIQUE NOT NULL,
@@ -72,15 +73,15 @@ def update_tables():
         print(f"⚠️ Table update error: {e}")
         conn.rollback()
 
-def add_trained_model(model_name, feature_key, file_name, user_id=None, is_global=False):
+def add_trained_model( display_name , model_name, feature_key, file_name, user_id=None, is_global=False):
     """Add a trained model to the database"""
     try:
         cursor.execute("""
             INSERT INTO trained_models 
-            (model_name, feature_key, file_name, user_id, is_global)
-            VALUES (%s, %s, %s, %s, %s)
+            (display_name, model_name, feature_key, file_name, user_id, is_global)
+            VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT DO NOTHING;
-        """, (model_name, feature_key, file_name, user_id, is_global))
+        """, ( display_name , model_name, feature_key, file_name, user_id, is_global))
         conn.commit()
         model_type = "global" if is_global else f"user {user_id}'s" if user_id else "anonymous"
         print(f"✅ {model_type} model added: {model_name}")
@@ -108,23 +109,6 @@ def add_admin_model(model_name, feature_key, file_name):
     else:
         print("⚠️ Admin user not found. Create admin first.")
 
-def init_admin_with_models():
-    """Initialize admin user and models"""
-    from init_user import create_admin_user
-    create_admin_user()
-    
-    # Add admin-specific models
-    add_admin_model(
-        model_name="admin_premium_model",
-        feature_key="Full-Feature-Set",
-        file_name="admin_premium_v1"
-    )
-    
-    add_admin_model(
-        model_name="admin_optimized_rf",
-        feature_key="Optimized-Features",
-        file_name="admin_rf_optimized"
-    )
 
 # --- Existing functions remain unchanged ---
 def add_name(model_name):
@@ -165,6 +149,7 @@ create_admin_user()
 
 # Add anonymous model (global)
 add_trained_model(
+    display_name = "Random forest Default Model",
     model_name="random_forest",
     feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     file_name="random_forest-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
@@ -172,6 +157,7 @@ add_trained_model(
 )
 
 add_trained_model(
+    display_name = "Support Vector Classifier Default Model",
     model_name="svc",
     feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     file_name="svc-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
@@ -179,6 +165,7 @@ add_trained_model(
 )
 
 add_trained_model(
+    display_name = "Decision tree Default Model",
     model_name="decision_tree",
     feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     file_name="decision_tree-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
@@ -186,6 +173,7 @@ add_trained_model(
 )
 
 add_trained_model(
+    display_name = "Logistic Regression Default Model",
     model_name="logreg",
     feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     file_name="logreg-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
@@ -193,6 +181,7 @@ add_trained_model(
 )
 
 add_trained_model(
+    display_name = "KNN Default Model",
     model_name="knn",
     feature_key="Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",
     file_name="knn-Age-Age#Class-Embarked-Fare-IsAlone-Pclass-Sex-Title",

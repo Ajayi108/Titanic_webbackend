@@ -28,6 +28,7 @@ def proxy_train(
         example=["Pclass","Sex","Age","Fare","Embarked","Title","IsAlone","Age*Class"],
         description="Feature list"
     ),
+    admin_name: str = Body(default=None, description="Optional unique name chosen by the admin"),
 ):
     # Canonicalize features: dedupe + sort 
     canonical_features = sorted(set(features))
@@ -48,8 +49,23 @@ def proxy_train(
 
     data = resp.json()
     model_name  = data["model_name"]
-    feature_key = data["feature_key"]  # assume this matches your canonical_features order
+    feature_key = data["feature_key"]  
     file_name   = data["file_name"]
+
+     # Use admin-provided name or fallback to file_name
+    display_name = admin_name.strip() if admin_name else file_name
+
+    #Ensure admin-chosen name is unique
+    cursor.execute(
+    "SELECT 1 FROM trained_models WHERE display_name = %s LIMIT 1;",
+    (display_name,)
+    )
+
+    if cursor.fetchone():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"The chosen model name '{display_name}' is already in use. Please choose a unique name."
+    )
 
     # Check for an existing record
     cursor.execute(
@@ -72,15 +88,15 @@ def proxy_train(
     try:
         cursor.execute(
             """
-            INSERT INTO trained_models (model_name, feature_key, file_name)
-            VALUES (%s, %s, %s)
+            INSERT INTO trained_models (model_name, feature_key, file_name, display_name)
+            VALUES (%s, %s, %s, %s)
             """,
-            (model_name, feature_key, file_name)
+            (model_name, feature_key, file_name, display_name)
         )
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"Model trained but failed to save metadata: {e}"
         )
-
+    data["display_name"] = display_name
     return data
