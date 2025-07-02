@@ -22,15 +22,16 @@ def list_trained_models() -> List[Dict[str, Any]]:
     Returns all trained models including their canonical feature lists.
     """
     cursor.execute("""
-        SELECT id, model_name, feature_key, file_name, is_global, trained_at
+        SELECT id, display_name, model_name, feature_key, file_name, is_global, trained_at
         FROM trained_models
         ORDER BY trained_at DESC
     """)
     rows = cursor.fetchall()
     result: List[Dict[str, Any]] = []
-    for id_, model_name, feature_key, file_name, is_global, trained_at in rows:
+    for id_, display_name, model_name, feature_key, file_name, is_global, trained_at in rows:
         result.append({
             "id": id_,
+            "display_name": display_name,
             "model_name": model_name,
             "feature_key": feature_key,
             "features": feature_key.split("-"),

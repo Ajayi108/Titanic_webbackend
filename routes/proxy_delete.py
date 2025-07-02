@@ -32,14 +32,18 @@ def delete_by_id(record_id: int) -> Dict[str, Any]:
     """
     # Look up the record in our DB
     cursor.execute(
-        "SELECT model_name, feature_key, file_name, is_global FROM trained_models WHERE id = %s",
+        """
+        SELECT model_name, feature_key, file_name, is_global, display_name 
+        FROM trained_models 
+        WHERE id = %s
+        """,
         (record_id,)
     )
     rec = cursor.fetchone()
     if not rec:
         raise HTTPException(status_code=404, detail="No such trained model")
 
-    model_name, feature_key, file_name ,  is_global = rec
+    model_name, feature_key, file_name ,  is_global, display_name = rec
     
     # this prevents the default model which is global to not be deleted.
     if is_global:
@@ -68,5 +72,6 @@ def delete_by_id(record_id: int) -> Dict[str, Any]:
         (record_id,)
     )
     return {
-        "message": f"Deleted record {record_id} and file '{file_name}'."
+        "message": f"Deleted record {record_id} and file '{file_name}'." , 
+        "display_name": display_name
     }
