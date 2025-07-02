@@ -146,8 +146,9 @@
 /* Notification System */
 .notification {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
   padding: 15px 20px;
   border-radius: 4px;
   background-color: rgba(15, 20, 40, 0.95);
@@ -157,6 +158,12 @@
   overflow: hidden;
   animation: slide-in 0.3s ease-out forwards;
 }
+
+.notification.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
 
 @keyframes slide-in {
   from {
@@ -215,6 +222,43 @@
   background: linear-gradient(to right, #00aaff, #00ffaa);
   width: 100%;
   animation: progress-shrink 4s linear forwards;
+}
+
+/* Confirm/Cancel button layout for warning messages */
+.notification-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.notification .train-btn.confirm-btn {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  background: linear-gradient(135deg, #00cc88, #00ffaa);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notification .train-btn.confirm-btn:hover {
+  background: linear-gradient(135deg, #00dd99, #00ffbb);
+}
+
+.notification .reset-btn.cancel-btn {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notification .reset-btn.cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 @keyframes progress-shrink {
