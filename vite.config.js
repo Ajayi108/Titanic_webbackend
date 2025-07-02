@@ -1,6 +1,5 @@
-// https://vite.dev/config/
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
@@ -12,6 +11,11 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, ''),
       }
     }
-  }
-})
-
+  },
+  // Setting up the test folder
+  test: {
+    include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    environment: 'jsdom',
+    setupFiles: ['tests/setup.js'],
+  },
+});
