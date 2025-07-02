@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import "./LoggedInCalculatorPage.css";
 import Footer from "../../components/Footer/Footer";
 
 const LoggedInCalculatorPage = () => {
-  // Mock user for development
-  const mockUser = { username: "User" };
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // States
   const [selectedModels, setSelectedModels] = useState([]);
@@ -19,11 +21,12 @@ const LoggedInCalculatorPage = () => {
     title: "",
   });
   const [modelPredictions, setModelPredictions] = useState({});
-  const [explanation, setExplanation] = useState(null);
+  const [predictionHistory, setPredictionHistory] = useState([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showInputs, setShowInputs] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
-  // Input options (removed fare from options since we'll use direct input)
+  // Input options
   const inputOptions = {
     class: ["First", "Second", "Third"],
     sex: ["Male", "Female"],
@@ -57,6 +60,12 @@ const LoggedInCalculatorPage = () => {
     };
 
     fetchAvailableModels();
+
+    // Load prediction history from localStorage
+    const savedHistory = localStorage.getItem("predictionHistory");
+    if (savedHistory) {
+      setPredictionHistory(JSON.parse(savedHistory));
+    }
   }, []);
 
   // Helper functions for model info
@@ -82,9 +91,7 @@ const LoggedInCalculatorPage = () => {
 
   // Input handlers
   const handleInputChange = (field, value) => {
-    // Special validation for numeric fields
     if (field === "age" || field === "fare") {
-      // Allow empty string or valid numbers
       if (value === "" || (!isNaN(value) && Number(value) >= 0)) {
         setInputs((prev) => ({ ...prev, [field]: value }));
       }
@@ -104,7 +111,6 @@ const LoggedInCalculatorPage = () => {
       title: "",
     });
     setModelPredictions({});
-    setExplanation(null);
   };
 
   const toggleModelSelection = (modelId) => {
@@ -118,6 +124,7 @@ const LoggedInCalculatorPage = () => {
   const proceedToInputs = () => {
     if (selectedModels.length > 0) {
       setShowInputs(true);
+      setShowHistory(false);
       setTimeout(() => {
         document
           .querySelector(".input-grid")
@@ -126,46 +133,56 @@ const LoggedInCalculatorPage = () => {
     }
   };
 
-  // Convert fare value to the expected bins (0-3)
-  const getFareValue = (fare) => {
-    const fareNum = parseFloat(fare) || 0;
-    if (fareNum <= 7.91) return 0;
-    if (fareNum <= 14.454) return 1;
-    if (fareNum <= 31) return 2;
-    return 3;
+  // Save prediction to history
+  const saveToHistory = (inputs, predictions) => {
+    const newHistoryEntry = {
+      id: Date.now(),
+      timestamp: new Date().toISOString(),
+      inputs: { ...inputs },
+      predictions: { ...predictions },
+    };
+
+    const updatedHistory = [newHistoryEntry, ...predictionHistory].slice(0, 10);
+    setPredictionHistory(updatedHistory);
+    localStorage.setItem("predictionHistory", JSON.stringify(updatedHistory));
   };
 
-  // Prediction function with proper value handling
+  // Load history item into calculator
+  const loadHistoryItem = (historyItem) => {
+    setInputs(historyItem.inputs);
+    setModelPredictions(historyItem.predictions);
+    setSelectedModels(Object.keys(historyItem.predictions));
+    setShowHistory(false);
+    setShowInputs(true);
+  };
+
+  // Prediction function with proper Age*Class validation
   const makePrediction = async () => {
     if (selectedModels.length === 0) return;
     setIsCalculating(true);
 
     try {
-      // Calculate age band (0-4)
+      // Convert inputs to numerical values
       const ageNum = parseFloat(inputs.age) || 0;
-      const ageValue = Math.min(Math.floor(ageNum / 16), 4);
-
-      // Calculate Pclass (1-3)
-      const pclassValue =
+      const fareNum = parseFloat(inputs.fare) || 0;
+      const pclassNum =
         inputs.class === "First" ? 1 : inputs.class === "Second" ? 2 : 3;
 
-      // Calculate and constrain Age*Class (0-12)
-      const ageClassValue = Math.min(Math.max(ageValue * pclassValue, 0), 12);
+      // Calculate and constrain Age*Class between 0 and 12
+      const ageClassValue = Math.min(Math.max(ageNum * pclassNum, 0), 12);
 
-      // Prepare payload with properly formatted values
+      // Prepare payload with properly constrained values
       const payload = {
-        Age: ageValue,
-        "Age*Class": ageClassValue,
+        Age: ageNum,
+        Pclass: pclassNum,
+        Fare: fareNum,
+        Sex: inputs.sex === "Male" ? 0 : 1,
         Embarked:
           inputs.embarked === "Cherbourg"
             ? 0
             : inputs.embarked === "Queenstown"
             ? 1
             : 2,
-        Fare: getFareValue(inputs.fare),
-        IsAlone: inputs.alone === "Yes" ? 1 : 0,
-        Pclass: pclassValue,
-        Sex: inputs.sex === "Male" ? 0 : 1,
         Title:
           inputs.title === "Master"
             ? 1
@@ -176,6 +193,8 @@ const LoggedInCalculatorPage = () => {
             : inputs.title === "Mr"
             ? 4
             : 5,
+        IsAlone: inputs.alone === "Yes" ? 1 : 0,
+        "Age*Class": ageClassValue,
       };
 
       const predictions = {};
@@ -206,6 +225,7 @@ const LoggedInCalculatorPage = () => {
       }
 
       setModelPredictions(predictions);
+      saveToHistory(inputs, predictions);
     } catch (error) {
       console.error("Prediction failed:", error);
       setModelPredictions({ error: error.message });
@@ -216,13 +236,19 @@ const LoggedInCalculatorPage = () => {
 
   const allInputsFilled = Object.values(inputs).every((val) => val !== "");
 
+  // Redirect if not logged in
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
   return (
     <div className="tech-calculator logged-in-calculator">
       <div className="circuit-lines"></div>
       <div className="data-dots"></div>
 
       <div className="container">
-        {!showInputs && (
+        {!showInputs && !showHistory && (
           <div className="hero-section">
             <div className="glitch-container">
               <h1 className="glitch" data-text="Predictanic">
@@ -237,12 +263,57 @@ const LoggedInCalculatorPage = () => {
 
             <div className="user-status">
               <div className="status-indicator"></div>
-              <span>LOGGED IN AS {mockUser?.username?.toUpperCase()}</span>
+              <span>LOGGED IN {user?.username?.toUpperCase()}</span>
+              {predictionHistory.length > 0 && (
+                <button
+                  className="history-toggle"
+                  onClick={() => setShowHistory(true)}
+                >
+                  VIEW HISTORY
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {!showInputs && (
+        {showHistory && (
+          <div className="history-panel">
+            <div className="history-header">
+              <h3>PREDICTION HISTORY</h3>
+              <button
+                className="close-history"
+                onClick={() => setShowHistory(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="history-items">
+              {predictionHistory.map((item) => (
+                <div
+                  key={item.id}
+                  className="history-item"
+                  onClick={() => loadHistoryItem(item)}
+                >
+                  <div className="history-timestamp">
+                    {new Date(item.timestamp).toLocaleString()}
+                  </div>
+                  <div className="history-summary">
+                    {Object.values(item.predictions).filter((p) =>
+                      p.includes("Survived")
+                    ).length > 0
+                      ? "Mostly Survived"
+                      : "Mostly Did Not Survive"}
+                  </div>
+                  <div className="history-models">
+                    {Object.keys(item.predictions).length} models
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!showInputs && !showHistory && (
           <div className="model-selection">
             <h3>SELECT PREDICTION MODELS</h3>
             <p className="selection-helper">
@@ -311,7 +382,6 @@ const LoggedInCalculatorPage = () => {
                 <div
                   key={field}
                   className={`input-cell ${value ? "filled" : ""}`}
-                  onClick={() => setExplanation(field)}
                 >
                   <div className="input-header">
                     <div className="input-label">
@@ -337,10 +407,7 @@ const LoggedInCalculatorPage = () => {
                           className={`option ${
                             value === option ? "selected" : ""
                           }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleInputChange(field, option);
-                          }}
+                          onClick={() => handleInputChange(field, option)}
                         >
                           {option}
                         </div>
@@ -364,7 +431,6 @@ const LoggedInCalculatorPage = () => {
                             ? "FARE (£)"
                             : ""
                         }
-                        onClick={(e) => e.stopPropagation()}
                         onKeyDown={(e) => {
                           if (["-", "e", "E"].includes(e.key)) {
                             e.preventDefault();
@@ -459,7 +525,14 @@ const LoggedInCalculatorPage = () => {
                     </div>
 
                     <div className="prediction-result">
-                      <h3>{result}</h3>
+                      {result.includes("Error") ? (
+                        <div className="error-message">
+                          Error:{" "}
+                          {JSON.parse(result.replace("Error: ", "")).detail}
+                        </div>
+                      ) : (
+                        <h3>{result}</h3>
+                      )}
                       {!result.includes("Error") && (
                         <p className="confidence">
                           Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
