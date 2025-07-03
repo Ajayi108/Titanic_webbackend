@@ -24,6 +24,14 @@ export default function SignupPage() {
     password: '',
     confirmPassword: ''
   });
+  const [notification, setNotification] = useState(null);
+  const showNotification = (message, type = 'error') => {
+    setNotification({ message, type });
+    // auto-dismiss after 5s
+    setTimeout(() => setNotification(null), 5000);
+  };
+
+    
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,28 +46,54 @@ export default function SignupPage() {
   };
 
   const handleSubmit = async () => {
+    //Make sure no field is empty
+    if (
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.email.trim() ||
+      !form.password.trim() ||
+      !form.confirmPassword.trim()
+    ) {
+      showNotification("Please fill in all fields", "error");
+      return;
+    }
+
+    // email‐format check
     if (!isValidEmail(form.email)) {
-      alert("Please enter a valid email address");
+      showNotification("Please enter a valid email address", "error");
       return;
     }
 
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match");
+      showNotification("Passwords do not match", "error");
       return;
     }
 
     try {
       await register(form.email, form.password, form.firstName, form.lastName);
-      alert("✅ Signup successful");
+        showNotification("✅ Signup successful", "success");
       navigate('/login');
     } catch (error) {
-      alert(`❌ ${error?.response?.data?.detail || 'Signup failed'}`);
+      showNotification(`❌ ${error?.response?.data?.detail || 'Signup failed'}`, "error");
     }
   };
 
 
   return (
     <div className="signup-container">
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          <div className="notification-content">
+            <span className="notification-icon">
+              {notification.type === "success" ? "✓" : notification.type === "error" ? "!" : "⚠️"}
+            </span>
+            <span className="notification-message">
+              {notification.message}
+            </span>
+          </div>
+        <div className="notification-progress"></div>
+      </div>
+      )}
       <video autoPlay muted loop className="signup-background-video">
         <source src={titanicVideo} type="video/mp4" />
         Your browser does not support the video tag.
