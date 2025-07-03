@@ -35,7 +35,7 @@ const AdminDashboard = () => {
     { id: "Embarked", name: "Embarked", description: "Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)" },
     { id: "Title", name: "Title", description: "Title extracted from name (Mr, Mrs, Miss, etc.)" },
     { id: "IsAlone", name: "Is Alone", description: "Whether the passenger was traveling alone" },
-    { id: "Age#Class", name: "Age*Class", escription: "Age and Passenger Class multiplication" }
+    { id: "Age*Class", name: "Age X Class", escription: "Age and Passenger Class multiplication" }
      
     ];
     // Fetch all trained models on initial render
