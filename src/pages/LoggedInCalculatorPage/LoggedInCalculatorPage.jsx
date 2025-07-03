@@ -21,6 +21,7 @@ const LoggedInCalculatorPage = () => {
     title: "",
   });
   const [modelPredictions, setModelPredictions] = useState({});
+  const [modelProbas,   setModelProbas]   = useState({});
   const [predictionHistory, setPredictionHistory] = useState([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showInputs, setShowInputs] = useState(false);
@@ -39,17 +40,18 @@ const LoggedInCalculatorPage = () => {
   useEffect(() => {
     const fetchAvailableModels = async () => {
       try {
-        const response = await fetch("http://localhost:5000/model/Model_list");
+        const response = await fetch("/api/model/Model_list");
         if (!response.ok) throw new Error("Failed to fetch models");
 
         const modelsData = await response.json();
         const transformedModels = modelsData.map((model) => ({
           id: model.id,
-          name: model.model_name.toUpperCase(),
+          name: model.display_name || model.file_name,
+          model_name: model.model_name,
+          trained_at: model.trained_at,
+          features: model.features,  // already an array from backend
           type: getAlgorithmType(model.model_name),
           description: getAlgorithmDescription(model.model_name),
-          accuracy: "N/A",
-          feature_key: model.feature_key,
         }));
 
         setAvailableModels(transformedModels);
@@ -111,27 +113,44 @@ const LoggedInCalculatorPage = () => {
       title: "",
     });
     setModelPredictions({});
+    setModelProbas({});
   };
 
   const toggleModelSelection = (modelId) => {
-    setSelectedModels((prev) =>
-      prev.includes(modelId)
-        ? prev.filter((id) => id !== modelId)
-        : [...prev, modelId]
-    );
+    const model = availableModels.find((m) => m.id === modelId);
+    if (!model) return;
+
+    setSelectedModels([modelId]);
+
+    // Set up dynamic inputs from that model's features
+    const rawFeatures = model.features;
+    const dynamicInputs = {};
+    rawFeatures.forEach(f => {
+      // normalize the field names to match your inputOptions keys
+      let key;
+      switch (f) {
+        case "Pclass":     key = "class";  break;
+        case "IsAlone":    key = "alone";  break;
+        case "Age#Class":  key = null;     break; // skip the combined feature
+        default:           key = f.toLowerCase();
+      }
+      if (key) dynamicInputs[key] = "";
+    });
+    // if the model uses Age*Class, make sure both age & class appear
+    if (rawFeatures.includes("Age#Class")) {
+      if (!dynamicInputs.age)   dynamicInputs.age   = "";
+      if (!dynamicInputs.class) dynamicInputs.class = "";
+    }
+    setInputs(dynamicInputs);
+    // Move straight to input
+    setShowInputs(true);
+    setShowHistory(false);
+
+    setTimeout(() => {
+      document.querySelector(".input-grid")?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
   };
 
-  const proceedToInputs = () => {
-    if (selectedModels.length > 0) {
-      setShowInputs(true);
-      setShowHistory(false);
-      setTimeout(() => {
-        document
-          .querySelector(".input-grid")
-          ?.scrollIntoView({ behavior: "smooth" });
-      }, 300);
-    }
-  };
 
   // Save prediction to history
   const saveToHistory = (inputs, predictions) => {
@@ -149,7 +168,7 @@ const LoggedInCalculatorPage = () => {
 
   // Load history item into calculator
   const loadHistoryItem = (historyItem) => {
-    setInputs(historyItem.inputs);
+    const sanitizedInputs = { ...historyItem.inputs };
     setModelPredictions(historyItem.predictions);
     setSelectedModels(Object.keys(historyItem.predictions));
     setShowHistory(false);
@@ -172,37 +191,81 @@ const LoggedInCalculatorPage = () => {
       const ageClassValue = Math.min(Math.max(ageNum * pclassNum, 0), 12);
 
       // Prepare payload with properly constrained values
-      const payload = {
-        Age: ageNum,
-        Pclass: pclassNum,
-        Fare: fareNum,
-        Sex: inputs.sex === "Male" ? 0 : 1,
-        Embarked:
-          inputs.embarked === "Cherbourg"
-            ? 0
-            : inputs.embarked === "Queenstown"
-            ? 1
-            : 2,
-        Title:
-          inputs.title === "Master"
-            ? 1
-            : inputs.title === "Miss"
-            ? 2
-            : inputs.title === "Mrs"
-            ? 3
-            : inputs.title === "Mr"
-            ? 4
-            : 5,
-        IsAlone: inputs.alone === "Yes" ? 1 : 0,
-        "Age*Class": ageClassValue,
-      };
+      const model = availableModels.find((m) => m.id === selectedModels[0]);
+      const payload = {};
+      if (model) {
+        const featureSet = new Set(model.features);
+        const age = parseFloat(inputs.age) || 0;
+        const fare = parseFloat(inputs.fare) || 0;
+        const pclass =
+          inputs.class === "First" ? 1 : inputs.class === "Second" ? 2 : 3;
+        for (const rawFeature of model.features) {
+          const feature = rawFeature.replace("#", "*");
+          switch (feature) {
+            case "Age":
+              payload["Age"] = age;
+              break;
+            case "Pclass":
+              payload["Pclass"] =
+                payload["Pclass"] = pclass;
+              break;
+            case "Fare":
+              payload["Fare"] = fare;
+              break;
+            case "Sex":
+              payload["Sex"] = inputs.sex === "Male" ? 0 : 1;
+              break;
+            case "Embarked":
+              payload["Embarked"] =
+                inputs.embarked === "Cherbourg"
+                  ? 0
+                  : inputs.embarked === "Queenstown"
+                  ? 1
+                  : 2;
+              break;
+            case "Title":
+              payload["Title"] =
+                inputs.title === "Mr"
+                  ? 1
+                  : inputs.title === "Miss"
+                  ? 2
+                  : inputs.title === "Mrs"
+                  ? 3
+                  : inputs.title === "Master"
+                  ? 4
+                  : 5;
+              break;
+            case "IsAlone":
+              payload["IsAlone"] = inputs.alone === "Yes" ? 1 : 0;
+              break;
+            case "Age*Class": {
+              const rawAge = parseFloat(inputs.age);
+              const classInput = inputs.class;
+              if (!rawAge || !classInput) {
+                throw new Error("Missing Age or Class input needed to compute Age*Class.");
+              }
+              const classValue =
+                classInput === "First" ? 1 : classInput === "Second" ? 2 : 3;
+              // Binning Age
+              let binnedAge = 0;
+              if (rawAge <= 16) binnedAge = 0;
+              else if (rawAge <= 32) binnedAge = 1;
+              else if (rawAge <= 48) binnedAge = 2;
+              else if (rawAge <= 64) binnedAge = 3;
+              else binnedAge = 4;
+              payload["Age*Class"] = binnedAge * classValue;
+              break;
+            }
+          }
+        }
+      }
 
       const predictions = {};
 
       for (const modelId of selectedModels) {
         try {
           const response = await fetch(
-            `http://localhost:5000/model/predict/${modelId}`,
+            `/api/model/predict/${modelId}`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -218,6 +281,12 @@ const LoggedInCalculatorPage = () => {
           const result = await response.json();
           predictions[modelId] =
             result.prediction === 1 ? "Survived" : "Did not survive";
+          // store the probability for display
+          setModelProbas(probas => ({
+            ...probas,
+            [modelId]: result.probability_class_0
+          }));
+
         } catch (error) {
           console.error(`Prediction error for model ${modelId}:`, error);
           predictions[modelId] = "Error: " + error.message;
@@ -333,6 +402,11 @@ const LoggedInCalculatorPage = () => {
                     <div className="chip">{model.type}</div>
                     <h4>{model.name}</h4>
                     <p>{model.description}</p>
+                    <div className="card-meta">
+                      <span>🧠 {model.model_name}</span>
+                      <span>📅 {new Date(model.trained_at).toLocaleString()}</span>
+                      <span>🧬 Features: {model.features.join(", ")}</span>
+                    </div>
                     <div className="accuracy">Accuracy: {model.accuracy}</div>
                   </div>
                   <div className="card-glow"></div>
@@ -346,17 +420,7 @@ const LoggedInCalculatorPage = () => {
               ))}
             </div>
 
-            {selectedModels.length > 0 && (
-              <div className="proceed-section">
-                <button
-                  className="proceed-btn active"
-                  onClick={proceedToInputs}
-                >
-                  PROCEED WITH {selectedModels.length}{" "}
-                  {selectedModels.length === 1 ? "MODEL" : "MODELS"}
-                </button>
-              </div>
-            )}
+
           </div>
         )}
 
@@ -378,7 +442,9 @@ const LoggedInCalculatorPage = () => {
             </div>
 
             <div className="input-grid">
-              {Object.entries(inputs).map(([field, value]) => (
+              {Object.entries(inputs)
+                .filter(([field]) => field.toLowerCase() !== "age#class")
+                .map(([field, value]) => (
                 <div
                   key={field}
                   className={`input-cell ${value ? "filled" : ""}`}
@@ -487,7 +553,7 @@ const LoggedInCalculatorPage = () => {
 
             <div className="models-prediction-grid">
               {Object.entries(modelPredictions).map(([modelId, result]) => {
-                const model = availableModels.find((m) => m.id === modelId);
+                const model = availableModels.find(m => m.id === selectedModels[0]);
                 return (
                   <div
                     key={modelId}
@@ -535,7 +601,7 @@ const LoggedInCalculatorPage = () => {
                       )}
                       {!result.includes("Error") && (
                         <p className="confidence">
-                          Confidence: {(Math.random() * 30 + 70).toFixed(1)}%
+                          Confidence: {(modelProbas[modelId] * 100).toFixed(1)}%
                         </p>
                       )}
                     </div>
