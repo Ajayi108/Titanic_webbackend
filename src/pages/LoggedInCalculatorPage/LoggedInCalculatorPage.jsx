@@ -407,7 +407,7 @@ const LoggedInCalculatorPage = () => {
                       <span>📅 {new Date(model.trained_at).toLocaleString()}</span>
                       <span>🧬 Features: {model.features.join(", ")}</span>
                     </div>
-                    <div className="accuracy">Accuracy: {model.accuracy}</div>
+                     
                   </div>
                   <div className="card-glow"></div>
 
