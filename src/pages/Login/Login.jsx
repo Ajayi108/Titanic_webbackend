@@ -8,8 +8,15 @@ export default function LoginPage() {
   const [fact, setFact] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [notification, setNotification] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // fire a toast
+  const showNotification = (message, type = 'error') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   const funFacts = [
     "The Titanic was the largest moving man-made object of its time.",
@@ -26,16 +33,35 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //  No blanks
+    if (!email.trim() || !password.trim()) {
+      showNotification("Please fill in all fields", "error");
+      return;
+    }
     try {
       await login(email, password);
+      showNotification("✅ Login successful", "success");
       navigate('/', { replace: true });
     } catch (err) {
       alert(err.response?.data?.detail || 'Login failed');
+      showNotification(err.response?.data?.detail || 'Login failed', "error");
     }
   };
 
   return (
     <div className="login-container">
+      {/* ——— Toast goes here ——— */}
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          <div className="notification-content">
+            <span className="notification-icon">
+              {notification.type === "success" ? "✓" : "!"}
+            </span>
+            <span className="notification-message">{notification.message}</span>
+          </div>
+          <div className="notification-progress"></div>
+        </div>
+      )}
       <video autoPlay muted loop className="background-video">
         <source src={titanicVideo} type="video/mp4" />
       </video>
