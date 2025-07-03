@@ -90,11 +90,7 @@ def add_trained_model( display_name , model_name, feature_key, file_name, user_i
         conn.rollback()
     
 
-def get_admin_id():
-    """Get admin user ID"""
-    cursor.execute("SELECT id FROM users WHERE email = 'admin@example.com';")
-    result = cursor.fetchone()
-    return result[0] if result else None
+
 
 def add_admin_model(model_name, feature_key, file_name):
     """Add admin-specific model"""
@@ -110,16 +106,6 @@ def add_admin_model(model_name, feature_key, file_name):
         print("⚠️ Admin user not found. Create admin first.")
 
 
-# --- Existing functions remain unchanged ---
-def add_name(model_name):
-    cursor.execute("INSERT INTO models (model_name) VALUES (%s);", (model_name,))
-    conn.commit()
-    print(f"Added: {model_name}")
-
-def remove_name(model_name):
-    cursor.execute("DELETE FROM models WHERE model_name = %s;", (model_name,))
-    conn.commit()
-    print(f"Removed: {model_name}")
 
 def add_user(email, password, is_admin=False):
     cursor.execute("SELECT id FROM users WHERE email = %s;", (email,))
@@ -134,13 +120,6 @@ def add_user(email, password, is_admin=False):
         conn.commit()
         print(f"✅ User added: {email}")
 
-def add_prediction(user_id, model_name, pclass, sex, age, fare, is_alone, embarked, title, result):
-    cursor.execute("""
-        INSERT INTO predictions (user_id, model_name, pclass, sex, age, fare, is_alone, embarked, title, result)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-    """, (user_id, model_name, pclass, sex, age, fare, is_alone, embarked, title, result))
-    conn.commit()
-    print(f"✅ Prediction added for user_id {user_id}")
 
 # --- Initialization ---
 create_tables()
