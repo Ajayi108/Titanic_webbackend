@@ -3,9 +3,12 @@ from psycopg2 import connect
 import os
 
 def create_admin_user():
-    admin_email = "admin@example.com"
-    admin_password = "adminpass"
+    admin_email = "admin@ice.com"
+    admin_password = "pass"
     hashed_pw = hash_password(admin_password)
+    admin_firtsname = "Admin"
+    admin_lastname = "Titanic"
+
 
     # Create a new database connection
     conn = connect(
@@ -21,9 +24,9 @@ def create_admin_user():
         cursor.execute("SELECT id FROM users WHERE email = %s;", (admin_email,))
         if not cursor.fetchone():
             cursor.execute("""
-                INSERT INTO users (email, password, is_admin)
-                VALUES (%s, %s, %s);
-            """, (admin_email, hashed_pw, True))
+                INSERT INTO users (email, password, first_name, last_name, is_admin)
+                VALUES (%s, %s, %s, %s, %s);
+            """, (admin_email, hashed_pw, admin_firtsname, admin_lastname, True))
             conn.commit()
             print(f"✅ Admin user created: {admin_email}")
         else:
